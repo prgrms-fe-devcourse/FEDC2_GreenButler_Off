@@ -1,17 +1,18 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 const useTimeoutFn = (fn, ms) => {
   const timeoutId = useRef();
-  const cb = useRef(fn);
+  const callback = useRef(fn);
 
   useEffect(() => {
-    cb.current = fn;
+    callback.current = fn;
   }, [fn]);
 
   const run = useCallback(() => {
     timeoutId.current && clearTimeout(timeoutId.current);
+
     timeoutId.current = setTimeout(() => {
-      cb.current();
+      callback.current();
     }, ms);
   }, [ms]);
 
@@ -19,7 +20,7 @@ const useTimeoutFn = (fn, ms) => {
     timeoutId.current && clearTimeout(timeoutId.current);
   }, []);
 
-  useEffect(clear, [clear]);
+  useEffect(() => clear, [clear]);
 
   return [run, clear];
 };

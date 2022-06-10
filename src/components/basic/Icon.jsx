@@ -13,4 +13,11 @@ const Icon = ({ name, fontSize, color, ...props }) => {
   return <IconTag style={{ ...iconStyle }} {...props} />;
 };
 
+Icon.propTypes = {
+  name: PropTypes.string,
+  fontSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  color: PropTypes.string,
+  style: PropTypes.object,
+};
+
 export default Icon;

@@ -50,3 +50,12 @@ const Input = ({
 };
 
 export default Input;
+
+Input.propTypes = {
+  initialValue: PropTypes.string,
+  block: PropTypes.bool,
+  fontSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  style: PropTypes.object,
+};

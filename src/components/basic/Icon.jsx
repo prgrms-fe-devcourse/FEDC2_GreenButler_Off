@@ -1,23 +1,37 @@
-import PropTypes from 'prop-types';
-import { ICON_TYPES } from 'utils/constants/icons';
+import styled from '@emotion/styled';
 
-const Icon = ({ name, fontSize, color, ...props }) => {
-  const { [name]: IconTag } = ICON_TYPES;
+const IconWrapper = styled.i`
+  display: inline-block;
+`;
 
-  const iconStyle = {
-    fontSize,
-    color,
-    ...props.style,
+const Icon = ({
+  name,
+  size = 16,
+  strokeWidth = 2,
+  rotate,
+  color = '#222',
+  ...props
+}) => {
+  const shapeStyle = {
+    width: size,
+    height: size,
+    transform: rotate ? `rotate(${rotate}deg)` : undefined,
   };
+  const iconStyle = {
+    'stroke-width': strokeWidth,
+    stroke: color,
+    width: size,
+    height: size,
+  };
+  const icon = require('feather-icons').icons[name];
+  const svg = icon ? icon.toSvg(iconStyle) : '';
+  const base64 = Buffer.from(svg, 'utf8').toString('base64');
 
-  return <IconTag style={{ ...iconStyle }} {...props} />;
-};
-
-Icon.propTypes = {
-  name: PropTypes.string,
-  fontSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  color: PropTypes.string,
-  style: PropTypes.object,
+  return (
+    <IconWrapper {...props} style={{ ...props.style, ...shapeStyle }}>
+      <img src={`data:image/svg+xml;base64,${base64}`} alt={name} />
+    </IconWrapper>
+  );
 };
 
 export default Icon;

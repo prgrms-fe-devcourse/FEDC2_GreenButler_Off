@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import colors from 'utils/constants/colors';
+import Viewport from 'components/Viewport';
 
 const Label = styled.label`
   display: ${({ isLabel }) => (isLabel ? 'block' : 'none')};
@@ -48,7 +49,7 @@ const Input = ({
   );
 
   return (
-    <>
+    <Viewport>
       <Label isLabel={isLabel}>{label}</Label>
       <StyledInput
         {...props}
@@ -58,7 +59,7 @@ const Input = ({
         inputStyle={InputStyle}
         onChange={handleChange}
       />
-    </>
+    </Viewport>
   );
 };
 

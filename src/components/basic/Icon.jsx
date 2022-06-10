@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 import { ICON_TYPES } from 'utils/constants/icons';
 
 const IconWrapper = styled.i`
@@ -25,3 +26,9 @@ const Icon = ({ name, size = 15, rotate, ...props }) => {
 };
 
 export default Icon;
+
+Icon.PropTypes = {
+  name: PropTypes.string,
+  size: PropTypes.number,
+  rotate: PropTypes.number,
+};

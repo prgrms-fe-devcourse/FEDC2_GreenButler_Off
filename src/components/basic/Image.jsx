@@ -32,7 +32,7 @@ const Image = ({
     display: block ? 'block' : undefined,
     width,
     height,
-    objectFit: mode, // cover, fill, contain
+    objectFit: mode,
   };
 
   useEffect(() => {

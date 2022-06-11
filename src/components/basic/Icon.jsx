@@ -6,7 +6,7 @@ const IconWrapper = styled.i`
   display: inline-block;
 `;
 
-const Icon = ({ name, size = 15, rotate, ...props }) => {
+const Icon = ({ name, size = 15, rotate, filter, ...props }) => {
   const { [name]: iconUrl } = ICON_TYPES;
   const shapeStyle = {
     width: size,
@@ -16,6 +16,7 @@ const Icon = ({ name, size = 15, rotate, ...props }) => {
   const iconStyle = {
     width: size,
     height: size,
+    filter,
   };
 
   return (
@@ -27,8 +28,9 @@ const Icon = ({ name, size = 15, rotate, ...props }) => {
 
 export default Icon;
 
-Icon.PropTypes = {
+Icon.propTypes = {
   name: PropTypes.string,
   size: PropTypes.number,
   rotate: PropTypes.number,
+  filter: PropTypes.string,
 };

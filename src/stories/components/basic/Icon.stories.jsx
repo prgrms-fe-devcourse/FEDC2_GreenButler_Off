@@ -12,6 +12,9 @@ export default {
     },
     size: { defaultValue: 20, control: { type: 'range', min: 15, max: 80 } },
     rotate: { defaultValue: 0, control: { type: 'range', min: 0, max: 360 } },
+    filter: {
+      control: 'text',
+    },
   },
 };
 

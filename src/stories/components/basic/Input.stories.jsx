@@ -1,5 +1,4 @@
 import Input from 'components/basic/Input';
-import Viewport from 'components/Viewport';
 
 export default {
   title: 'Component/basic/Input',
@@ -13,10 +12,6 @@ export default {
       defaultValue: false,
       control: 'boolean',
     },
-    isButton: {
-      defaultValue: false,
-      control: 'boolean',
-    },
     fontSize: { control: 'number' },
     width: {
       name: 'width',
@@ -25,14 +20,14 @@ export default {
     },
     height: {
       name: 'height',
-      defaultValue: 40,
-      control: { type: 'range', min: 20, max: 50 },
+      defaultValue: 70,
+      control: { type: 'range', min: 20, max: 70 },
     },
   },
 };
 
 export const Default = (args) => (
-  <Viewport>
+  <>
     <Input {...args} />
-  </Viewport>
+  </>
 );

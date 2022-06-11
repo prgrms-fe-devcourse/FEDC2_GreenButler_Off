@@ -70,7 +70,7 @@ const Input = ({
 
   const handleChange = useCallback(
     (e) => {
-      onChange && onChange(e.target.value);
+      onChange && onChange(e);
     },
     [onChange],
   );

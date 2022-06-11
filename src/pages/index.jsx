@@ -1,0 +1,15 @@
+export { default as LoginPage } from './LoginPage/index';
+export { default as SignupPage } from './SignupPage/index';
+export { default as HomePage } from './HomePage/index';
+export { default as PostAddPage } from './PostAddPage/index';
+export { default as PostEditPage } from './PostEditPage/index';
+export { default as PostDetailPage } from './PostDetailPage/index';
+export { default as MyPage } from './MyPage/index';
+export { default as UserPage } from './UserPage/index';
+export { default as FollowPage } from './FollowPage/index';
+export { default as MyInfoPage } from './MyInfoPage/index';
+export { default as MyInfoEditPage } from './MyInfoEditPage/index';
+export { default as SearchPage } from './SearchPage/index';
+export { default as SearchTagPage } from './SearchTagPage/index';
+export { default as NotificationPage } from './NotificationPage/index';
+export { default as NotFoundPage } from './NotFoundPage/index';

@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const Text = ({
   children,
   block,
@@ -35,6 +37,18 @@ const Text = ({
       {children}
     </Tag>
   );
+};
+
+Text.propTypes = {
+  children: PropTypes.node.isRequired,
+  fontSize: PropTypes.number,
+  block: PropTypes.bool,
+  paragraph: PropTypes.bool,
+  delete: PropTypes.bool,
+  code: PropTypes.bool,
+  mark: PropTypes.bool,
+  strong: PropTypes.bool,
+  color: PropTypes.string,
 };
 
 export default Text;

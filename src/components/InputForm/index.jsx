@@ -31,6 +31,12 @@ const StyledButton = styled(Button)`
   color: ${white};
 `;
 
+const sleep = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), 1000);
+  });
+};
+
 const InputForm = ({
   onSubmit,
   placeholder = '태그를 입력해 주세요.',
@@ -48,7 +54,10 @@ const InputForm = ({
       tag: '',
       fullName: '',
     },
-    onSubmit: onSubmit,
+    onSubmit: async () => {
+      await onSubmit();
+      console.log('submit!');
+    },
     validate: ({ tag, fullName }) => {
       const newErrors = {};
       if (name === 'tag' && !tag) {
@@ -63,6 +72,7 @@ const InputForm = ({
     },
   });
 
+  console.log(values, errors);
   const inputProps = {
     placeholder,
     name,

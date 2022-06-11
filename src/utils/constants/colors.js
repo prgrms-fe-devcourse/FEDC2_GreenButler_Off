@@ -7,7 +7,6 @@ export default {
   grayDark: '#828282',
   gray: '#A3A3A3',
   grayLight: '#CCCCCC',
-  white: '#FFFFFF',
   border: '#F1F1F1',
   background: '#F8F8F8',
   inputBackground: '#FFFFFF',

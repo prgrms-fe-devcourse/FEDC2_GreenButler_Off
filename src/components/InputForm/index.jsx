@@ -1,4 +1,5 @@
 import Input from 'components/basic/Input';
+import PropTypes from 'prop-types';
 import Button from 'components/basic//Button';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
@@ -30,13 +31,7 @@ const StyledButton = styled(Button)`
   color: ${white};
 `;
 
-const sleep = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), 1000);
-  });
-};
-
-const EditForm = ({
+const InputForm = ({
   onSubmit,
   placeholder = '태그를 입력해 주세요.',
   name = 'tag',
@@ -53,10 +48,7 @@ const EditForm = ({
       tag: '',
       fullName: '',
     },
-    onSubmit: async () => {
-      await sleep();
-      console.log('submit!');
-    },
+    onSubmit: onSubmit,
     validate: ({ tag, fullName }) => {
       const newErrors = {};
       if (name === 'tag' && !tag) {
@@ -78,8 +70,13 @@ const EditForm = ({
     inValid,
   };
 
+  const formProps = {
+    width,
+    height,
+  };
+
   return (
-    <StyledForm onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleSubmit} {...formProps}>
       <Input onChange={handleChange} {...inputProps} />
       {errors[name] && <ErrorText>{errors[name]}</ErrorText>}
       <StyledButton
@@ -94,4 +91,17 @@ const EditForm = ({
   );
 };
 
-export default EditForm;
+export default InputForm;
+
+InputForm.propTypes = {
+  onSubmit: PropTypes.func,
+  placeholder: PropTypes.string,
+  name: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  fontWeight: PropTypes.number,
+  children: PropTypes.string,
+  buttonWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  buttonHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  inValid: PropTypes.bool,
+};

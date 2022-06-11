@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useRef, useEffect } from 'react';
 
 let observer = null;
@@ -67,6 +68,17 @@ const Image = ({
       style={{ ...props.style, ...imageStyle }}
     />
   );
+};
+
+Image.propTypes = {
+  lazy: PropTypes.bool,
+  threshold: PropTypes.number,
+  src: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  alt: PropTypes.string,
+  mode: PropTypes.string,
 };
 
 export default Image;

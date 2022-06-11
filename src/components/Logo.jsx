@@ -45,4 +45,11 @@ const Logo = ({ isLink, name, width, height, ...props }) => {
   );
 };
 
+Logo.propTypes = {
+  isLink: PropTypes.bool,
+  name: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
+
 export default Logo;

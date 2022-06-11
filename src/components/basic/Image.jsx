@@ -81,4 +81,15 @@ Image.propTypes = {
   mode: PropTypes.string,
 };
 
+Image.propTypes = {
+  lazy: PropTypes.bool,
+  threshold: PropTypes.number,
+  src: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  alt: PropTypes.string,
+  mode: PropTypes.string,
+};
+
 export default Image;

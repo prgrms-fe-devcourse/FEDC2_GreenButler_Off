@@ -1,7 +1,6 @@
 //import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import Image from 'components/basic/Image';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useCallback } from 'react';
 
@@ -14,7 +13,7 @@ const LogoContainer = styled.div`
   }
 `;
 
-const StyledImage = styled(Image)`
+const LogoImage = styled.img`
   cursor: pointer;
   object-fit: contain;
   width: 100%;
@@ -40,7 +39,7 @@ const Logo = ({ isLink, name, width, height, ...props }) => {
       onClick={isLink ? () => handleClcikLogo : null}
       {...props}
     >
-      <StyledImage alt={name} src={imageUrl} />
+      <LogoImage alt={name} src={imageUrl} />
     </LogoContainer>
   );
 };

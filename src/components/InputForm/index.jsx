@@ -4,6 +4,7 @@ import Button from 'components/basic//Button';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
 import colors from 'utils/constants/colors';
+import { useState } from 'react';
 
 const { mainGreen, white } = colors;
 
@@ -31,17 +32,11 @@ const StyledButton = styled(Button)`
   color: ${white};
 `;
 
-const sleep = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), 1000);
-  });
-};
-
 const InputForm = ({
   onSubmit,
   placeholder = '태그를 입력해 주세요.',
   name = 'tag',
-  width = '460px',
+  width = '100%',
   height = '70px',
   fontWeight = '400',
   children = '등록',
@@ -49,35 +44,35 @@ const InputForm = ({
   buttonHeight = '46px',
   inValid = false,
 }) => {
+  const [currentInvalid, setInvalid] = useState(inValid);
   const { values, errors, handleSubmit, handleChange, isLoading } = useForm({
     initialValues: {
       tag: '',
       fullName: '',
     },
     onSubmit: async () => {
+      setInvalid(false);
       await onSubmit();
-      console.log('submit!');
     },
     validate: ({ tag, fullName }) => {
       const newErrors = {};
       if (name === 'tag' && !tag) {
         newErrors.tag = '태그를 입력해주세요!';
-        inValid = true;
+        setInvalid(true);
       }
       if (name === 'fullName' && !fullName) {
         newErrors.fullName = '수정할 닉네임을 입력해주세요!';
-        inValid = true;
+        setInvalid(true);
       }
       return newErrors;
     },
   });
 
-  console.log(values, errors);
   const inputProps = {
     placeholder,
     name,
     fontWeight,
-    inValid,
+    inValid: currentInvalid,
   };
 
   const formProps = {

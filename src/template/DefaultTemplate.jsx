@@ -32,7 +32,7 @@ const Container = styled.div`
   overflow-x: hidden;
   margin: 0 auto;
   height: ${({ height }) => `${height}`}px;
-  background-color: ${({ theme }) => theme.color.background};
+  background-color: ${({ theme }) => theme.color.backgroundGray};
 `;
 
 export default DefaultTemplate;

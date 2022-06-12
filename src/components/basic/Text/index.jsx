@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const Text = ({
   children,
@@ -11,15 +11,17 @@ const Text = ({
   color,
   mark,
   code,
+  lineHeight,
   ...props
 }) => {
-  const Tag = block ? "div" : paragraph ? "p" : "span";
+  const Tag = block ? 'div' : paragraph ? 'p' : 'span';
 
   const fontStyle = {
-    fontWeight: strong ? "bold" : undefined,
+    fontWeight: strong ? 'bold' : undefined,
     fontSize,
-    textDecoration: underline ? "underline" : undefined,
+    textDecoration: underline ? 'underline' : undefined,
     color,
+    lineHeight,
   };
 
   if (mark) {

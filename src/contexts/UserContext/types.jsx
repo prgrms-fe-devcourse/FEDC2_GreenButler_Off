@@ -1,0 +1,9 @@
+export const LOGIN = 'LOGIN';
+export const SIGNUP = 'SIGNUP';
+export const LOGOUT = 'LOGOUT';
+export const GET_CURRENT_USER = 'GET_CURRENT_USER';
+export const FOLLOW = 'FOLLOW';
+export const UNFOLLOW = 'UNFOLLOW';
+export const LOADING_ON = 'LOADING_ON';
+export const LOADING_OFF = 'LOADING_OFF';
+export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';

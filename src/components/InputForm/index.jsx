@@ -1,35 +1,26 @@
 import Input from 'components/basic/Input';
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 import Button from 'components/basic//Button';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
 import colors from 'utils/constants/colors';
 import { useState } from 'react';
 
-const { mainGreen, white } = colors;
-
-const ErrorText = styled.span`
-  font-size: 12px;
-  color: red;
-  position: absolute;
-  left: 50px;
-  bottom: 20px;
-`;
+const { mainGreen } = colors;
 
 const StyledForm = styled.form`
+  width: '100%';
   padding: 22px 22px;
-  width: 100%;
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
-  position: relative;
 `;
 
 const StyledButton = styled(Button)`
-  position: absolute;
-  right: 60px;
-  top: 55px;
   font-weight: 700;
+  font-size: ${({ fontSize }) => fontSize};
   background-color: ${mainGreen};
-  color: ${white};
+  color: '#FFFFFF';
 `;
 
 const InputForm = ({
@@ -38,10 +29,8 @@ const InputForm = ({
   name = 'tag',
   width = '100%',
   height = '70px',
-  fontWeight = '400',
+  fontSize = '18px',
   children = '등록',
-  buttonWidth = '65px',
-  buttonHeight = '46px',
   inValid = false,
 }) => {
   const [currentInvalid, setInvalid] = useState(inValid);
@@ -56,12 +45,12 @@ const InputForm = ({
     },
     validate: ({ tag, fullName }) => {
       const newErrors = {};
-      if (name === 'tag' && !tag) {
-        newErrors.tag = '태그를 입력해주세요!';
+      if (name === 'fullName' && (!fullName || fullName.length > 7)) {
+        newErrors.fullName = '닉네임은 1-7글자 사이로 입력해주세요!';
         setInvalid(true);
       }
-      if (name === 'fullName' && !fullName) {
-        newErrors.fullName = '수정할 닉네임을 입력해주세요!';
+      if (name === 'tag' && !tag) {
+        newErrors.tag = '태그입력!';
         setInvalid(true);
       }
       return newErrors;
@@ -69,27 +58,20 @@ const InputForm = ({
   });
 
   const inputProps = {
+    width,
     placeholder,
     name,
-    fontWeight,
+    fontSize,
+    height,
     inValid: currentInvalid,
   };
 
-  const formProps = {
-    width,
-    height,
-  };
+  const buttonProps = {};
 
   return (
-    <StyledForm onSubmit={handleSubmit} {...formProps}>
+    <StyledForm onSubmit={handleSubmit}>
       <Input onChange={handleChange} {...inputProps} />
-      {errors[name] && <ErrorText>{errors[name]}</ErrorText>}
-      <StyledButton
-        type="submit"
-        disabled={isLoading}
-        width={buttonWidth}
-        height={buttonHeight}
-      >
+      <StyledButton type="submit" disabled={isLoading}>
         {children}
       </StyledButton>
     </StyledForm>
@@ -104,9 +86,10 @@ InputForm.propTypes = {
   name: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  fontWeight: PropTypes.number,
+  fontSize: PropTypes.string,
   children: PropTypes.string,
-  buttonWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  buttonHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  buttonWidth: PropTypes.string,
+  buttonHeight: PropTypes.string,
+  buttonFontSize: PropTypes.string,
   inValid: PropTypes.bool,
 };

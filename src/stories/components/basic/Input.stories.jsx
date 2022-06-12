@@ -1,5 +1,4 @@
 import Input from 'components/basic/Input';
-import Viewport from 'components/Viewport';
 
 export default {
   title: 'Component/basic/Input',
@@ -31,8 +30,4 @@ export default {
   },
 };
 
-export const Default = (args) => (
-  <Viewport>
-    <Input {...args} />
-  </Viewport>
-);
+export const Default = (args) => <Input {...args} />;

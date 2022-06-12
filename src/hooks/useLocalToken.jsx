@@ -1,4 +1,4 @@
-import { useLocalStorage } from './useLocalStrorage';
+import useLocalStorage from './useLocalStrorage';
 
 const LOCAL_TOKEN_KEY = 'token';
 

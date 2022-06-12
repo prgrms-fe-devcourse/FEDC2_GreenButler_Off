@@ -7,7 +7,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <DefaultTemplate>
-        <Router />;
+        <Router />
       </DefaultTemplate>
     </ThemeProvider>
   );

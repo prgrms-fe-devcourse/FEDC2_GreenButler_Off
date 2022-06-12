@@ -28,7 +28,7 @@ export default {
     borderColor: { options: colorArr, control: 'select' },
     borderRadius: { control: 'text' },
     borderWidth: { control: 'text' },
-    children: { contorl: 'text', defaultValue: '확인' },
+    children: { control: 'text', defaultValue: '확인' },
   },
 };
 

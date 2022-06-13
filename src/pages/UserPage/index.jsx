@@ -1,17 +1,15 @@
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import Button from 'components/basic/Button';
 import { other, posts } from 'dummy';
-import { useNavigate } from 'react-router-dom';
 import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
 
 const UserPage = () => {
   const user = other;
-
-  const navigate = useNavigate();
 
   const smallTextStyle = {
     fontSize: 16,
@@ -30,23 +28,7 @@ const UserPage = () => {
 
   return (
     <UserContainter>
-      <Header>
-        <Icon name="LIKE_ICON" size={25} onClick={() => navigate(-1)} />
-        <div>
-          <Icon
-            name="LIKE_ICON"
-            size={25}
-            onClick={() => navigate('/user/notification', { replace: true })}
-          />
-          알림
-          <Icon
-            name="LIKE_ICON"
-            size={25}
-            onClick={() => navigate('/user/myInfo', { replace: true })}
-          />
-          내정보
-        </div>
-      </Header>
+      <Header />
       <UserInfo>
         <Avatar
           size={136}
@@ -60,8 +42,8 @@ const UserPage = () => {
         />
 
         <Text
-          block="block"
           style={{
+            display: 'block',
             marginTop: 5,
             fontWeight: 500,
             fontSize: 24,
@@ -96,45 +78,24 @@ const UserPage = () => {
       </Tab>
       <ImageContainer>
         {posts.map((post) => (
-          <Image
-            style={{
-              overflow: 'hidden',
-              cursor: 'pointer',
-            }}
-            width="100%"
-            height="100%"
-            key={Math.random()}
-            className="post-item"
-            src={
-              post.image ||
-              `https://user-images.githubusercontent.com/79133602/173282447-b5cdf98e-4372-4284-9795-b824acf2283d.png`
-            }
-            onClick={() => navigate(`/post/detail`)}
-          />
+          <Link to={`/post/detail/${post._id}`} key={Math.random()}>
+            <Image
+              style={{
+                overflow: 'hidden',
+                cursor: 'pointer',
+              }}
+              width="100%"
+              height="100%"
+              className="post-item"
+              src={
+                post.image ||
+                `https://user-images.githubusercontent.com/79133602/173282447-b5cdf98e-4372-4284-9795-b824acf2283d.png`
+              }
+            />
+          </Link>
         ))}
       </ImageContainer>
-      <Bottom>
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/', { replace: true })}
-        />
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/post/create', { replace: true })}
-        />
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/search', { replace: true })}
-        />
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/user/mypage', { replace: true })}
-        />
-      </Bottom>
+      <Bottom />
     </UserContainter>
   );
 };
@@ -226,7 +187,7 @@ const UserDetail = styled.div`
   justify-content: center;
   gap: 10px;
 
-  > div:first-child {
+  > div:first-of-type {
     font-size: 16px;
     color: ${theme.color.fontNormal};
   }

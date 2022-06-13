@@ -20,14 +20,13 @@ const StyledInner = styled.div`
   border-radius: 15px;
   box-sizing: border-box;
   border: 1px solid ${grayLight};
-`
+`;
 
 const StyledButton = styled(Button)`
   font-weight: 700;
   font-size: ${({ fontSize }) => fontSize};
   background-color: ${mainGreen};
-  color: '#FFFFFF';
-  width: 100px;
+  color: white;
 `;
 
 const StyledInput = styled.input`
@@ -47,7 +46,7 @@ const StyledInput = styled.input`
   &:focus {
     outline: none;
   }
-`
+`;
 
 /*
   수정해야 할 부분
@@ -82,17 +81,17 @@ const ButtonInput = ({
     validate: ({ value }) => {
       const newErrors = {};
 
-      if(name === 'tag' && (!value || value.length > 6)){
+      if (name === 'tag' && (!value || value.length > 6)) {
         newErrors.value = '태그는 1-6글자 사이로 입력해주세요!';
       }
-      if(name === 'fullName' && (!value || value.length > 7)) {
+      if (name === 'fullName' && (!value || value.length > 7)) {
         newErrors.value = '닉네임은 1-7글자 사이로 입력해주세요!';
       }
-      if(name === 'search' && (!value)) {
+      if (name === 'search' && !value) {
         newErrors.value = '검색어를 입력해주세요!';
       }
 
-      if(newErrors.value){
+      if (newErrors.value) {
         setInvalid(true);
       }
 
@@ -108,20 +107,32 @@ const ButtonInput = ({
   };
 
   const style = {
-    search:{
+    search: {
       border: 'none',
-      backgroundColor: '#F8F8F8'
-    }
-  }
+      backgroundColor: '#F8F8F8',
+    },
+  };
 
   return (
     <StyledForm onSubmit={handleSubmit} width={width}>
-      <StyledInner style={{...style[name]}}>
-        {name === 'search' && <Icon name="SEARCH_GRAY" size={30}/> }
-        <StyledInput type="text" name="value" onChange={handleChange} {...inputProps}/>
-        {enterButton && <StyledButton type="submit" disabled={isLoading} height={50}>
-          {enterButton}
-        </StyledButton>}
+      <StyledInner style={{ ...style[name] }}>
+        {name === 'search' && <Icon name="SEARCH_GRAY" size={30} />}
+        <StyledInput
+          type="text"
+          name="value"
+          onChange={handleChange}
+          {...inputProps}
+        />
+        {enterButton && (
+          <StyledButton
+            type="submit"
+            disabled={isLoading}
+            width={'auto'}
+            height={50}
+          >
+            {enterButton}
+          </StyledButton>
+        )}
       </StyledInner>
       {errors.value && errors.value}
     </StyledForm>

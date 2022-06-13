@@ -5,17 +5,20 @@ import colors from 'utils/constants/colors';
 const { mainGreen } = colors;
 
 const StyledButton = styled.button`
-  border: ${({borderWidth, borderColor}) =>
+  border: ${({ borderWidth, borderColor }) =>
     borderWidth ? `${borderWidth} solid ${borderColor}` : 'none'};
-  border-radius: ${({borderRadius}) => (borderRadius)};
+  border-radius: ${({ borderRadius }) => borderRadius};
   cursor: pointer;
-  &:hover{
-    ${(({hover})=> hover)}
+  padding: 0 16px;
+  white-space: nowrap;
+
+  &:hover {
+    ${({ hover }) => hover}
   }
   &:active {
-    ${(({active})=> active)}
+    ${({ active }) => active}
   }
-  :disabled{
+  :disabled {
     opacity: 0.5;
   }
 `;
@@ -36,9 +39,7 @@ const Button = ({
   disabled,
   ...props
 }) => {
-
-
-  const buttonStyle ={
+  const buttonStyle = {
     width,
     height,
     color,
@@ -47,11 +48,11 @@ const Button = ({
     borderRadius,
     borderWidth,
     fontSize,
-  }
+  };
 
   return (
     <StyledButton
-      style={{...buttonStyle}}
+      style={{ ...buttonStyle }}
       hover={!disabled && hover}
       active={!disabled && active}
       onClick={onClick}

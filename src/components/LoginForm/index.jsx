@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
 import colors from 'utils/constants/colors';
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import Text from 'components/basic/Text';
-import Viewport from 'components/Viewport';
+import { Link } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
+import theme from 'styles/theme';
 
 const StyledForm = styled.form`
   width: '100%';
@@ -47,7 +47,7 @@ const ErrorText = styled.span`
   margin-top: 5px;
   margin-left: 5px;
   font-size: 12px;
-  color: red;
+  color: ${theme.color.mainRed};
 `;
 
 const LoginForm = ({
@@ -55,6 +55,7 @@ const LoginForm = ({
   inValidEmail = false,
   inValidPassword = false,
 }) => {
+  const theme = useTheme();
   const [currentEmailInvalid, setEmailInvalid] = useState(inValidEmail);
   const [currentPasswordInvalid, setPasswordInvalid] =
     useState(inValidPassword);
@@ -122,7 +123,7 @@ const LoginForm = ({
         type="submit"
         width={420}
         height={70}
-        backgroundColor={colors.mainGreen}
+        backgroundColor={theme.color.mainGreen}
         borderColor={'none'}
         color={'white'}
         fontSize={18}

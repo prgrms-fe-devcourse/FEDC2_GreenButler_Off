@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import Button from 'components/basic/Button';
 import Image from 'components/basic/Image';
 import InputForm from 'components/basic/Input/InputForm';
 import Text from 'components/basic/Text';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import theme from 'styles/theme';
 
 const { fontNormal, mainGreen, backgroundGreen, borderNormal, mainBlack } =
@@ -12,13 +13,23 @@ const { fontNormal, mainGreen, backgroundGreen, borderNormal, mainBlack } =
 const ImageLoad = styled.div`
   width: 100%;
   background-color: ${backgroundGreen};
-
+  position: relative;
   &:after {
     content: '';
     display: block;
     padding-bottom: 100%;
   }
 `;
+
+const ImageInner = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: 100%;
+  background-color: white;
+`;
+
 const TagList = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -50,10 +61,11 @@ const RemoveBtn = styled.button``;
 
 const PostAddPage = () => {
   const [tags, setTags] = useState([]);
+  const [imgSrc, setImgSrc] = useState('');
+  const [text, setText] = useState('');
 
   const onSubmit = (value) => {
     setTags((state) => [...state, value]);
-    console.log(value);
   };
 
   const onRemoveTag = (index) => {
@@ -61,9 +73,24 @@ const PostAddPage = () => {
     setTags(updateTags);
   };
 
+  const onClickAddBtn = () => {};
+
+  const onFileReader = (e) => {
+    const fileBlob = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    reader.onload = () => {
+      setImgSrc(reader.result);
+    };
+  };
+
   return (
     <>
-      <ImageLoad></ImageLoad>
+      <ImageLoad>
+        <ImageInner style={{ backgroundImage: `url(${imgSrc})` }} />
+      </ImageLoad>
+      <input type="file" id="file" onChange={onFileReader} />
+
       <InputForm
         name="tag"
         placeholder="태그를 입력해 주세요"
@@ -90,10 +117,16 @@ const PostAddPage = () => {
         ))}
       </TagList>
       <TextArea
+        onChange={(e) => {
+          setText(e.target.value);
+        }}
         placeholder="내 식물의 성장 글을 작성해주세요."
         rows={10}
       ></TextArea>
-      <Button style={{ marginTop: '15px', marginBottom: '15px' }}>
+      <Button
+        style={{ marginTop: '15px', marginBottom: '15px' }}
+        onClick={onClickAddBtn}
+      >
         게시물 등록
       </Button>
     </>

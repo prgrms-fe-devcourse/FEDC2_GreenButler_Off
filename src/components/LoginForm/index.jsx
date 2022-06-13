@@ -2,7 +2,6 @@ import Input from 'components/basic/Input';
 import Button from 'components/basic/Button';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
-import colors from 'utils/constants/colors';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
@@ -27,7 +26,7 @@ const InputWrapper = styled.div`
 const StyledButton = styled(Button)`
   font-weight: 700;
   font-size: ${({ fontSize }) => fontSize};
-  background-color: ${colors.mainGreen};
+  background-color: ${theme.color.mainGreen};
   color: '#FFFFFF';
   margin-top: 35px;
   margin-bottom: 33px;
@@ -55,11 +54,7 @@ const LoginForm = ({
       email: '',
       password: '',
     },
-    onSubmit: async () => {
-      setEmailInvalid(false);
-      setPasswordInvalid(false);
-      await onSubmit();
-    },
+    onSubmit,
     validate: ({ email, password }) => {
       const newErrors = {};
 

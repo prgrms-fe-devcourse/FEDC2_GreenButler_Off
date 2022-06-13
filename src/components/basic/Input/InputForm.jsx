@@ -117,7 +117,7 @@ const ButtonInput = ({
   return (
     <StyledForm onSubmit={handleSubmit} width={width}>
       <StyledInner style={{...style[name]}}>
-        {name === 'search' && <Icon name="LIKE_ICON" size={30}/> }
+        {name === 'search' && <Icon name="SEARCH_GRAY" size={30}/> }
         <StyledInput type="text" name="value" onChange={handleChange} {...inputProps}/>
         {enterButton && <StyledButton type="submit" disabled={isLoading} height={50}>
           {enterButton}

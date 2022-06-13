@@ -1,39 +1,41 @@
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import { me, posts } from 'dummy';
-import { useNavigate } from 'react-router-dom';
 import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
+import { getPostData, getUserPosts } from 'utils/apis/postApi';
 
 const MyPage = () => {
   const user = me;
-
-  const navigate = useNavigate();
+  const likedPostId = user.likes;
+  const [likePosts, setLikePosts] = useState([]);
+  const [userPosts, setUserPosts] = useState(posts);
 
   const smallTextStyle = {
     fontSize: 16,
     color: theme.color.fontNormal,
   };
 
+  const handleClickMyPosts = async () => {
+    //const result = await getUserPosts(user._id);
+    //console.log(result);
+  };
+
+  const handleClickLikePosts = async () => {
+    const result = await getPostData();
+  };
+
+  useEffect(() => {
+    handleClickMyPosts();
+  }, []);
+
   return (
     <UserContainter>
-      <Header>
-        <Icon name="LIKE_ICON" size={25} onClick={() => navigate(-1)} />
-        <div>
-          <Icon
-            name="LIKE_ICON"
-            size={25}
-            onClick={() => navigate('/user/notification', { replace: true })}
-          />
-          <Icon
-            name="LIKE_ICON"
-            size={25}
-            onClick={() => navigate('/user/myInfo', { replace: true })}
-          />
-        </div>
-      </Header>
+      <Header />
       <UserInfo>
         <Avatar
           size={136}
@@ -47,8 +49,8 @@ const MyPage = () => {
         />
 
         <Text
-          block="block"
           style={{
+            display: 'block',
             marginTop: 5,
             fontWeight: 500,
             fontSize: 24,
@@ -75,50 +77,29 @@ const MyPage = () => {
       </UserInfo>
       {/*  추후 Tab 컴포넌트 교체 */}
       <Tab>
-        <Icon name="LIKE_ICON" size={18} />
-        <Icon name="LIKE_ICON" size={18} />
+        <Icon name="LIKE_ICON" size={18} onClick={handleClickMyPosts} />
+        <Icon name="LIKE_ICON" size={18} onClick={handleClickLikePosts} />
       </Tab>
       <ImageContainer>
         {posts.map((post) => (
-          <Image
-            style={{
-              overflow: 'hidden',
-              cursor: 'pointer',
-            }}
-            width="100%"
-            height="100%"
-            key={Math.random()}
-            className="post-item"
-            src={
-              post.image ||
-              `https://user-images.githubusercontent.com/79133602/173282447-b5cdf98e-4372-4284-9795-b824acf2283d.png`
-            }
-            onClick={() => navigate(`/post/detail`)}
-          />
+          <Link to={`/post/detail/${post._id}`} key={Math.random()}>
+            <Image
+              style={{
+                overflow: 'hidden',
+                cursor: 'pointer',
+              }}
+              width="100%"
+              height="100%"
+              className="post-item"
+              src={
+                post.image ||
+                `https://user-images.githubusercontent.com/79133602/173282447-b5cdf98e-4372-4284-9795-b824acf2283d.png`
+              }
+            />
+          </Link>
         ))}
       </ImageContainer>
-      <Bottom>
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/', { replace: true })}
-        />
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/post/create', { replace: true })}
-        />
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/search', { replace: true })}
-        />
-        <Icon
-          name="LIKE_ICON"
-          size={25}
-          onClick={() => navigate('/user/mypage', { replace: true })}
-        />
-      </Bottom>
+      <Bottom />
     </UserContainter>
   );
 };
@@ -143,10 +124,6 @@ const Header = styled.div`
   z-index: 2;
   display: flex;
   justify-content: space-between;
-
-  i {
-    cursor: pointer;
-  }
 `;
 
 const Bottom = styled.div`
@@ -161,10 +138,6 @@ const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  i {
-    cursor: pointer;
-  }
 `;
 
 const Tab = styled.div`
@@ -176,6 +149,9 @@ const Tab = styled.div`
   margin-top: 15px;
   justify-content: space-around;
   border-bottom: 1px solid ${theme.color.gray};
+  i {
+    cursor: pointer;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -208,7 +184,7 @@ const UserDetail = styled.div`
   justify-content: center;
   gap: 10px;
 
-  > div:first-child {
+  > div:first-of-type {
     font-size: 16px;
     color: ${theme.color.fontNormal};
   }

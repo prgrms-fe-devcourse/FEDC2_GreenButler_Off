@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import Button from 'components/basic//Button';
+import Button from 'components/basic/Button';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
-import colors from 'utils/constants/colors';
+import theme from 'styles/theme';
 import { useState } from 'react';
 import Icon from '../Icon';
 
-const { mainGreen, grayLight } = colors;
+const { mainGreen, borderNormal, fontNormal, backgroundLight } = theme.color;
 
 const StyledForm = styled.form`
   width: ${({ width }) => (width ? `${width}px` : '100%')};
@@ -19,7 +19,7 @@ const StyledInner = styled.div`
   padding: 12px;
   border-radius: 15px;
   box-sizing: border-box;
-  border: 1px solid ${grayLight};
+  border: 1px solid ${borderNormal};
 `;
 
 const StyledButton = styled(Button)`
@@ -40,7 +40,7 @@ const StyledInput = styled.input`
   background-color: transparent;
 
   ::placeholder {
-    color: #a3a3a3;
+    color: ${fontNormal};
   }
 
   &:focus {
@@ -61,22 +61,23 @@ const StyledInput = styled.input`
   3. 필요하다면 focus시 border 컬러 변경
 
 */
-const ButtonInput = ({
+const InputForm = ({
   onSubmit,
-  placeholder = '태그를 입력해 주세요.',
+  placeholder,
   name = 'tag',
   width = '100%',
   fontSize = '18px',
-  enterButton = '등록',
+  enterButton = '',
+  ...props
 }) => {
   const [currentInvalid, setInvalid] = useState(false);
   const { values, errors, handleSubmit, handleChange, isLoading } = useForm({
     initialValues: {
       value: '',
     },
-    onSubmit: async () => {
+    onSubmit: async ({ value }) => {
       setInvalid(false);
-      await onSubmit();
+      await onSubmit(value);
     },
     validate: ({ value }) => {
       const newErrors = {};
@@ -109,12 +110,16 @@ const ButtonInput = ({
   const style = {
     search: {
       border: 'none',
-      backgroundColor: '#F8F8F8',
+      backgroundColor: backgroundLight,
     },
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit} width={width}>
+    <StyledForm
+      onSubmit={handleSubmit}
+      width={width}
+      style={{ ...props.style }}
+    >
       <StyledInner style={{ ...style[name] }}>
         {name === 'search' && <Icon name="SEARCH_GRAY" size={30} />}
         <StyledInput
@@ -139,9 +144,9 @@ const ButtonInput = ({
   );
 };
 
-export default ButtonInput;
+export default InputForm;
 
-ButtonInput.propTypes = {
+InputForm.propTypes = {
   onSubmit: PropTypes.func,
   placeholder: PropTypes.string,
   name: PropTypes.string,

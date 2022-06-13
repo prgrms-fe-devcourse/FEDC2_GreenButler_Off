@@ -6,7 +6,8 @@ import Text from 'components/basic/Text';
 import { useState } from 'react';
 import theme from 'styles/theme';
 
-const { fontNormal, mainGreen, backgroundGreen, borderNormal } = theme.color;
+const { fontNormal, mainGreen, backgroundGreen, borderNormal, mainBlack } =
+  theme.color;
 
 const ImageLoad = styled.div`
   width: 100%;
@@ -26,7 +27,6 @@ const TagItem = styled.li`
   padding: 5px 13px;
   border: 1px solid ${mainGreen};
   border-radius: 15px;
-  color: ${mainGreen};
   white-space: nowrap;
   margin: 0 4px 4px 0;
 `;
@@ -39,12 +39,14 @@ const TextArea = styled.textarea`
   padding: 23px 20px;
   resize: none;
   font-size: 20px;
-  color: ${fontNormal};
+  color: ${mainBlack};
 
   ::placeholder {
     color: ${fontNormal};
   }
 `;
+
+const RemoveBtn = styled.button``;
 
 const PostAddPage = () => {
   const [tags, setTags] = useState([]);
@@ -53,6 +55,12 @@ const PostAddPage = () => {
     setTags((state) => [...state, value]);
     console.log(value);
   };
+
+  const onRemoveTag = (index) => {
+    const updateTags = tags.filter((_, itemIndex) => itemIndex !== index);
+    setTags(updateTags);
+  };
+
   return (
     <>
       <ImageLoad></ImageLoad>
@@ -77,7 +85,7 @@ const PostAddPage = () => {
         {tags.map((tag, index) => (
           <TagItem key={index}>
             {tag}
-            <button>x</button>
+            <RemoveBtn onClick={() => onRemoveTag(index)}>x</RemoveBtn>
           </TagItem>
         ))}
       </TagList>

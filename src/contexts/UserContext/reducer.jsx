@@ -1,4 +1,3 @@
-import { createContext } from 'react';
 import {
   LOGIN,
   SIGNUP,
@@ -25,8 +24,6 @@ export const initialUserData = {
   },
   isLoading: false,
 };
-
-export const UserContext = createContext(initialUserData);
 
 export const reducer = (state, { type, payload }) => {
   switch (type) {

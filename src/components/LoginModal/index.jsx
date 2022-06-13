@@ -4,6 +4,7 @@ import Button from 'components/basic/Button';
 import Logo from 'components/Logo';
 import { useTheme } from '@emotion/react';
 import { IMAGE_NAMES } from 'utils/constants/images';
+import PropTypes from 'prop-types';
 
 const ModalWrapper = styled.div`
   box-sizing: border-box;
@@ -57,7 +58,7 @@ const SubText = styled(Text)`
   margin-bottom: 34px;
 `;
 
-const Modal = ({ isShow, onClose, width = '420px', height = '304px' }) => {
+const LoginModal = ({ isShow, onClose, width = '420px', height = '304px' }) => {
   const theme = useTheme();
 
   const onClick = (e) => {
@@ -106,4 +107,11 @@ const Modal = ({ isShow, onClose, width = '420px', height = '304px' }) => {
   );
 };
 
-export default Modal;
+export default LoginModal;
+
+LoginModal.propTypes = {
+  isShow: PropTypes.bool,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  onClose: PropTypes.func,
+};

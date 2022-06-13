@@ -15,12 +15,13 @@ const StyledForm = styled.form`
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
+  margin-top: 40px;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  position: relative;
 `;
 
 const StyledButton = styled(Button)`
@@ -33,9 +34,9 @@ const StyledButton = styled(Button)`
 `;
 
 const ErrorText = styled.span`
-  text-align: left;
-  margin-top: 5px;
-  margin-left: 5px;
+  position: relative;
+  bottom: 13px;
+  margin-left: 25px;
   font-size: 12px;
   color: ${theme.color.mainRed};
 `;

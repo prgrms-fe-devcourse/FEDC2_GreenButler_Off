@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 
 import theme from 'styles/theme';
 const { backgroundGreen } = theme.color;
@@ -60,6 +61,11 @@ const UploadImage = ({ onChange, defaultImage = null, ...props }) => {
       />
     </div>
   );
+};
+
+UploadImage.propTypes = {
+  onChange: PropTypes.func,
+  defaultImage: PropTypes.string,
 };
 
 export default UploadImage;

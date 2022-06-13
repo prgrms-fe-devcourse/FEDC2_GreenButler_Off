@@ -57,6 +57,36 @@ const TextArea = styled.textarea`
   }
 `;
 
+const handleDataForm = async ({ text, tags, imgSrc }) => {
+  // 변환한 데이터 앞 부분 자르기
+  const byteString = atob(imgSrc.split(',')[1]);
+  const title = { content: text, tags };
+
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ia], {
+    type: 'image/jpeg',
+  });
+
+  const formData = new FormData();
+  formData.append('image', blob);
+  formData.append('title', JSON.stringify(title));
+  formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
+
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+    Authorization:
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyYTc1ZTVjYjFiOTBiMGM4MTJjOWI3MCIsImVtYWlsIjoiMzI1QG5hdmVyLmNvbSJ9LCJpYXQiOjE2NTUxMzYyMTd9.w4YDSceQD83VMiKaTnJYEmcDEKNQAWT1Al9iyFGEL74',
+  };
+
+  const result = await axios.post(`/posts/create`, formData, { headers });
+  console.log(result);
+};
+
 const RemoveBtn = styled.button``;
 
 const PostAddPage = () => {
@@ -73,7 +103,9 @@ const PostAddPage = () => {
     setTags(updateTags);
   };
 
-  const onClickAddBtn = () => {};
+  const onClickAddBtn = () => {
+    handleDataForm({ text, tags, imgSrc });
+  };
 
   const onFileReader = (e) => {
     const fileBlob = e.target.files[0];

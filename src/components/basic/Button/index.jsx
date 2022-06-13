@@ -52,12 +52,11 @@ const Button = ({
 
   return (
     <StyledButton
-      style={{ ...buttonStyle }}
+      style={{ ...buttonStyle, ...props.style }}
       hover={!disabled && hover}
       active={!disabled && active}
       onClick={onClick}
       disabled={disabled}
-      {...props}
     >
       {children}
     </StyledButton>

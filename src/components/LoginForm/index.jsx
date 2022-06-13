@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import theme from 'styles/theme';
+import Text from 'components/basic/Text';
 
 const StyledForm = styled.form`
   width: '100%';
@@ -30,16 +31,6 @@ const StyledButton = styled(Button)`
   color: '#FFFFFF';
   margin-top: 35px;
   margin-bottom: 33px;
-`;
-
-const SignUpLink = styled(Link)`
-  display: block;
-  margin-top: 16px;
-  text-align: center;
-  &:hover span {
-    color: ${colors.mainGreen};
-    border-bottom: 1px solid;
-  }
 `;
 
 const ErrorText = styled.span`
@@ -131,6 +122,14 @@ const LoginForm = ({
       >
         로그인
       </StyledButton>
+      <Link to="/signup">
+        <Text fontSize={18} color={theme.color.gray}>
+          계정이 없으신가요?{'  '}
+        </Text>
+        <Text fontSize={18} strong color={theme.color.mainGreen}>
+          회원가입
+        </Text>
+      </Link>
     </StyledForm>
   );
 };

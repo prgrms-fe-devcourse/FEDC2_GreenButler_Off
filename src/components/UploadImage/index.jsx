@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-
 import theme from 'styles/theme';
+
 const { backgroundGreen } = theme.color;
 
 const ImageLoad = styled.div`
@@ -27,7 +27,8 @@ const ImageInner = styled.div`
   width: 100%;
   height: 100%;
   background-position: center;
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
   /* background-color: white; */
 `;
 

@@ -1,45 +1,30 @@
+import { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import axios from 'axios';
 import Button from 'components/basic/Button';
-import Image from 'components/basic/Image';
 import InputForm from 'components/basic/Input/InputForm';
 import Text from 'components/basic/Text';
-import { useRef, useState } from 'react';
 import theme from 'styles/theme';
+import UploadImage from 'components/UploadImage';
 
-const { fontNormal, mainGreen, backgroundGreen, borderNormal, mainBlack } =
-  theme.color;
+const { fontNormal, mainGreen, borderNormal, mainBlack } = theme.color;
 
-const ImageLoad = styled.div`
-  width: 100%;
-  background-color: ${backgroundGreen};
-  position: relative;
-  &:after {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
-  }
-`;
-
-const ImageInner = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-size: 100%;
-  background-color: white;
+const Wrapper = styled.div`
+  padding: 0 20px;
 `;
 
 const TagList = styled.ul`
   display: flex;
   flex-wrap: wrap;
 `;
+
 const TagItem = styled.li`
   padding: 5px 13px;
   border: 1px solid ${mainGreen};
   border-radius: 15px;
   white-space: nowrap;
   margin: 0 4px 4px 0;
+  color: ${mainGreen};
 `;
 
 const TextArea = styled.textarea`
@@ -57,8 +42,15 @@ const TextArea = styled.textarea`
   }
 `;
 
+/*
+  TODO:
+  태그 등록 완료 시 input 초기화
+  태그 특수문자 제한
+  태그 입력 시 자동으로 # 앞에 붙이게 처리
+  게시물 등록 시 페이지 이동
+*/
+
 const handleDataForm = async ({ text, tags, imgSrc }) => {
-  // 변환한 데이터 앞 부분 자르기
   const byteString = atob(imgSrc.split(',')[1]);
   const title = { content: text, tags };
 
@@ -94,8 +86,10 @@ const PostAddPage = () => {
   const [imgSrc, setImgSrc] = useState('');
   const [text, setText] = useState('');
 
-  const onSubmit = (value) => {
-    setTags((state) => [...state, value]);
+  const onAddTag = (value) => {
+    const tag = `#${value}`;
+    setTags((state) => [...state, tag]);
+    console.log(tags);
   };
 
   const onRemoveTag = (index) => {
@@ -107,54 +101,47 @@ const PostAddPage = () => {
     handleDataForm({ text, tags, imgSrc });
   };
 
-  const onFileReader = (e) => {
-    const fileBlob = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    reader.onload = () => {
-      setImgSrc(reader.result);
-    };
-  };
+  const onFileChange = useCallback((src) => {
+    setImgSrc(src);
+  }, []);
 
   return (
     <>
-      <ImageLoad>
-        <ImageInner style={{ backgroundImage: `url(${imgSrc})` }} />
-      </ImageLoad>
-      <input type="file" id="file" onChange={onFileReader} />
+      <UploadImage onChange={onFileChange} />
+      <Wrapper>
+        <InputForm
+          name="tag"
+          placeholder="태그를 입력해 주세요"
+          enterButton="등록"
+          fontSize="18px"
+          onSubmit={onAddTag}
+          style={{ marginTop: '15px' }}
+        />
+        <Text
+          fontSize={16}
+          color={fontNormal}
+          block
+          style={{ marginTop: '15px', marginBottom: '15px' }}
+        >
+          * 태그는 최대 5개까지 입력 가능합니다.
+        </Text>
 
-      <InputForm
-        name="tag"
-        placeholder="태그를 입력해 주세요"
-        enterButton="등록"
-        fontSize="18px"
-        onSubmit={onSubmit}
-        style={{ marginTop: '15px' }}
-      />
-      <Text
-        fontSize={16}
-        color={fontNormal}
-        block
-        style={{ marginTop: '15px', marginBottom: '15px' }}
-      >
-        * 태그는 최대 5개까지 입력 가능합니다.
-      </Text>
-
-      <TagList>
-        {tags.map((tag, index) => (
-          <TagItem key={index}>
-            {tag}
-            <RemoveBtn onClick={() => onRemoveTag(index)}>x</RemoveBtn>
-          </TagItem>
-        ))}
-      </TagList>
-      <TextArea
-        onChange={(e) => {
-          setText(e.target.value);
-        }}
-        placeholder="내 식물의 성장 글을 작성해주세요."
-        rows={10}
-      ></TextArea>
+        <TagList>
+          {tags.map((tag, index) => (
+            <TagItem key={index}>
+              {tag}
+              <RemoveBtn onClick={() => onRemoveTag(index)}>x</RemoveBtn>
+            </TagItem>
+          ))}
+        </TagList>
+        <TextArea
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+          placeholder="내 식물의 성장 글을 작성해주세요."
+          rows={10}
+        ></TextArea>
+      </Wrapper>
       <Button
         style={{ marginTop: '15px', marginBottom: '15px' }}
         onClick={onClickAddBtn}

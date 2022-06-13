@@ -47,7 +47,7 @@ export const logout = () => {
   인증된 사용자인지 체크한다. 인증 성공 시 사용자 정보를 응답받는다. 
   Response: User
 */
-export const checkAuthUser = (token) => {
+export const getCurrentUser = (token) => {
   return request({
     method: API_METHOD.GET,
     url: `/auth-user`,

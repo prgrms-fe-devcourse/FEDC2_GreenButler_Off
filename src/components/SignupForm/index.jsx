@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import theme from 'styles/theme';
 import colors from 'utils/constants/colors';
+import PropTypes from 'prop-types';
 import Text from 'components/basic/Text';
 
 const StyledForm = styled.form`
@@ -52,7 +53,7 @@ const fullNameValid = (fullName) => {
   return reg.test(fullName);
 };
 
-const LoginForm = ({
+const SignupForm = ({
   onSubmit,
   inValidEmail = false,
   inValidPassword = false,
@@ -184,4 +185,10 @@ const LoginForm = ({
   );
 };
 
-export default LoginForm;
+export default SignupForm;
+
+SignupForm.propTypes = {
+  name: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};

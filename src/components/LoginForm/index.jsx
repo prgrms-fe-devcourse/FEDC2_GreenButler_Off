@@ -4,24 +4,23 @@ import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '@emotion/react';
 import theme from 'styles/theme';
 import Text from 'components/basic/Text';
 
 const StyledForm = styled.form`
+  margin-top: 54px;
   width: '100%';
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
+  margin-bottom: 20px;
 `;
 
 const StyledButton = styled(Button)`
@@ -29,14 +28,15 @@ const StyledButton = styled(Button)`
   font-size: ${({ fontSize }) => fontSize};
   background-color: ${theme.color.mainGreen};
   color: '#FFFFFF';
+`;
+const ButtonWrapper = styled.div`
   margin-top: 35px;
   margin-bottom: 33px;
 `;
-
 const ErrorText = styled.span`
-  position: relative;
-  bottom: 13px;
-  margin-left: 25px;
+  text-align: left;
+  margin-top: 5px;
+  margin-left: 5px;
   font-size: 12px;
   color: ${theme.color.mainRed};
 `;
@@ -46,7 +46,6 @@ const LoginForm = ({
   inValidEmail = false,
   inValidPassword = false,
 }) => {
-  const theme = useTheme();
   const [currentEmailInvalid, setEmailInvalid] = useState(inValidEmail);
   const [currentPasswordInvalid, setPasswordInvalid] =
     useState(inValidPassword);
@@ -106,18 +105,19 @@ const LoginForm = ({
         ></Input>
         {errors.password && <ErrorText>{errors.password}</ErrorText>}
       </InputWrapper>
-      <StyledButton
-        type="submit"
-        width={420}
-        height={70}
-        backgroundColor={theme.color.mainGreen}
-        borderColor={'none'}
-        color={'white'}
-        fontSize={18}
-        disabled={isLoading}
-      >
-        로그인
-      </StyledButton>
+      <ButtonWrapper>
+        <StyledButton
+          type="submit"
+          width={420}
+          height={70}
+          backgroundColor={theme.color.mainGreen}
+          borderColor={'none'}
+          color={'white'}
+          fontSize={18}
+        >
+          로그인
+        </StyledButton>
+      </ButtonWrapper>
       <Link to="/signup">
         <Text fontSize={18} color={theme.color.gray}>
           계정이 없으신가요?{'  '}

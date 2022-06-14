@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import axios from 'axios';
 import Button from 'components/basic/Button';
-import Text from 'components/basic/Text';
 import UploadImage from 'components/UploadImage';
 import TagAddForm from 'components/TagAddForm';
 import theme from 'styles/theme';
@@ -96,16 +95,6 @@ const PostAddPage = () => {
       <UploadImage onChange={onFileChange} />
       <Wrapper>
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
-
-        <Text
-          fontSize={16}
-          color={fontNormal}
-          block
-          style={{ marginTop: '15px', marginBottom: '15px' }}
-        >
-          * 태그는 최대 5개까지 입력 가능합니다.
-        </Text>
-
         <TextArea
           onChange={(e) => {
             setText(e.target.value);

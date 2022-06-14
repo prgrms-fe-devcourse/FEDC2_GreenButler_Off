@@ -6,7 +6,7 @@ import Icon from 'components/basic/Icon';
 
 import theme from 'styles/theme';
 
-const { mainGreen } = theme.color;
+const { mainGreen, fontNormal } = theme.color;
 
 const TagList = styled.ul`
   display: flex;
@@ -54,6 +54,15 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
         />
         <InputForm.Button>등록</InputForm.Button>
       </InputForm>
+
+      <Text
+        fontSize={16}
+        color={fontNormal}
+        block
+        style={{ marginTop: '15px', marginBottom: '15px' }}
+      >
+        * 태그는 최대 5개까지 입력 가능합니다.
+      </Text>
 
       <TagList>
         {tags.map((tag, index) => (

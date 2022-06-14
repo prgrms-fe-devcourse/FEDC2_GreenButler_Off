@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Header from 'components/Header/Header';
 import Navigation from 'components/Navigation';
 import { useEffect, useState } from 'react';
 
@@ -16,6 +17,7 @@ const DefaultTemplate = ({ children }) => {
 
   return (
     <Container id="default-template-container" height={height}>
+      <Header />
       <Navigation />
       <StyledMain>{children}</StyledMain>
     </Container>

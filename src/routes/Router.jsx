@@ -29,8 +29,8 @@ const Router = () => {
       <Route path="/user/mypage" element={<MyPage />} />
       <Route path="/user/:id" element={<UserPage />} />
       <Route path="/user/follow" element={<FollowPage />} />
-      <Route path="/user/myInfo" element={<MyInfoPage />} />
-      <Route path="/user/myInfo/edit" element={<MyInfoEditPage />} />
+      <Route path="/user/myinfo" element={<MyInfoPage />} />
+      <Route path="/user/myinfo/edit" element={<MyInfoEditPage />} />
       <Route path="/user/notification" element={<NotificationPage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/search/tag" element={<SearchTagPage />} />

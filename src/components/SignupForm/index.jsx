@@ -188,7 +188,7 @@ const SignupForm = ({
         <Text fontSize={18} color={theme.color.fontNormal}>
           이미 계정이 있으신가요?{'  '}
         </Text>
-        <StyledText fontSize={18} color={theme.color.mainGreen}>
+        <StyledText fontSize={18} strong color={theme.color.mainGreen}>
           로그인
         </StyledText>
       </Link>

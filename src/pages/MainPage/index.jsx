@@ -1,10 +1,19 @@
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 import Header from './Header';
 import PostList from './PostList';
-import { useUserContext } from 'contexts/UserContext';
+import { getPosts } from 'utils/apis/postApi';
+
 const MainPage = () => {
-  const { currentUser } = useUserContext();
-  console.log(currentUser);
+  getPosts();
+
+  // useEffect(() => {
+  //   async () => {
+  //     const data = await getPosts();
+  //     console.log(data);
+  //   };
+  // }, []);
+
   return (
     <Container>
       <Header />

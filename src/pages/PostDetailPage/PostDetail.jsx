@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import PostBody from 'pages/MainPage/PostBody';
-import Button from 'components/basic/Button';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
@@ -104,19 +103,20 @@ const CommentInput = () => {
 
 const SubmitButton = ({ ...props }) => {
   const style = {
+    width: '64px',
     color: theme.color.mainWhite,
     backgroundColor: theme.color.mainGreen,
     fontSize: '18px',
     fontWeight: 700,
-    padding: '10px 15px',
+    padding: '10px',
     borderRadius: '8px',
     marginLeft: '10px',
     alignSelf: 'flex-end',
   };
   return (
-    <Button style={style} {...props}>
+    <button style={style} {...props}>
       등록
-    </Button>
+    </button>
   );
 };
 
@@ -210,9 +210,9 @@ const MoreButton = (props) => {
   };
 
   return (
-    <Button {...props} style={style}>
+    <button {...props} style={style}>
       <Icon className="more-button" name="SEARCH_GRAY" size={20} />
-    </Button>
+    </button>
   );
 };
 

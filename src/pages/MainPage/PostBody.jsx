@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
 import Text from 'components/basic/Text';
-import Button from 'components/basic/Button';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 
@@ -62,7 +61,7 @@ const IconButtons = styled.div`
   display: flex;
 `;
 
-const IconButton = ({ children, name, ...props }) => {
+const IconButton = ({ children, name }) => {
   const style = {
     padding: 0,
     borderRadius: '0',
@@ -73,10 +72,10 @@ const IconButton = ({ children, name, ...props }) => {
     backgroundColor: 'transparent',
   };
   return (
-    <Button style={style} {...props}>
+    <button style={style}>
       <Icon name={name} size={22} />
       {children}
-    </Button>
+    </button>
   );
 };
 
@@ -120,9 +119,9 @@ const Tag = ({ children, ...props }) => {
     marginRight: '5px',
   };
   return (
-    <Button style={style} {...props}>
+    <button style={style} {...props}>
       {children}
-    </Button>
+    </button>
   );
 };
 

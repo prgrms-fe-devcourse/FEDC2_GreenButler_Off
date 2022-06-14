@@ -28,11 +28,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  max-width: 500px;
+  width: 500px;
   overflow-x: hidden;
   margin: 0 auto;
   height: ${({ height }) => `${height}`}px;
-  background-color: ${({ theme }) => theme.color.backgroundLight};
+  background-color: ${({ theme }) => theme.color.mainWhite};
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 export default DefaultTemplate;

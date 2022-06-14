@@ -2,8 +2,12 @@ import styled from '@emotion/styled';
 import React, { useMemo, useState } from 'react';
 import TabItem from './TabItem';
 
-const TebItemContainer = styled.div`
-  border-bottom: 1px solid #ddd;
+const TabItemContainer = styled.div`
+  display: flex;
+`;
+
+const TabItemContent = styled.div`
+  margin-top: 14px;
 `;
 
 const childrenToArray = (children, types) => {
@@ -47,8 +51,8 @@ const Tab = ({ children, active, ...props }) => {
 
   return (
     <div {...props}>
-      <TebItemContainer>{items}</TebItemContainer>
-      <div>{activeItem.props.children}</div>
+      <TabItemContainer>{items}</TabItemContainer>
+      <TabItemContent>{activeItem.props.children}</TabItemContent>
     </div>
   );
 };

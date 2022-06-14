@@ -1,20 +1,30 @@
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Text from '../Text';
+import theme from 'styles/theme';
+
+const { mainGreen, borderLight, fontBlack, fontNormal } = theme.color;
 
 const TabItemWrapper = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 140px;
-  height: 60px;
-  background-color: ${({ active }) => (active ? '#ddf' : 'eee')};
+  padding: 16px 0;
+  color: ${({ active }) => (active ? fontBlack : fontNormal)};
+  border-bottom: 2px solid ${({ active }) => (active ? mainGreen : borderLight)};
+  flex: 1;
+  cursor: pointer;
 `;
 
-const TabItem = ({ children, title, index, active, onClick, ...props }) => {
+const TabItem = ({ title, active, onClick, ...props }) => {
+  const fontStyle = {
+    fontWeight: active ? 500 : 'normal',
+  };
   return (
     <TabItemWrapper active={active} onClick={onClick} {...props}>
-      <Text strong={active}>{title}</Text>
+      <Text fontSize={20} block style={{ ...fontStyle }}>
+        {title}
+      </Text>
     </TabItemWrapper>
   );
 };

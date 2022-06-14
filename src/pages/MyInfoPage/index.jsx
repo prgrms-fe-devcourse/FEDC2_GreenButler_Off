@@ -6,20 +6,21 @@ import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import { me } from 'dummy';
 import theme from 'styles/theme';
+import Input from 'components/basic/Input';
 import InputForm from 'components/basic/Input/InputForm';
 import Icon from 'components/basic/Icon';
 import { useUserContext } from 'contexts/UserContext';
+import axios from 'axios';
 
 const MyInfoPage = () => {
-  //const { currentUser } = useUserContext();
+  //const { currentUser,editFullName } = useUserContext();
+  const { editFullName } = useUserContext();
   const currentUser = me;
   const [isEditor, setIsEditor] = useState(false);
 
-  const toggleEditor = (isEditor) => !isEditor;
-
-  useEffect(() => {
-    console.log(isEditor);
-  }, [isEditor]);
+  const handleSubmit = (value) => {
+    editFullName({ payload: { fullName: value, userName: '' } });
+  };
 
   return (
     <UserContainter>
@@ -36,7 +37,7 @@ const MyInfoPage = () => {
           }
         />
         {isEditor ? (
-          <div>안돼</div>
+          <InputForm name="fullName" enterButton="수정" onSubmit={handleSubmit} />
         ) : (
           <NickName>
             <Text
@@ -51,13 +52,12 @@ const MyInfoPage = () => {
             >
               {currentUser.fullName}
             </Text>
-            <button>
-              <Icon
-                name="LIKE_ICON"
-                size={18}
-                style={{ marginTop: '8px', marginLeft: '5px' }}
-                onClick={toggleEditor}
-              />
+            <button
+              onClick={() => {
+                setIsEditor((isEditor) => !isEditor);
+              }}
+            >
+              <Icon name="LIKE_ICON" size={18} style={{ marginTop: '8px', marginLeft: '5px' }} />
             </button>
           </NickName>
         )}

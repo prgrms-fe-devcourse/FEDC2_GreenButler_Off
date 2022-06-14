@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import colors from 'utils/constants/colors';
 
-
 const { black, mainRed, grayLight } = colors;
 
 const InputWrapper = styled.div`
@@ -24,8 +23,8 @@ const StyledInput = styled.input`
   padding: 22px 22px;
   border-radius: 15px;
   box-sizing: border-box;
-  border: 1px solid ${({inValid }) => inValid ? mainRed : grayLight };
-  
+  border: 1px solid ${({ inValid }) => (inValid ? mainRed : grayLight)};
+
   ::placeholder {
     color: #a3a3a3;
   }
@@ -48,7 +47,6 @@ const NewInput = ({
   onChange,
   ...props
 }) => {
-
   const InputStyle = {
     fontSize,
   };
@@ -63,16 +61,16 @@ const NewInput = ({
   return (
     <InputWrapper block={block} width={width}>
       {label && <Label>{label}</Label>}
-        <StyledInput
-          type={type}
-          name={name}
-          required={required}
-          placeholder={placeholder}
-          inputStyle={InputStyle}
-          onChange={handleChange}
-          inValid={inValid}
-        />
-      </InputWrapper>
+      <StyledInput
+        type={type}
+        name={name}
+        required={required}
+        placeholder={placeholder}
+        inputStyle={InputStyle}
+        onChange={handleChange}
+        inValid={inValid}
+      />
+    </InputWrapper>
   );
 };
 

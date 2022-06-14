@@ -8,6 +8,7 @@ import {
   LOADING_ON,
   LOADING_OFF,
   SET_NOTIFICATIONS,
+  EDIT_FULLNAME,
 } from './types';
 
 export const initialUserData = {
@@ -106,6 +107,13 @@ export const reducer = (state, { type, payload }) => {
     }
     case LOADING_OFF: {
       return { ...state, isLoading: false };
+    }
+    case EDIT_FULLNAME: {
+      console.log(payload);
+      return {
+        ...state,
+        fullName: payload,
+      };
     }
     default: {
       return state;

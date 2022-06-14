@@ -115,26 +115,12 @@ const InputForm = ({
   };
 
   return (
-    <StyledForm
-      onSubmit={handleSubmit}
-      width={width}
-      style={{ ...props.style }}
-    >
+    <StyledForm onSubmit={handleSubmit} width={width} style={{ ...props.style }}>
       <StyledInner style={{ ...style[name] }}>
         {name === 'search' && <Icon name="SEARCH_GRAY" size={30} />}
-        <StyledInput
-          type="text"
-          name="value"
-          onChange={handleChange}
-          {...inputProps}
-        />
+        <StyledInput type="text" name="value" onChange={handleChange} {...inputProps} />
         {enterButton && (
-          <StyledButton
-            type="submit"
-            disabled={isLoading}
-            width={'auto'}
-            height={50}
-          >
+          <StyledButton type="submit" disabled={isLoading} width={'auto'} height={50}>
             {enterButton}
           </StyledButton>
         )}

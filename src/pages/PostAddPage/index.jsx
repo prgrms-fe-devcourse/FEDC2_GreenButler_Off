@@ -1,30 +1,17 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import axios from 'axios';
 import Button from 'components/basic/Button';
-import InputForm from 'components/basic/Input/InputForm';
 import Text from 'components/basic/Text';
-import theme from 'styles/theme';
 import UploadImage from 'components/UploadImage';
+import TagAddForm from 'components/TagAddForm';
+import theme from 'styles/theme';
 
-const { fontNormal, mainGreen, borderNormal, mainBlack } = theme.color;
+const { fontNormal, borderNormal, mainBlack } = theme.color;
 
 const Wrapper = styled.div`
   padding: 0 20px;
-`;
-
-const TagList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const TagItem = styled.li`
-  padding: 5px 13px;
-  border: 1px solid ${mainGreen};
-  border-radius: 15px;
-  white-space: nowrap;
-  margin: 0 4px 4px 0;
-  color: ${mainGreen};
 `;
 
 const TextArea = styled.textarea`
@@ -45,8 +32,7 @@ const TextArea = styled.textarea`
 /*
   TODO:
   태그 등록 완료 시 input 초기화
-  태그 특수문자 제한
-  태그 입력 시 자동으로 # 앞에 붙이게 처리
+  태그 특수문자 및 띄어쓰기 제한
   게시물 등록 시 페이지 이동
 */
 
@@ -71,34 +57,41 @@ const handleDataForm = async ({ text, tags, imgSrc }) => {
 
   const headers = {
     'Content-Type': 'multipart/form-data',
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyYTc1ZTVjYjFiOTBiMGM4MTJjOWI3MCIsImVtYWlsIjoiMzI1QG5hdmVyLmNvbSJ9LCJpYXQiOjE2NTUxMzYyMTd9.w4YDSceQD83VMiKaTnJYEmcDEKNQAWT1Al9iyFGEL74',
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyYTc1ZTVjYjFiOTBiMGM4MTJjOWI3MCIsImVtYWlsIjoiMzI1QG5hdmVyLmNvbSJ9LCJpYXQiOjE2NTUxMzYyMTd9.w4YDSceQD83VMiKaTnJYEmcDEKNQAWT1Al9iyFGEL74`,
   };
 
   const result = await axios.post(`/posts/create`, formData, { headers });
   console.log(result);
 };
 
-const RemoveBtn = styled.button``;
-
 const PostAddPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
   const [text, setText] = useState('');
 
-  const onAddTag = (value) => {
-    const tag = `#${value}`;
-    setTags((state) => [...state, tag]);
-    console.log(tags);
-  };
+  const navigate = useNavigate();
 
-  const onRemoveTag = (index) => {
-    const updateTags = tags.filter((_, itemIndex) => itemIndex !== index);
-    setTags(updateTags);
-  };
+  const onAddTag = useCallback(
+    (value) => {
+      const tag = `#${value}`;
+      if (tags.length < 5) {
+        setTags([...tags, tag]);
+      }
+    },
+    [tags],
+  );
 
-  const onClickAddBtn = () => {
-    handleDataForm({ text, tags, imgSrc });
+  const onRemoveTag = useCallback(
+    (index) => {
+      const updateTags = tags.filter((_, itemIndex) => itemIndex !== index);
+      setTags(updateTags);
+    },
+    [tags],
+  );
+
+  const onClickAddBtn = async () => {
+    await handleDataForm({ text, tags, imgSrc });
+    navigate('/');
   };
 
   const onFileChange = useCallback((src) => {
@@ -109,14 +102,8 @@ const PostAddPage = () => {
     <>
       <UploadImage onChange={onFileChange} />
       <Wrapper>
-        <InputForm
-          name="tag"
-          placeholder="태그를 입력해 주세요"
-          enterButton="등록"
-          fontSize="18px"
-          onSubmit={onAddTag}
-          style={{ marginTop: '15px' }}
-        />
+        <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
+
         <Text
           fontSize={16}
           color={fontNormal}
@@ -126,14 +113,6 @@ const PostAddPage = () => {
           * 태그는 최대 5개까지 입력 가능합니다.
         </Text>
 
-        <TagList>
-          {tags.map((tag, index) => (
-            <TagItem key={index}>
-              {tag}
-              <RemoveBtn onClick={() => onRemoveTag(index)}>x</RemoveBtn>
-            </TagItem>
-          ))}
-        </TagList>
         <TextArea
           onChange={(e) => {
             setText(e.target.value);

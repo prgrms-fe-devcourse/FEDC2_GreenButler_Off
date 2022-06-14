@@ -29,13 +29,6 @@ const TextArea = styled.textarea`
   }
 `;
 
-/*
-  TODO:
-  태그 등록 완료 시 input 초기화
-  태그 특수문자 및 띄어쓰기 제한
-  게시물 등록 시 페이지 이동
-*/
-
 const handleDataForm = async ({ text, tags, imgSrc }) => {
   const byteString = atob(imgSrc.split(',')[1]);
   const title = { content: text, tags };

@@ -15,7 +15,7 @@ const StyledInner = styled.div`
 `;
 
 const Error = styled.p`
-  margin-top: 15px;
+  margin: 15px 0;
   color: ${mainRed};
 `;
 

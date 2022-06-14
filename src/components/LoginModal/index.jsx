@@ -96,7 +96,7 @@ const LoginModal = ({ isShow, onClose, width = '420px', height = '304px' }) => {
             backgroundColor={theme.color.mainGreen}
             borderColor={'none'}
             color={'white'}
-            fontSize={20}
+            fontSize={'20'}
             onClick={onClick}
           >
             확인

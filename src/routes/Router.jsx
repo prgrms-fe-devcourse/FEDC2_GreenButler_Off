@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import {
   LoginPage,
   SignupPage,
-  HomePage,
+  MainPage,
   PostAddPage,
   PostEditPage,
   PostDetailPage,
@@ -22,7 +22,7 @@ const Router = () => {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<MainPage />} />
       <Route path="/post/create" element={<PostAddPage />} />
       <Route path="/post/edit" element={<PostEditPage />} />
       <Route path="/post/detail" element={<PostDetailPage />} />

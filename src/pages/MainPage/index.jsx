@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import Header from './Header';
-import PostDetail from './PostDetail';
+import PostList from './PostList';
 
-const PostDetailPage = () => {
+const MainPage = () => {
   return (
     <Container>
       <Header />
-      <PostDetail />
+      <PostList />
     </Container>
   );
 };
@@ -15,4 +15,4 @@ const Container = styled.div`
   min-height: 100vh;
 `;
 
-export default PostDetailPage;
+export default MainPage;

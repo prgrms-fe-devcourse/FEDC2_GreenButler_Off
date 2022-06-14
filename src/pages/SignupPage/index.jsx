@@ -16,11 +16,11 @@ const SignupWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-top: 152px;
+  padding-top: 111px;
 `;
 
 const StyledText = styled(Text)`
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 const SignupPage = () => {

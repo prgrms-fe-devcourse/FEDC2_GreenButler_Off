@@ -21,13 +21,14 @@ const childrenToArray = (children, types) => {
   });
 };
 
-const Tab = ({ children, active, ...props }) => {
+const Tab = ({ children, active, onActive, ...props }) => {
   const [currentActive, setCurrentActive] = useState(() => {
     if (active) {
       return active;
     } else {
       const index = childrenToArray(children, 'Tab.Item')[0].props.index;
 
+      onActive(index);
       return index;
     }
   });
@@ -39,11 +40,12 @@ const Tab = ({ children, active, ...props }) => {
         key: element.props.index,
         active: element.props.index === currentActive,
         onClick: () => {
+          onActive(element.props.index);
           setCurrentActive(element.props.index);
         },
       });
     });
-  }, [children, currentActive]);
+  }, [children, currentActive, onActive]);
 
   const activeItem = useMemo(() => {
     return items.find((element) => currentActive === element.props.index);

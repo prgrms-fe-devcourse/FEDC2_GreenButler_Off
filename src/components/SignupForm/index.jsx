@@ -187,7 +187,9 @@ const SignupForm = ({
 export default SignupForm;
 
 SignupForm.propTypes = {
-  name: PropTypes.string,
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onSubmit: PropTypes.func,
+  inValidEmail: PropTypes.bool,
+  inValidPassword: PropTypes.bool,
+  inValidFullName: PropTypes.bool,
+  inValidPasswordCheck: PropTypes.bool,
 };

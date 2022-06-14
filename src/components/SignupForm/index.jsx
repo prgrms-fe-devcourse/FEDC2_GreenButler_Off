@@ -180,6 +180,14 @@ const SignupForm = ({
           </Text>
         </StyledButton>
       </ButtonWrapper>
+      <Link to="/login">
+        <Text fontSize={18} color={theme.color.gray}>
+          이미 계정이 있으신가요?{'  '}
+        </Text>
+        <Text fontSize={18} strong color={theme.color.mainGreen}>
+          로그인
+        </Text>
+      </Link>
     </StyledForm>
   );
 };

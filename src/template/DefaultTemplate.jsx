@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Navigation from 'components/Navigation';
 import { useEffect, useState } from 'react';
 
 const DefaultTemplate = ({ children }) => {
@@ -15,6 +16,7 @@ const DefaultTemplate = ({ children }) => {
 
   return (
     <Container id="default-template-container" height={height}>
+      <Navigation />
       <StyledMain>{children}</StyledMain>
     </Container>
   );
@@ -28,11 +30,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  max-width: 500px;
+  width: 500px;
   overflow-x: hidden;
   margin: 0 auto;
   height: ${({ height }) => `${height}`}px;
-  background-color: ${({ theme }) => theme.color.background};
+  background-color: ${({ theme }) => theme.color.mainWhite};
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 export default DefaultTemplate;

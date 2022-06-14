@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.env
 
 # testing
 /coverage
@@ -24,3 +25,6 @@ yarn-error.log*
 
 # vscode
 .vscode/
+
+#env
+.env

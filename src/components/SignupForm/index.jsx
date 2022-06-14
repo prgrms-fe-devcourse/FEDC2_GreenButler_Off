@@ -47,6 +47,10 @@ const emailValid = (email) => {
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   return reg.test(email);
 };
+const fullNameValid = (fullName) => {
+  const reg = /[^\w\sㄱ-힣]|[_]/g;
+  return reg.test(fullName);
+};
 
 const LoginForm = ({
   onSubmit,
@@ -82,6 +86,9 @@ const LoginForm = ({
       }
       if (!fullName) {
         newErrors.fullName = '! 닉네임을 입력해주세요';
+        setFullNameInvalid(true);
+      } else if (fullNameValid(fullName)) {
+        newErrors.fullName = '! 특수문자를 제외한 닉네임을 입력해주세요';
         setFullNameInvalid(true);
       } else {
         setFullNameInvalid(false);

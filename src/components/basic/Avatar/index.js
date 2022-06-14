@@ -10,6 +10,7 @@ const AvatarWrapper = styled.div`
   border-radius: 50%;
   overflow: hidden;
   background-color: #eee;
+  flex-shrink: 0;
 
   > img {
     transition: opacity 0.2s ease-out;

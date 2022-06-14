@@ -1,8 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
-import styled from '@emotion/styled';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
-import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
 import { dummyPosts, me } from 'dummy';
 import { useUserContext } from 'contexts/UserContext';

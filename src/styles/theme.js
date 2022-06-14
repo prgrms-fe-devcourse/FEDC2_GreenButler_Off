@@ -10,5 +10,6 @@ export default {
     borderNormal: '#CCCCCC',
     borderLight: '#F1F1F1',
     backgroundLight: '#F8F8F8',
+    mainWhite: '#FFFFFF',
   },
 };

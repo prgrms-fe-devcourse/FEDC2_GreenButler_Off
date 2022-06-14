@@ -91,7 +91,7 @@ const SignupModal = ({
           <MainText fontSize={26} strong>
             회원가입에 실패했어요.
           </MainText>
-          <SubText fontSize={17} color={theme.color.grayDark}>
+          <SubText fontSize={17} color={theme.color.fontDark}>
             이메일 및 비밀번호를 다시 확인해주세요
           </SubText>
           <Button
@@ -101,7 +101,7 @@ const SignupModal = ({
             backgroundColor={theme.color.mainGreen}
             borderColor={'none'}
             color={'white'}
-            fontSize={20}
+            fontSize={'20px'}
             onClick={onClick}
           >
             확인

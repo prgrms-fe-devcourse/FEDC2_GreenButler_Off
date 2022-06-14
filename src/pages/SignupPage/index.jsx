@@ -5,11 +5,11 @@ import SignupForm from 'components/SignupForm';
 import { signup, login } from 'utils/apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import LoginModal from 'components/LoginModal';
+import SignupModal from 'components/SignupModal';
 import Text from 'components/basic/Text';
 import useLocalStorage from 'hooks/useLocalStrorage';
 
-const LoginWrapper = styled.div`
+const SignupWrapper = styled.div`
   width: 500px;
   height: 100vh;
   background-color: white;
@@ -56,11 +56,11 @@ const SignupPage = () => {
     }
   };
   return (
-    <LoginWrapper>
+    <SignupWrapper>
       <StyledText fontSize={30}>회원가입</StyledText>
       <SignupForm onSubmit={handleSubmit}></SignupForm>
-      <LoginModal isShow={showModal} onClose={closeModal}></LoginModal>
-    </LoginWrapper>
+      <SignupModal isShow={showModal} onClose={closeModal}></SignupModal>
+    </SignupWrapper>
   );
 };
 

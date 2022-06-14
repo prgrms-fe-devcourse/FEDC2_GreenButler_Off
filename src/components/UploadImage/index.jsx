@@ -5,6 +5,11 @@ import theme from 'styles/theme';
 
 const { backgroundGreen } = theme.color;
 
+const ImageWrapper = styled.div`
+  margin-left: -20px;
+  margin-right: -20px;
+`;
+
 const ImageLoad = styled.div`
   width: 100%;
   background-color: ${backgroundGreen};
@@ -47,7 +52,7 @@ const UploadImage = ({ onChange, defaultImage = null, ...props }) => {
   };
 
   return (
-    <div>
+    <ImageWrapper>
       <ImageLoad
         onClick={() => fileInputRef.current.click()}
         style={{ ...props.style }}
@@ -60,7 +65,7 @@ const UploadImage = ({ onChange, defaultImage = null, ...props }) => {
         id="file"
         onChange={handleFileChange}
       />
-    </div>
+    </ImageWrapper>
   );
 };
 

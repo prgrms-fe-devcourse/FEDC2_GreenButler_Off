@@ -12,4 +12,9 @@ export default {
     backgroundLight: '#F8F8F8',
     mainWhite: '#FFFFFF',
   },
+  value: {
+    headerHeight: '80px',
+    navHeight: '75px',
+    pagePadding: '20px',
+  },
 };

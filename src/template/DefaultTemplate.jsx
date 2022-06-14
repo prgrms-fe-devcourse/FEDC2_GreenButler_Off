@@ -38,6 +38,11 @@ const Container = styled.div`
   height: ${({ height }) => `${height}`}px;
   background-color: ${({ theme }) => theme.color.mainWhite};
 
+  -ms-overflow-style: none;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
   @media screen and (max-width: 500px) {
     width: 100%;
   }

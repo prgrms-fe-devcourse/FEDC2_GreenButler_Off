@@ -113,3 +113,10 @@ const SignupModal = ({
 };
 
 export default SignupModal;
+
+SignupModal.propTypes = {
+  isShow: PropTypes.bool,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  onClose: PropTypes.func,
+};

@@ -6,12 +6,9 @@ import Button from 'components/basic/Button';
 import UploadImage from 'components/UploadImage';
 import TagAddForm from 'components/TagAddForm';
 import theme from 'styles/theme';
+import PageWrapper from 'components/basic/pageWrapper';
 
 const { fontNormal, borderNormal, mainBlack } = theme.color;
-
-const Wrapper = styled.div`
-  padding: 0 20px;
-`;
 
 const TextArea = styled.textarea`
   margin-top: 20px;
@@ -92,8 +89,9 @@ const PostAddPage = () => {
 
   return (
     <>
-      <UploadImage onChange={onFileChange} />
-      <Wrapper>
+      <PageWrapper header>
+        <UploadImage onChange={onFileChange} />
+
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <TextArea
           onChange={(e) => {
@@ -102,13 +100,14 @@ const PostAddPage = () => {
           placeholder="내 식물의 성장 글을 작성해주세요."
           rows={10}
         ></TextArea>
-      </Wrapper>
-      <Button
-        style={{ marginTop: '15px', marginBottom: '15px' }}
-        onClick={onClickAddBtn}
-      >
-        게시물 등록
-      </Button>
+
+        <Button
+          style={{ marginTop: '15px', marginBottom: '15px' }}
+          onClick={onClickAddBtn}
+        >
+          게시물 등록
+        </Button>
+      </PageWrapper>
     </>
   );
 };

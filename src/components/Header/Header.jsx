@@ -3,6 +3,7 @@ import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
+const { headerHeight } = theme.value;
 const { borderLight, mainWhite } = theme.color;
 
 const HeaderContainer = styled.header`
@@ -10,6 +11,7 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: ${headerHeight};
   max-width: 500px;
   padding: 30px 20px;
   border-bottom: 1px solid ${borderLight};

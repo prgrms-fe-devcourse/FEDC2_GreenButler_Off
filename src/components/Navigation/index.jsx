@@ -2,13 +2,15 @@ import styled from '@emotion/styled';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import { useParams, useLocation } from 'react-router-dom';
-
+const { navHeight } = theme.value;
 const { mainWhite, borderLight } = theme.color;
+
 const NavContainer = styled.div`
   position: fixed;
   width: 100%;
+  height: ${navHeight};
   max-width: 500px;
   margin: 0 auto;
   left: 0;
@@ -21,11 +23,14 @@ const NavContainer = styled.div`
 
 const NavList = styled.ul`
   display: flex;
+  height: 100%;
 
   a {
-    display: block;
     width: 100%;
-    padding: 30px 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 

@@ -112,7 +112,10 @@ export const reducer = (state, { type, payload }) => {
       console.log(payload);
       return {
         ...state,
-        fullName: payload,
+        currentUser: {
+          ...state.currentUser,
+          fullName: payload.fullName,
+        },
       };
     }
     default: {

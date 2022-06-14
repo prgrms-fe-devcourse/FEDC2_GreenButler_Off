@@ -74,7 +74,7 @@ Button.propTypes = {
   fontSize: PropTypes.string,
   hover: PropTypes.object,
   active: PropTypes.object,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
 };

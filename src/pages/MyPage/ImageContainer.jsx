@@ -1,12 +1,12 @@
 import React from 'react';
 import Image from 'components/basic/Image';
-import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+import PostImageList from 'components/PostImageList';
 
-const PostImageList = React.memo(function PostImageList({ posts }) {
+const ImageContainer = React.memo(function ImageContainer({ posts }) {
   const dummyPlace = 'https://via.placeholder.com/200'; //추후 스켈레톤으로 교체
   return (
-    <ImageContainer>
+    <PostImageList>
       {posts.map((post) => (
         <Link to={`/post/detail/${post._id}`} key={Math.random()}>
           <Image
@@ -27,17 +27,8 @@ const PostImageList = React.memo(function PostImageList({ posts }) {
           />
         </Link>
       ))}
-    </ImageContainer>
+    </PostImageList>
   );
 });
 
-export default PostImageList;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 30%);
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
-`;
+export default ImageContainer;

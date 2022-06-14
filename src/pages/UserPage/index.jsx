@@ -3,7 +3,6 @@ import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import Button from 'components/basic/Button';
 import { me, other, dummyPosts, users } from 'dummy';
-import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
 import { useParams } from 'react-router-dom';
 import { useUserContext } from 'contexts/UserContext';

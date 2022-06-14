@@ -30,10 +30,16 @@ const StyledButton = styled(Button)`
   background-color: ${theme.color.mainGreen};
   color: '#FFFFFF';
 `;
+
+const StyledText = styled(Text)`
+  font-weight: 700;
+`;
+
 const ButtonWrapper = styled.div`
   margin-top: 35px;
   margin-bottom: 33px;
 `;
+
 const ErrorText = styled.span`
   text-align: left;
   margin-top: 5px;
@@ -115,9 +121,9 @@ const SignupForm = ({
       <InputWrapper>
         <Input
           name="email"
-          width={420}
-          height={70}
-          label={false}
+          width={'420'}
+          height={'70'}
+          label={''}
           fontSize={18}
           inValid={currentEmailInvalid}
           placeholder={'이메일을 입력해주세요'}
@@ -128,9 +134,9 @@ const SignupForm = ({
       <InputWrapper>
         <Input
           name="fullName"
-          width={420}
-          height={70}
-          label={false}
+          width={'420'}
+          height={'70'}
+          label={''}
           fontSize={18}
           inValid={currentFullNameInvalid}
           placeholder={'닉네임을 입력해주세요.'}
@@ -142,9 +148,9 @@ const SignupForm = ({
         <Input
           name="password"
           type="password"
-          width={420}
-          height={70}
-          label={false}
+          width={'420'}
+          height={'70'}
+          label={''}
           fontSize={18}
           inValid={currentPasswordInvalid}
           placeholder={'비밀번호를 입력해주세요.'}
@@ -156,9 +162,9 @@ const SignupForm = ({
         <Input
           name="passwordCheck"
           type="password"
-          width={420}
-          height={70}
-          label={false}
+          width={'420'}
+          height={'70'}
+          label={''}
           fontSize={18}
           inValid={currentPasswordCheckInvalid}
           placeholder={'비밀번호를 한번 더 입력해주세요.'}
@@ -175,18 +181,16 @@ const SignupForm = ({
           borderColor={'none'}
           color={'white'}
         >
-          <Text fontSize={18} strong>
-            회원가입
-          </Text>
+          <StyledText fontSize={20}>회원가입</StyledText>
         </StyledButton>
       </ButtonWrapper>
       <Link to="/login">
-        <Text fontSize={18} color={theme.color.gray}>
+        <Text fontSize={18} color={theme.color.fontNormal}>
           이미 계정이 있으신가요?{'  '}
         </Text>
-        <Text fontSize={18} strong color={theme.color.mainGreen}>
+        <StyledText fontSize={18} color={theme.color.mainGreen}>
           로그인
-        </Text>
+        </StyledText>
       </Link>
     </StyledForm>
   );

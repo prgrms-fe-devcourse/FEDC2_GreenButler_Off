@@ -4,6 +4,9 @@ import Tab from 'components/basic/Tab';
 
 import axios from 'axios';
 
+const TAG = 'tag';
+const USER = 'user';
+
 const getSearchTag = async (keyword) => {
   const result = await axios.get(`/search/all/%23${keyword}`);
   return result.data;
@@ -19,18 +22,18 @@ const SearchPage = () => {
 
   const [searchData, setSearchData] = useState({
     keyword: '',
-    tag: null,
-    user: null,
+    [TAG]: null,
+    [USER]: null,
   });
 
   const onSearch = useCallback(
     async (keyword) => {
-      if (currentTab === 'tag') {
+      if (currentTab === TAG) {
         const result = await getSearchTag(keyword);
         setSearchData((state) => ({ ...state, tag: result, keyword }));
       }
 
-      if (currentTab === 'user') {
+      if (currentTab === USER) {
         const result = await getSearchUser(keyword);
         setSearchData((state) => ({ ...state, user: result, keyword }));
       }
@@ -57,7 +60,7 @@ const SearchPage = () => {
       />
       <div>
         <Tab onActive={onActive}>
-          <Tab.Item title="태그" index="tag">
+          <Tab.Item title="태그" index={TAG}>
             {searchData.tag
               ? searchData.tag.map((post) => {
                   const { content, tags } = JSON.parse(post.title);
@@ -72,7 +75,7 @@ const SearchPage = () => {
                 })
               : '검색 결과가 없습니다.'}
           </Tab.Item>
-          <Tab.Item title="계정" index="user">
+          <Tab.Item title="계정" index={USER}>
             {searchData.user
               ? searchData.user.map((data) => {
                   return <div key={data._id}>{data.fullName}</div>;

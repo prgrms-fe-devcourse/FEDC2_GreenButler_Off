@@ -5,7 +5,6 @@ import useForm from 'hooks/useForm';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import theme from 'styles/theme';
-import colors from 'utils/constants/colors';
 import PropTypes from 'prop-types';
 import Text from 'components/basic/Text';
 
@@ -28,7 +27,7 @@ const InputWrapper = styled.div`
 const StyledButton = styled(Button)`
   font-weight: 700;
   font-size: ${({ fontSize }) => fontSize};
-  background-color: ${colors.mainGreen};
+  background-color: ${theme.color.mainGreen};
   color: '#FFFFFF';
 `;
 const ButtonWrapper = styled.div`
@@ -40,7 +39,7 @@ const ErrorText = styled.span`
   margin-top: 5px;
   margin-left: 5px;
   font-size: 12px;
-  color: ${colors.mainRed};
+  color: ${theme.color.mainRed};
 `;
 
 const emailValid = (email) => {
@@ -172,7 +171,7 @@ const SignupForm = ({
           type="submit"
           width={420}
           height={70}
-          backgroundColor={colors.mainGreen}
+          backgroundColor={theme.color.mainGreen}
           borderColor={'none'}
           color={'white'}
         >

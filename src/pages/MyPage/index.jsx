@@ -1,37 +1,47 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
-import { me, posts } from 'dummy';
 import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
-import { getPostData, getUserPosts } from 'utils/apis/postApi';
+import { dummyPosts, me } from 'dummy';
+import { useUserContext } from 'contexts/UserContext';
+import { getUserPosts } from 'utils/apis/postApi';
 
 const MyPage = () => {
-  const user = me;
-  const likedPostId = user.likes;
-  const [likePosts, setLikePosts] = useState([]);
-  const [userPosts, setUserPosts] = useState(posts);
+  //const { currentUser } = useUserContext();
+  const currentUser = me;
+  const [posts, setPosts] = useState([]);
+  const [userPosts, setUserPosts] = useState([]);
+  const [uesrLikePosts, setUserLikePosts] = useState(dummyPosts);
+
+  const handleGetUserPosts = useCallback(async () => {
+    const { data } = await getUserPosts('629e29bd6d18b41c5b238ba2');
+    setUserPosts(data);
+    setPosts(data);
+  }, []);
+
+  useEffect(() => {
+    handleGetUserPosts();
+  }, []);
 
   const smallTextStyle = {
     fontSize: 16,
     color: theme.color.fontNormal,
   };
 
-  const handleClickMyPosts = async () => {
-    //const result = await getUserPosts(user._id);
-    //console.log(result);
+  const nickNameStyle = {
+    display: 'block',
+    marginTop: 5,
+    fontWeight: 500,
+    fontSize: 24,
+    lineHeight: '34.75px',
+    cursor: 'pointer',
   };
 
-  const handleClickLikePosts = async () => {
-    const result = await getPostData();
-  };
-
-  useEffect(() => {
-    handleClickMyPosts();
-  }, []);
+  const dummyPlace = 'https://via.placeholder.com/200'; //추후 스켈레톤으로 교체
 
   return (
     <UserContainter>
@@ -43,42 +53,59 @@ const MyPage = () => {
             cursor: 'pointer',
           }}
           src={
-            user.image ||
+            currentUser.image ||
             `https://user-images.githubusercontent.com/79133602/173279398-ac52268b-082f-4fd2-8748-b60dad85b069.png`
           }
         />
-
         <Text
           style={{
-            display: 'block',
-            marginTop: 5,
-            fontWeight: 500,
-            fontSize: 24,
-            lineHeight: '34.75px',
-            cursor: 'pointer',
+            ...nickNameStyle,
           }}
         >
-          {user.fullName}
+          {currentUser.fullName}
         </Text>
         <UserDetailWrapper>
           <UserDetail>
             <Text style={{ ...smallTextStyle }}> 게시물</Text>
-            <Text fontSize={18}> {user.posts.length}</Text>
+            <Text fontSize={18}> {currentUser.posts.length}</Text>
           </UserDetail>
           <UserDetail>
             <Text style={{ ...smallTextStyle }}>팔로워</Text>
-            <Text fontSize={18}> {user.followers.length}</Text>
+            <Text fontSize={18}> {currentUser.followers.length}</Text>
           </UserDetail>
           <UserDetail>
             <Text style={{ ...smallTextStyle }}> 팔로잉</Text>
-            <Text fontSize={18}> {user.following.length}</Text>
+            <Text fontSize={18}> {currentUser.following.length}</Text>
           </UserDetail>
         </UserDetailWrapper>
       </UserInfo>
-      {/*  추후 Tab 컴포넌트 교체 */}
+
+      {/*  추후 Tab 컴포넌트 교체       
       <Tab>
-        <Icon name="LIKE_ICON" size={18} onClick={handleClickMyPosts} />
-        <Icon name="LIKE_ICON" size={18} onClick={handleClickLikePosts} />
+        <Tab.Item onClick={() => console.log('3')}>
+          <Icon
+            name="LIKE_ICON"
+            size={18}
+            onClick={() => setPosts(userPosts)}
+          />
+        </Tab.Item>
+        <Tab.Item onClick={() => console.log('3')}>
+          <Icon
+            name="LIKE_ICON"
+            size={18}
+            onClick={() => setPosts(userPosts)}
+          />
+        </Tab.Item>
+      </Tab>      
+      */}
+
+      <Tab>
+        <Icon name="LIKE_ICON" size={18} onClick={() => setPosts(userPosts)} />
+        <Icon
+          name="LIKE_ICON"
+          size={18}
+          onClick={() => setPosts(uesrLikePosts)}
+        />
       </Tab>
       <ImageContainer>
         {posts.map((post) => (
@@ -89,12 +116,15 @@ const MyPage = () => {
                 cursor: 'pointer',
               }}
               width="100%"
-              height="100%"
+              block={true}
+              threshold={0.1}
               className="post-item"
               src={
                 post.image ||
                 `https://user-images.githubusercontent.com/79133602/173282447-b5cdf98e-4372-4284-9795-b824acf2283d.png`
               }
+              alt={posts._id}
+              placeholder={dummyPlace}
             />
           </Link>
         ))}

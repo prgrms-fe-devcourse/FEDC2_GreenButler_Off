@@ -1,15 +1,33 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import Button from 'components/basic/Button';
-import { other, posts } from 'dummy';
+import { other, dummyPosts } from 'dummy';
 import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
+import { useParams } from 'react-router-dom';
+import { getUserPosts } from 'utils/apis/postApi';
 
 const UserPage = () => {
+  const userId = useParams();
   const user = other;
+  const [posts, setPosts] = useState([]);
+  const [userPosts, setUserPosts] = useState([]);
+  const [uesrLikePosts, setUserLikePosts] = useState(dummyPosts);
+
+  const handleGetUserPosts = useCallback(async () => {
+    const { data } = await getUserPosts('629e29bd6d18b41c5b238ba2');
+    //const { data } = await getUserPosts(userId);
+    setUserPosts(data);
+    setPosts(data);
+  }, []);
+
+  useEffect(() => {
+    handleGetUserPosts();
+  }, []);
 
   const smallTextStyle = {
     fontSize: 16,
@@ -71,12 +89,35 @@ const UserPage = () => {
           팔로우
         </Button>
       </UserInfo>
-      {/*  추후 Tab 컴포넌트 교체 */}
+
+      {/*  추후 Tab 컴포넌트 교체       
       <Tab>
-        <Icon name="LIKE_ICON" size={18} />
-        <Icon name="LIKE_ICON" size={18} />
+        <Tab.Item onClick={() => console.log('3')}>
+          <Icon
+            name="LIKE_ICON"
+            size={18}
+            onClick={() => setPosts(userPosts)}
+          />
+        </Tab.Item>
+        <Tab.Item onClick={() => console.log('3')}>
+          <Icon
+            name="LIKE_ICON"
+            size={18}
+            onClick={() => setPosts(userPosts)}
+          />
+        </Tab.Item>
+      </Tab>      
+      */}
+
+      <Tab>
+        <Icon name="LIKE_ICON" size={18} onClick={() => setPosts(userPosts)} />
+        <Icon
+          name="LIKE_ICON"
+          size={18}
+          onClick={() => setPosts(uesrLikePosts)}
+        />
       </Tab>
-      <ImageContainer>
+      <PostImageList>
         {posts.map((post) => (
           <Link to={`/post/detail/${post._id}`} key={Math.random()}>
             <Image
@@ -94,7 +135,7 @@ const UserPage = () => {
             />
           </Link>
         ))}
-      </ImageContainer>
+      </PostImageList>
       <Bottom />
     </UserContainter>
   );
@@ -157,7 +198,7 @@ const Tab = styled.div`
   }
 `;
 
-const ImageContainer = styled.div`
+const PostImageList = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 30%);

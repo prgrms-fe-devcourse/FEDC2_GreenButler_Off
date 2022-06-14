@@ -58,7 +58,12 @@ const SubText = styled(Text)`
   margin-bottom: 34px;
 `;
 
-const LoginModal = ({ isShow, onClose, width = '420px', height = '304px' }) => {
+const SignupModal = ({
+  isShow,
+  onClose,
+  width = '420px',
+  height = '304px',
+}) => {
   const theme = useTheme();
 
   const onClick = (e) => {
@@ -84,9 +89,9 @@ const LoginModal = ({ isShow, onClose, width = '420px', height = '304px' }) => {
           ></Logo>
 
           <MainText fontSize={26} strong>
-            로그인에 실패했어요.
+            회원가입에 실패했어요.
           </MainText>
-          <SubText fontSize={17} color={theme.color.grayDark}>
+          <SubText fontSize={17} color={theme.color.fontDark}>
             이메일 및 비밀번호를 다시 확인해주세요
           </SubText>
           <Button
@@ -107,9 +112,9 @@ const LoginModal = ({ isShow, onClose, width = '420px', height = '304px' }) => {
   );
 };
 
-export default LoginModal;
+export default SignupModal;
 
-LoginModal.propTypes = {
+SignupModal.propTypes = {
   isShow: PropTypes.bool,
   width: PropTypes.string,
   height: PropTypes.string,

@@ -39,6 +39,7 @@ const ButtonWrapper = styled.div`
 const StyledText = styled(Text)`
   font-weight: 700;
 `;
+
 const ErrorText = styled.span`
   text-align: left;
   margin-top: 5px;
@@ -121,7 +122,7 @@ const LoginForm = ({
           color={'white'}
           fontSize={'20px'}
         >
-          로그인
+          <StyledText fontSize={20}>로그인</StyledText>
         </StyledButton>
       </ButtonWrapper>
 

@@ -12,6 +12,7 @@ import Text from 'components/basic/Text';
 import { IMAGE_URLS } from 'utils/constants/images';
 import Button from 'components/basic/Button';
 import { Link } from 'react-router-dom';
+import PageWrapper from 'components/basic/pageWrapper';
 
 const TAG = 'tag';
 const USER = 'user';
@@ -95,57 +96,57 @@ const SearchPage = () => {
   }, [currentTab]);
 
   return (
-    <Wrapper>
+    <PageWrapper header nav>
       <InputForm
         name="search"
         placeholder="검색어를 입력해주세요."
         onSubmit={onSubmit}
+        style={{ marginTop: '20px' }}
       />
-      <div>
-        <Tab onActive={onActive}>
-          <Tab.Item title="태그" index={TAG}>
-            <PostImageList>
-              {searchData.tag &&
-                searchData.tag.map((post) => {
-                  return (
-                    <Link to={`post/detail/${post._id}`} key={post._id}>
-                      <Image
-                        lazy
-                        width="100%"
-                        block
-                        threshold={0.5}
-                        src={post.image}
-                      />
-                    </Link>
-                  );
-                })}
-            </PostImageList>
-          </Tab.Item>
-          <Tab.Item title="계정" index={USER}>
-            {searchData.user &&
-              searchData.user.map((data) => {
+
+      <Tab onActive={onActive}>
+        <Tab.Item title="태그" index={TAG}>
+          <PostImageList>
+            {searchData.tag &&
+              searchData.tag.map((post) => {
                 return (
-                  <ProfileContainer key={data._id}>
-                    <Profile>
-                      <Avatar size={60} src={IMAGE_URLS.PROFILE_iMG} />
-                      <Nickname fontSize={18}>{data.fullName}</Nickname>
-                    </Profile>
-                    <FollowBtn
-                      width={100}
-                      height={30}
-                      borderRadius={10}
-                      fontSize="16px"
-                      style={{ flexShrink: 0 }}
-                    >
-                      팔로우
-                    </FollowBtn>
-                  </ProfileContainer>
+                  <Link to={`post/detail/${post._id}`} key={post._id}>
+                    <Image
+                      lazy
+                      width="100%"
+                      block
+                      threshold={0.5}
+                      src={post.image}
+                    />
+                  </Link>
                 );
               })}
-          </Tab.Item>
-        </Tab>
-      </div>
-    </Wrapper>
+          </PostImageList>
+        </Tab.Item>
+        <Tab.Item title="계정" index={USER}>
+          {searchData.user &&
+            searchData.user.map((data) => {
+              return (
+                <ProfileContainer key={data._id}>
+                  <Profile>
+                    <Avatar size={60} src={IMAGE_URLS.PROFILE_iMG} />
+                    <Nickname fontSize={18}>{data.fullName}</Nickname>
+                  </Profile>
+                  <FollowBtn
+                    width={100}
+                    height={30}
+                    borderRadius={10}
+                    fontSize="16px"
+                    style={{ flexShrink: 0 }}
+                  >
+                    팔로우
+                  </FollowBtn>
+                </ProfileContainer>
+              );
+            })}
+        </Tab.Item>
+      </Tab>
+    </PageWrapper>
   );
 };
 

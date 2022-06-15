@@ -53,12 +53,19 @@ export const Tab = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-end;
-  padding-bottom: 10px;
   margin-top: 15px;
   justify-content: space-around;
-  border-bottom: 1px solid ${theme.color.gray};
-  i {
+  border-bottom: 1px solid ${theme.color.borderNormal};
+  > button {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+    &:hover {
+      border-bottom: 2px solid ${theme.color.mainGreen};
+    }
   }
 `;
 

@@ -1,0 +1,42 @@
+import { Routes, Route } from 'react-router-dom';
+import {
+  LoginPage,
+  SignupPage,
+  MainPage,
+  PostAddPage,
+  PostEditPage,
+  PostDetailPage,
+  MyPage,
+  UserPage,
+  FollowPage,
+  MyInfoPage,
+  MyInfoEditPage,
+  SearchPage,
+  SearchTagPage,
+  NotificationPage,
+  NotFoundPage,
+} from '../pages/index';
+
+const Router = () => {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/" element={<MainPage />} />
+      <Route path="/post/create" element={<PostAddPage />} />
+      <Route path="/post/edit" element={<PostEditPage />} />
+      <Route path="/post/detail" element={<PostDetailPage />} />
+      <Route path="/user/mypage" element={<MyPage />} />
+      <Route path="/user/:id" element={<UserPage />} />
+      <Route path="/user/follow" element={<FollowPage />} />
+      <Route path="/user/myinfo" element={<MyInfoPage />} />
+      <Route path="/user/myinfo/edit" element={<MyInfoEditPage />} />
+      <Route path="/user/notification" element={<NotificationPage />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/search/tag" element={<SearchTagPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  );
+};
+
+export default Router;

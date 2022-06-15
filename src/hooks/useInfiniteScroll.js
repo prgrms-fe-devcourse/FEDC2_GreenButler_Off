@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
 const useInfiniteScroll = ({
-  root = null,
   target,
   onIntersect,
-  threshold = 1.0,
+  root = null,
   rootMargin = '0px',
+  threshold = 1.0,
 }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(onIntersect, {
@@ -22,6 +22,10 @@ const useInfiniteScroll = ({
 
     return () => observer.unobserve(target);
   }, [target, root, rootMargin, onIntersect, threshold]);
+
+
+
+  
 };
 
 export default useInfiniteScroll;

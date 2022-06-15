@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import colors from 'utils/constants/colors';
-
-const { black, mainRed, grayLight } = colors;
+import theme from 'styles/theme';
 
 const InputWrapper = styled.div`
   display: ${({ block }) => (block ? 'block' : 'inline-block')};
@@ -12,7 +10,7 @@ const InputWrapper = styled.div`
 
 const Label = styled.div`
   font-size: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   font-weight: 500;
   text-align: left;
 `;
@@ -23,14 +21,16 @@ const StyledInput = styled.input`
   padding: 22px 22px;
   border-radius: 15px;
   box-sizing: border-box;
-  border: 1px solid ${({ inValid }) => (inValid ? mainRed : grayLight)};
+  border: 1px solid
+    ${({ inValid }) =>
+      inValid ? theme.color.mainRed : theme.color.borderNormal};
 
   ::placeholder {
     color: #a3a3a3;
   }
 
   &:focus {
-    outline-color: ${black};
+    border: 1px solid ${theme.color.fontBlack};
   }
 `;
 
@@ -59,7 +59,7 @@ const NewInput = ({
   );
 
   return (
-    <InputWrapper block={block} width={width}>
+    <InputWrapper block={block} width={width} style={{ ...props.style }}>
       {label && <Label>{label}</Label>}
       <StyledInput
         type={type}

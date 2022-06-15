@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import Header from './Header';
 import PostList from './PostList';
-
+import { useUserContext } from 'contexts/UserContext';
 const MainPage = () => {
+  const { currentUser } = useUserContext();
+  console.log(currentUser);
   return (
     <Container>
       <Header />

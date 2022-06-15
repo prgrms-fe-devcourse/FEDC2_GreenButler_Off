@@ -1,4 +1,10 @@
-import { useContext, useCallback, useReducer, useMemo, createContext } from 'react';
+import {
+  useContext,
+  useCallback,
+  useReducer,
+  useMemo,
+  createContext,
+} from 'react';
 import { reducer, initialUserData } from './reducer';
 import useLocalToken from 'hooks/useLocalToken';
 import useHandles from './handles';
@@ -29,9 +35,13 @@ export const useUserContext = () => useContext(UserContext);
   2) isLoading: 로딩 중인지 여부
 */
 const UserProvider = ({ children }) => {
-  const [{ currentUser, isLoading }, dispatch] = useReducer(reducer, initialUserData); // 데이터의 갱신은 reducer 함수로 관리한다.
+  const [{ currentUser, isLoading }, dispatch] = useReducer(
+    reducer,
+    initialUserData,
+  ); // 데이터의 갱신은 reducer 함수로 관리한다.
   const [localToken] = useLocalToken(); // JWT 토큰
-  const { handleGetCurrentUser, handleLogin, handleSignup, handleLogout } = useHandles();
+  const { handleGetCurrentUser, handleLogin, handleSignup, handleLogout } =
+    useHandles();
 
   // 현재 유저의 정보를 서버로부터 가져온다.
   const onGetCurrentUser = useCallback(async () => {
@@ -60,9 +70,10 @@ const UserProvider = ({ children }) => {
   const onSignup = useCallback(
     async (data) => {
       dispatch({ type: LOADING_ON });
-      const { user, token } = await handleSignup(data);
-      if (token) {
-        dispatch({ type: SIGNUP, payload: user }); // 회원가입 성공 시, currentUser의 정보 갱신
+      const res = await handleSignup(data);
+      console.log(res.user, res.token);
+      if (res.token) {
+        dispatch({ type: SIGNUP, payload: res.user }); // 회원가입 성공 시, currentUser의 정보 갱신
       }
       dispatch({ type: LOADING_OFF });
     },
@@ -97,7 +108,16 @@ const UserProvider = ({ children }) => {
       onFollow,
       onUnfollow,
     };
-  }, [currentUser, isLoading, onLogin, onSignup, onLogout, onGetCurrentUser, onFollow, onUnfollow]);
+  }, [
+    currentUser,
+    isLoading,
+    onLogin,
+    onSignup,
+    onLogout,
+    onGetCurrentUser,
+    onFollow,
+    onUnfollow,
+  ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

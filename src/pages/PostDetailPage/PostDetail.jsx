@@ -80,7 +80,7 @@ const Container = styled.div``;
 const CommentInputForm = styled.form`
   display: flex;
   align-items: center;
-  margin: 13px 20px;
+  margin: 13px 0;
   padding: 7px 15px;
   border-radius: 15px;
   border: 1px solid ${theme.color.borderNormal};
@@ -125,7 +125,7 @@ const SubmitButton = ({ ...props }) => {
 };
 
 const CommentList = styled.ul`
-  padding: 10px 20px;
+  padding: 10px 0;
 `;
 
 const CommentItem = styled.li`
@@ -162,43 +162,25 @@ const MetaInformation = styled.div`
   margin-bottom: 4px;
 `;
 
-const UserNameText = ({ children, ...props }) => {
-  const style = {
-    fontWeight: '700',
-    lineHeight: '19px',
-  };
-  return (
-    <Text {...props} style={style}>
-      {children}
-    </Text>
-  );
-};
+const UserNameText = styled.span`
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 19px;
+`;
 
-const DateText = ({ children, ...props }) => {
-  const style = {
-    color: theme.color.fontNormal,
-    fontSize: '12px',
-    lineHeight: '15px',
-    marginLeft: '6px',
-  };
-  return (
-    <Text {...props} style={style}>
-      {children}
-    </Text>
-  );
-};
+const DateText = styled.span`
+  color: ${theme.color.fontNormal};
+  font-size: 14px;
+  line-height: 15px;
+  margin-left: 6px;
+  word-wrap: break-word;
+`;
 
-const CommentText = ({ children, ...props }) => {
-  const style = {
-    fontSize: '16px',
-    lineHeight: '19px',
-  };
-  return (
-    <Text paragraph {...props} style={style}>
-      {children}
-    </Text>
-  );
-};
+const CommentText = styled.p`
+  font-size: 16px;
+  line-height: 19px;
+  word-break: break-all;
+`;
 
 const MoreButton = (props) => {
   const style = {
@@ -215,7 +197,7 @@ const MoreButton = (props) => {
 
   return (
     <button {...props} style={style}>
-      <Icon className="more-button" name="SEARCH_GRAY" size={20} />
+      <Icon className="more-button" name="MORE" size={20} />
     </button>
   );
 };

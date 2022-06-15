@@ -28,7 +28,6 @@ const MyInfoEditPage = () => {
   return (
     <PageWrapper>
       <UserContainter>
-        <Header />
         <UserInfo>
           <Text
             style={{
@@ -62,7 +61,6 @@ const MyInfoEditPage = () => {
             <button type="submit"></button>
           </UserEditForm>
         </UserInfo>
-        <Bottom />
       </UserContainter>
     </PageWrapper>
   );
@@ -75,34 +73,6 @@ const UserContainter = styled.div`
   height: 100%;
   position: relative;
   background-color: white;
-`;
-
-const Header = styled.div`
-  height: 90px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  border-bottom: 1px solid ${theme.color.borderNormal};
-  background-color: white;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Bottom = styled.div`
-  height: 90px;
-  width: 100%;
-  border-top: 1px solid ${theme.color.borderNormal};
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const UserInfo = styled.div`

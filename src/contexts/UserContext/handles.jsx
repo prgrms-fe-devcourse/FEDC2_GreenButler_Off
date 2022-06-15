@@ -1,7 +1,14 @@
 import useLocalToken from 'hooks/useLocalToken';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser, login, logout, signup, changeUserName } from 'utils/apis/userApi';
+import {
+  getCurrentUser,
+  login,
+  logout,
+  signup,
+  changeUserName,
+  changePassword,
+} from 'utils/apis/userApi';
 
 const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
@@ -70,7 +77,17 @@ const useHandles = () => {
   //회원 이름수정
   const handlechangeUserName = useCallback(
     async (fullName, username = '') => {
-      changeUserName(localToken, fullName, username);
+      console.log('CHANGENAME_HANDLE', fullName);
+      //await changeUserName(localToken, fullName, username);
+    },
+    [localToken],
+  );
+
+  //회원 비밀번호 수정
+  const handlechangePassword = useCallback(
+    async (password) => {
+      console.log('PASSWORD_HANDLE', password);
+      //await changePassword(localToken, password);
     },
     [localToken],
   );
@@ -81,6 +98,7 @@ const useHandles = () => {
     handleSignup,
     handleLogout,
     handlechangeUserName,
+    handlechangePassword,
   };
 };
 

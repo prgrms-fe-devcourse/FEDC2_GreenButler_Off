@@ -47,6 +47,7 @@ const UserProvider = ({ children }) => {
     handleSignup,
     handleLogout,
     handlechangeUserName,
+    handlechangePassword,
   } = useHandles();
 
   // 현재 유저의 정보를 서버로부터 가져온다.
@@ -106,16 +107,33 @@ const UserProvider = ({ children }) => {
   //현재 유저의 닉네임을 수정
   const editFullName = useCallback(
     (payload = { fullName: '', userName: '' }) => {
-      console.log(payload);
+      console.log('FULLNAME_CONTEXT_PAYLOAD', payload);
       const { fullName, userName } = payload;
+      console.log('FULLNAME_CONTEXT', fullName);
       if (localToken) {
         handlechangeUserName(localToken, fullName, userName);
         dispatch({ type: EDIT_FULLNAME, payload });
-      } else {
+      } /* else {
         console.log('token error');
-      }
+      } */
     },
     [],
+  );
+
+  //현재 유저의 비밀번호 수정 - Reducer를 사용할 필요 없어
+  const onChangePassword = useCallback(
+    async (password) => {
+      console.log('PASSWORD_CONTEXT', password);
+
+      if (localToken) {
+        handlechangePassword(localToken, password);
+      }
+      handlechangePassword(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyOWUyOWJkNmQxOGI0MWM1YjIzOGJhMiIsImVtYWlsIjoiYWRtaW5AcHJvZ3JhbW1lcnMuY28ua3IifSwiaWF0IjoxNjU0NjcxNjI5fQ.etL5BJpmU-w7nUg1JDa_1oEHqBKkTgTxPQ0tfOfj-As',
+        password,
+      );
+    },
+    [localToken, handlechangePassword],
   );
 
   const value = useMemo(() => {
@@ -129,6 +147,7 @@ const UserProvider = ({ children }) => {
       onFollow,
       onUnfollow,
       editFullName,
+      onChangePassword,
     };
   }, [
     currentUser,
@@ -140,6 +159,7 @@ const UserProvider = ({ children }) => {
     onFollow,
     onUnfollow,
     editFullName,
+    onChangePassword,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

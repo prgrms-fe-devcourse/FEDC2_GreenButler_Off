@@ -89,7 +89,9 @@ export const reducer = (state, { type, payload }) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          following: state.currentUser.following.filter(({ _id }) => _id !== payload.unfollowId),
+          following: state.currentUser.following.filter(
+            ({ _id }) => _id !== payload.unfollowId,
+          ),
         },
       };
     }
@@ -109,10 +111,11 @@ export const reducer = (state, { type, payload }) => {
       return { ...state, isLoading: false };
     }
     case EDIT_FULLNAME: {
-      console.log(payload);
+      console.log('FULLNAME_REDUCER_PAYLOAD', payload);
+      console.log('FULLNAME_REDUCER', payload.fullName);
       return {
         ...state,
-        fullName: payload,
+        fullName: payload.fullName,
       };
     }
     default: {

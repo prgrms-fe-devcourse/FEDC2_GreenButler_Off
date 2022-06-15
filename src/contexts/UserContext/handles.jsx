@@ -1,7 +1,7 @@
 import useLocalToken from 'hooks/useLocalToken';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser, login, logout, signup } from 'utils/apis/userApi';
+import { getCurrentUser, login, logout, signup, changeUserName } from 'utils/apis/userApi';
 
 const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
@@ -67,11 +67,20 @@ const useHandles = () => {
     navigate('/login', { replace: true }); // 로그인 페이지로 이동
   }, [navigate, setLocalToken]);
 
+  //회원 이름수정
+  const handlechangeUserName = useCallback(
+    async (fullName, username = '') => {
+      changeUserName(localToken, fullName, username);
+    },
+    [localToken],
+  );
+
   return {
     handleGetCurrentUser,
     handleLogin,
     handleSignup,
     handleLogout,
+    handlechangeUserName,
   };
 };
 

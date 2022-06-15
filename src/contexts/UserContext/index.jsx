@@ -20,6 +20,7 @@ import {
   ADD_POST,
   INIT_POST,
   UPDATE_POST,
+  EDIT_FULLNAME,
 } from './types';
 
 /* 
@@ -40,8 +41,13 @@ const UserProvider = ({ children }) => {
     initialUserData,
   ); // 데이터의 갱신은 reducer 함수로 관리한다.
   const [localToken] = useLocalToken(); // JWT 토큰
-  const { handleGetCurrentUser, handleLogin, handleSignup, handleLogout } =
-    useHandles();
+  const {
+    handleGetCurrentUser,
+    handleLogin,
+    handleSignup,
+    handleLogout,
+    handlechangeUserName,
+  } = useHandles();
 
   // 현재 유저의 정보를 서버로부터 가져온다.
   const onGetCurrentUser = useCallback(async () => {
@@ -97,6 +103,21 @@ const UserProvider = ({ children }) => {
     dispatch({ type: UNFOLLOW, payload });
   }, []);
 
+  //현재 유저의 닉네임을 수정
+  const editFullName = useCallback(
+    (payload = { fullName: '', userName: '' }) => {
+      console.log(payload);
+      const { fullName, userName } = payload;
+      if (localToken) {
+        handlechangeUserName(localToken, fullName, userName);
+        dispatch({ type: EDIT_FULLNAME, payload });
+      } else {
+        console.log('token error');
+      }
+    },
+    [],
+  );
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -107,6 +128,7 @@ const UserProvider = ({ children }) => {
       onGetCurrentUser,
       onFollow,
       onUnfollow,
+      editFullName,
     };
   }, [
     currentUser,
@@ -117,6 +139,7 @@ const UserProvider = ({ children }) => {
     onGetCurrentUser,
     onFollow,
     onUnfollow,
+    editFullName,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

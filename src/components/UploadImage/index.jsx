@@ -2,8 +2,10 @@ import { useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import theme from 'styles/theme';
+import { IMAGE_URLS } from 'utils/constants/images';
 
 const { backgroundGreen } = theme.color;
+const { POST_DEFAULT_IMG } = IMAGE_URLS;
 
 const ImageWrapper = styled.div`
   margin-left: -20px;
@@ -51,13 +53,17 @@ const UploadImage = ({ onChange, defaultImage = null, ...props }) => {
     };
   };
 
+  const ImageStyle = {
+    backgroundImage: `url(${imageSrc ? imageSrc : POST_DEFAULT_IMG}`,
+  };
+
   return (
     <ImageWrapper>
       <ImageLoad
         onClick={() => fileInputRef.current.click()}
         style={{ ...props.style }}
       >
-        <ImageInner style={{ backgroundImage: `url(${imageSrc})` }} />
+        <ImageInner style={{ ...ImageStyle }} />
       </ImageLoad>
       <FileInput
         ref={fileInputRef}

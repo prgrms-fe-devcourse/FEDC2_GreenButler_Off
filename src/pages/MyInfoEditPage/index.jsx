@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import Text from 'components/basic/Text';
-import { me } from 'dummy';
-import theme from 'styles/theme';
 import Input from 'components/basic/Input';
 import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const MyInfoEditPage = () => {
-  //const { currentUser,onChangePassword } = useUserContext();
   const { onChangePassword } = useUserContext();
-  const currentUser = me;
   const [password, setPassword] = useState('');
   const [confirmPassword, setconfirmPassword] = useState('');
   const [inValid, setInValid] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +21,8 @@ const MyInfoEditPage = () => {
     }
     setInValid(false);
     onChangePassword(password);
+    //TODO:신영 모달창을 띄우고 비밀번호가 변경됐습니다. 이후 내정보로 이동할지?
+    navigate(-1);
   };
 
   return (
@@ -33,10 +33,10 @@ const MyInfoEditPage = () => {
             style={{
               marginTop: 5,
               marginLeft: 20,
-              fontSize: 26,
               textAlign: 'left',
               fontWeight: 700,
             }}
+            fontSize={26}
             block={true}
           >
             비밀번호를 설정해주세요
@@ -44,7 +44,7 @@ const MyInfoEditPage = () => {
           <UserEditForm onSubmit={handleSubmit}>
             <Input
               label="변경할 비밀번호"
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 5 }}
               type="password"
               inValid={inValid}
               onChange={(e) => setPassword(e.target.value)}
@@ -89,6 +89,5 @@ const UserEditForm = styled.form`
   justify-content: center;
   align-items: flex-start;
   margin: 20px 0 0 0;
-
   padding-bottom: 90px;
 `;

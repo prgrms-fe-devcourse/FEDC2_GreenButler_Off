@@ -13,7 +13,7 @@ import UploadImage from 'components/UploadImage';
 
 const MyInfoPage = () => {
   //const { currentUser, editFullName } = useUserContext();
-  const { editFullName } = useUserContext();
+  const { editFullName, onLogout } = useUserContext();
   const currentUser = me;
   const [imgSrc, setImgSrc] = useState('');
   const [isNameEditor, setIsNameEditor] = useState(false);
@@ -31,9 +31,7 @@ const MyInfoPage = () => {
     setImgSrc(src);
   }, []);
 
-  useEffect(() => {
-    console.log(currentUser.fullName);
-  }, [handleSubmit]);
+  useEffect(() => {}, [handleSubmit]);
 
   return (
     <PageWrapper>
@@ -84,17 +82,16 @@ const MyInfoPage = () => {
           {isNameEditor ? (
             <ChangeNameForm handleSubmit={handleSubmit} />
           ) : (
-            //TODO: 추후 이름변경 취소 백그라운드 클릭 이벤트리스너 따로 만들기,
+            //TODO:신영 추후 이름변경 취소 백그라운드 클릭 이벤트리스너 따로 만들기, 및 컴포넌트 분리
             <NickName>
               <Text
                 style={{
                   display: 'block',
-                  marginTop: 5,
                   fontWeight: 500,
-                  fontSize: 24,
                   lineHeight: '34.75px',
                   cursor: 'pointer',
                 }}
+                fontSize={22}
               >
                 {currentUser.fullName}
               </Text>
@@ -106,39 +103,43 @@ const MyInfoPage = () => {
                 <Icon
                   name="LIKE_ICON"
                   size={18}
-                  style={{ marginTop: '8px', marginLeft: '5px' }}
+                  style={{ marginTop: '5px', marginLeft: '5px' }}
                 />
               </button>
             </NickName>
           )}
+          {/* //TODO:신영 컴포넌트 분리
+           */}
           <UserDetailWrapper>
             <UserDetail>
-              <Text style={{ fontSize: '20px', marginLeft: '30px' }}>
+              <Text style={{ marginLeft: '30px' }} fontSize={20}>
                 Email
               </Text>
               <Text
                 style={{
-                  fontSize: '20px',
                   marginLeft: '10px',
-                  color: theme.color.fontNormal,
                 }}
+                fontSize={20}
+                color={theme.color.fontNormal}
               >
                 {currentUser.email}
               </Text>
             </UserDetail>
-            <UserDetail>
-              <Icon
-                name="LIKE_ICON"
-                size={18}
-                style={{
-                  marginTop: '2px',
-                  marginLeft: '28px',
-                  marginRight: '10px',
-                }}
-              />
-              <Text fontSize={18}>비밀번호 변경하기</Text>
-            </UserDetail>
-            <UserDetail>
+            <Link to="/user/myInfo/edit">
+              <UserDetail>
+                <Icon
+                  name="LIKE_ICON"
+                  size={18}
+                  style={{
+                    marginTop: '2px',
+                    marginLeft: '28px',
+                    marginRight: '10px',
+                  }}
+                />
+                <Text fontSize={18}>비밀번호 변경하기</Text>
+              </UserDetail>
+            </Link>
+            <UserDetail onClick={onLogout}>
               <Icon
                 name="LIKE_ICON"
                 size={18}
@@ -199,7 +200,7 @@ const UserDetailWrapper = styled.div`
     border-top: 1px solid ${theme.color.borderLight};
   }
 
-  > div:nth-child(n + 2) {
+  > div:nth-of-type(n + 2) {
     cursor: pointer;
   }
   padding-bottom: 90px;

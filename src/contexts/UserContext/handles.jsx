@@ -70,7 +70,8 @@ const useHandles = () => {
     // JWT 토큰 및 로컬 스토리지 초기화
     setLocalToken('');
     localStorage.clear();
-    await logout();
+    //TODO:신영 추후 로그인 제대로 되서 토큰이 있으면 아래 주석 제거
+    //await logout();
     navigate('/login', { replace: true }); // 로그인 페이지로 이동
   }, [navigate, setLocalToken]);
 

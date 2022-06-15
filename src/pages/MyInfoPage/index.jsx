@@ -1,26 +1,30 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styled from '@emotion/styled';
-import Image from 'components/basic/Image';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
-import { me } from 'dummy';
 import theme from 'styles/theme';
-import Input from 'components/basic/Input';
+import ChangeNameForm from 'components/ChangeNameForm';
 import InputForm from 'components/basic/Input/InputForm';
 import Icon from 'components/basic/Icon';
 import { useUserContext } from 'contexts/UserContext';
 import axios from 'axios';
 
-const MyInfoPage = () => {
-  //const { currentUser,editFullName } = useUserContext();
-  const { editFullName } = useUserContext();
-  const currentUser = me;
+const MyInfoEditPage = () => {
+  const { currentUser, editFullName } = useUserContext();
   const [isEditor, setIsEditor] = useState(false);
 
-  const handleSubmit = (value) => {
-    editFullName({ payload: { fullName: value, userName: '' } });
-  };
+  const handleSubmit = useCallback(
+    (value) => {
+      editFullName({ payload: { fullName: value, userName: '' } });
+      setIsEditor(false);
+    },
+    [editFullName],
+  );
+
+  useEffect(() => {
+    console.log(currentUser.fullName);
+  }, [handleSubmit]);
 
   return (
     <UserContainter>
@@ -36,22 +40,11 @@ const MyInfoPage = () => {
             `https://user-images.githubusercontent.com/79133602/173279398-ac52268b-082f-4fd2-8748-b60dad85b069.png`
           }
         />
+
         {isEditor ? (
-          <InputForm name="fullName" enterButton="수정" onSubmit={handleSubmit} />
+          <ChangeNameForm handleSubmit={handleSubmit} />
         ) : (
           <NickName>
-            <Text
-              style={{
-                display: 'block',
-                marginTop: 5,
-                fontWeight: 500,
-                fontSize: 24,
-                lineHeight: '34.75px',
-                cursor: 'pointer',
-              }}
-            >
-              {currentUser.fullName}
-            </Text>
             <button
               onClick={() => {
                 setIsEditor((isEditor) => !isEditor);
@@ -106,7 +99,7 @@ const MyInfoPage = () => {
   );
 };
 
-export default MyInfoPage;
+export default MyInfoEditPage;
 
 const UserContainter = styled.div`
   width: 100%;

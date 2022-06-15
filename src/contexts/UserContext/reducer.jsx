@@ -109,12 +109,14 @@ export const reducer = (state, { type, payload }) => {
       return { ...state, isLoading: false };
     }
     case EDIT_FULLNAME: {
-      console.log(payload);
+      console.log('FULL_NAME', payload);
+      const { fullName } = payload;
+      console.log('FULL_NAME', fullName);
       return {
         ...state,
         currentUser: {
           ...state.currentUser,
-          fullName: payload.fullName,
+          fullName: fullName,
         },
       };
     }

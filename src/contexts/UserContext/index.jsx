@@ -31,6 +31,7 @@ export const useUserContext = () => useContext(UserContext);
 */
 const UserProvider = ({ children }) => {
   const [{ currentUser, isLoading }, dispatch] = useReducer(reducer, initialUserData); // 데이터의 갱신은 reducer 함수로 관리한다.
+  console.log(currentUser);
   const [localToken] = useLocalToken(); // JWT 토큰
   const { handleGetCurrentUser, handleLogin, handleSignup, handleLogout, handlechangeUserName } =
     useHandles();
@@ -97,6 +98,8 @@ const UserProvider = ({ children }) => {
       dispatch({ type: EDIT_FULLNAME, payload });
     } else {
       console.log('token error');
+      handlechangeUserName(localToken, fullName, userName);
+      dispatch({ type: EDIT_FULLNAME, payload });
     }
   }, []);
 

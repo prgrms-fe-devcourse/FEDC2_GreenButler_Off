@@ -1,39 +1,76 @@
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
 import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 
-const PostBody = () => {
+// const currentUserId = '62a75e5cb1b90b0c812c9b70';
+
+const PostBody = ({ post, isDetailPage = false }) => {
+  const { image, likes, comments, updatedAt } = post || {};
+  const { content, contents, tags } = JSON.parse(post?.title);
+
+  const navigate = useNavigate();
+
+  const HandleTodetailpage = useCallback(() => {
+    if (isDetailPage) {
+      return;
+    }
+    navigate('/post/detail', {
+      state: {
+        post,
+      },
+    });
+  }, [post, isDetailPage, navigate]);
+
+  const handleTagClick = useCallback(
+    (tag) => {
+      navigate('/search/tag', {
+        state: {
+          tag,
+        },
+      });
+    },
+    [navigate],
+  );
+
+  // const isFavoritePost = useMemo(() => {
+  //   return likes.some(({ _id }) => _id === currentUserId);
+  // }, [likes]);
+
   return (
     <Container>
-      <ImageWrapper>
+      <ImageWrapper onClick={HandleTodetailpage}>
         <Image
-          src="https://picsum.photos/300/300/?image=75"
+          src={image ? image : 'https://picsum.photos/300/300/?image=71'}
           width="100%"
           height="100%"
         />
       </ImageWrapper>
       <Contents>
         <IconButtons>
-          <IconButton className="heart-button" name="SEARCH_GRAY">
-            <IconButtonText>1</IconButtonText>
+          <IconButton className="heart-button" name="HEART">
+            <IconButtonText>{likes.length}</IconButtonText>
           </IconButton>
-          <IconButton className="comment-button" name="SEARCH_GRAY">
-            <IconButtonText>2</IconButtonText>
+          <IconButton
+            className="comment-button"
+            name="COMMENT"
+            onClick={HandleTodetailpage}
+          >
+            <IconButtonText>{comments.length}</IconButtonText>
           </IconButton>
         </IconButtons>
-        <Paragraph>
-          신기해 귀여워🙌
-          <br />
-          선인장에도 꽃이 피는구나🌵
-        </Paragraph>
+        <Paragraph>{content ? content : contents}</Paragraph>
         <Tags>
-          <Tag>#선인장</Tag>
-          <Tag>#초린이</Tag>
-          <Tag>#무럭무럭자라라</Tag>
+          {tags.map((tag, i) => (
+            <Tag key={i} onClick={() => handleTagClick(tag)}>
+              {tag[0] === '#' ? tag : `#${tag}`}
+            </Tag>
+          ))}
         </Tags>
-        <DateText>3일 전</DateText>
+        <DateText>{updatedAt.substr(0, 10)}</DateText>
       </Contents>
     </Container>
   );
@@ -61,7 +98,7 @@ const IconButtons = styled.div`
   display: flex;
 `;
 
-const IconButton = ({ children, name }) => {
+const IconButton = ({ name, className, children, onClick }) => {
   const style = {
     padding: 0,
     borderRadius: '0',
@@ -72,7 +109,7 @@ const IconButton = ({ children, name }) => {
     backgroundColor: 'transparent',
   };
   return (
-    <button style={style}>
+    <button className={className} style={style} onClick={onClick}>
       <Icon name={name} size={22} />
       {children}
     </button>
@@ -83,7 +120,7 @@ const IconButtonText = ({ children, ...props }) => {
   const style = {
     color: theme.color.fontBlack,
     fontSize: '16px',
-    marginLeft: '8px',
+    marginLeft: '5px',
     PointerEvent: 'none',
   };
   return (
@@ -93,19 +130,59 @@ const IconButtonText = ({ children, ...props }) => {
   );
 };
 
-const Paragraph = ({ children, ...props }) => {
-  const style = {
-    fontSize: 20,
-    lineHeight: '28px',
-    padding: '17px 0',
-  };
+// const Paragraph = ({ children }) => {
+//   const style = {
+//     width: '280px',
+//     maxHeight: '56px',
+//     lineheight: '26px',
+//     fontSize: '20px',
+//     margin: '18px 0',
+//   };
 
-  return (
-    <Text paragraph style={style} {...props}>
-      {children}
-    </Text>
-  );
-};
+//   const lineClamp = css`
+//     display: -webkit-box;
+//     word-wrap: break-word;
+//     text-overflow: ellipsis;
+//     overflow: hidden;
+//     -webkit-line-clamp: 2;
+//     -webkit-box-orient: vertical;
+//   `;
+
+//   return (
+//     <p style={style} css={lineClamp}>
+//       {children}
+//     </p>
+//   );
+// };
+
+const Paragraph = styled.p`
+  width: 280px;
+  max-height: 56px;
+  line-height: 26px;
+  font-size: 20px;
+  margin: 18px 0;
+
+  display: -webkit-box;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
+// const Paragraph = ({ children, ...props }) => {
+//   const style = {
+//     fontSize: 20,
+//     lineHeight: '28px',
+//     padding: '17px 0',
+//   };
+
+//   return (
+//     <Text paragraph style={style} {...props}>
+//       {children}
+//     </Text>
+//   );
+// };
 
 const Tags = styled.div``;
 
@@ -113,10 +190,11 @@ const Tag = ({ children, ...props }) => {
   const style = {
     color: theme.color.mainGreen,
     fontSize: '16px',
-    borderRadius: '8px',
+    borderRadius: '15px',
     border: `1px solid ${theme.color.mainGreen}`,
     padding: '5px 13px',
     marginRight: '5px',
+    marginBottom: '5px',
   };
   return (
     <button style={style} {...props}>

@@ -38,7 +38,7 @@ const ModalInner = styled.div`
   background-color: #fff;
   border-radius: 15px;
   width: 420px;
-  height: 300px;
+  height: 310px;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
@@ -49,12 +49,12 @@ const ModalInner = styled.div`
   flex-direction: column;
 `;
 
-const MainText = styled(Text)`
-  margin-top: 10px;
+const MainTextWrapper = styled.div`
+  margin-top: 19px;
   margin-bottom: 11px;
 `;
 
-const SubText = styled(Text)`
+const SubTextWrapper = styled.div`
   margin-bottom: 34px;
 `;
 
@@ -88,12 +88,16 @@ const SignupModal = ({
             height={65}
           ></Logo>
 
-          <MainText fontSize={26} strong>
-            회원가입에 실패했어요.
-          </MainText>
-          <SubText fontSize={17} color={theme.color.fontDark}>
-            이메일 및 비밀번호를 다시 확인해주세요
-          </SubText>
+          <MainTextWrapper>
+            <Text fontSize={26} strong>
+              회원가입에 실패했어요.
+            </Text>
+          </MainTextWrapper>
+          <SubTextWrapper>
+            <Text fontSize={17} color={theme.color.fontDark}>
+              이메일 및 비밀번호를 다시 확인해주세요
+            </Text>
+          </SubTextWrapper>
           <Button
             type="submit"
             width={375}

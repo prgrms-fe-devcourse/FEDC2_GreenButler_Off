@@ -8,6 +8,7 @@ import { useState } from 'react';
 import SignupModal from 'components/SignupModal';
 import Text from 'components/basic/Text';
 import useLocalStorage from 'hooks/useLocalStrorage';
+import { useUserContext } from 'contexts/UserContext';
 
 const SignupWrapper = styled.div`
   width: 500px;
@@ -27,6 +28,7 @@ const SignupPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [tokenInfo, setTokenInfo] = useLocalStorage('tokenInfo', '');
   const navigate = useNavigate();
+  const { onSignup, currentUser } = useUserContext();
 
   const openModal = () => {
     setShowModal(true);
@@ -37,18 +39,12 @@ const SignupPage = () => {
 
   const handleSubmit = async ({ email, fullName, password }) => {
     try {
-      const res = await signup({
+      const res = await onSignup({
         email,
         fullName,
         password,
       });
-      if (res.data.token) {
-        const resLogin = await login({ email, password });
-        if (resLogin.data.token) {
-          setTokenInfo(res.data.token);
-          navigate('/');
-        }
-      }
+      console.log(currentUser);
     } catch (e) {
       e.message = 'SignupError';
       openModal();

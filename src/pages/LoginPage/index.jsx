@@ -6,6 +6,7 @@ import { login } from 'utils/apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LoginModal from 'components/LoginModal';
+import { useUserContext } from 'contexts/UserContext';
 
 const LoginWrapper = styled.div`
   width: 500px;
@@ -20,6 +21,7 @@ const LoginWrapper = styled.div`
 const LoginPage = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const { onLogin, currentUser } = useUserContext();
 
   const openModal = () => {
     setShowModal(true);
@@ -30,13 +32,10 @@ const LoginPage = () => {
 
   const handleSubmit = async ({ email, password }) => {
     try {
-      const res = await login({
+      const res = await onLogin({
         email,
         password,
       });
-      if (res.data.token) {
-        navigate('/');
-      }
     } catch (e) {
       e.message = 'LoginError';
       openModal();

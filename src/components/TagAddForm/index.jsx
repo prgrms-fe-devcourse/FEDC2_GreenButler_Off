@@ -27,7 +27,9 @@ const TagItem = styled.li`
 const RemoveBtn = styled.button``;
 
 const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
-  const { value, resetValue, error, setError, handleChange } = useValidInput(6);
+  const MAX = 6;
+  const { value, resetValue, error, setError, handleChange } =
+    useValidInput(MAX);
 
   const handleRemoveTag = (index) => {
     onRemoveTag(index);
@@ -36,7 +38,7 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
 
   const onSubmit = () => {
     setError('');
-    onAddTag(value);
+    onAddTag(value.slice(0, MAX));
     resetValue();
   };
 
@@ -52,7 +54,7 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
           onChange={handleChange}
           value={value}
         />
-        <InputForm.Button>등록</InputForm.Button>
+        <InputForm.Button disabled={value < 1}>등록</InputForm.Button>
       </InputForm>
 
       <Text

@@ -4,6 +4,7 @@ import Image from 'components/basic/Image';
 import PropTypes from 'prop-types';
 
 const TagSearchResult = ({ posts }) => {
+  console.log(posts, 'posts');
   return (
     <PostImageList>
       {posts &&

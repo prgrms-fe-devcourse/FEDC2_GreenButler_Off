@@ -56,7 +56,9 @@ export const getPostData = (postId) => {
 export const addPost = (token, data) => {
   const submitData = { ...data, meta: JSON.stringify(data.meta) };
   const formData = new FormData();
-  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
+  Object.keys(submitData).forEach((key) =>
+    formData.append(key, submitData[key]),
+  );
   formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
 
   return request({
@@ -77,7 +79,9 @@ export const addPost = (token, data) => {
 export const updatePost = (token, data) => {
   const submitData = { ...data, meta: JSON.stringify(data.meta) };
   const formData = new FormData();
-  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
+  Object.keys(submitData).forEach((key) =>
+    formData.append(key, submitData[key]),
+  );
   formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
 
   return request({
@@ -173,5 +177,23 @@ export const deleteComment = (token, postId) => {
     data: {
       id: postId,
     },
+  });
+};
+
+/* 
+  특정 포스트를 검색한다.
+*/
+
+export const searchTag = (keyword) => {
+  return request({
+    method: API_METHOD.GET,
+    url: `/search/all/%23${keyword}`,
+  });
+};
+
+export const searchUser = (keyword) => {
+  return request({
+    method: API_METHOD.GET,
+    url: `/search/users/${keyword}`,
   });
 };

@@ -13,29 +13,11 @@ import { IMAGE_URLS } from 'utils/constants/images';
 import Button from 'components/basic/Button';
 import { Link } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
+import TagSearchResult from 'components/TagSearchResult';
+import UserSearchResult from 'components/UserSearchResult';
 
 const TAG = 'tag';
 const USER = 'user';
-
-const Wrapper = styled.div`
-  padding: 20px;
-`;
-const ProfileContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-`;
-const Profile = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px 20px;
-`;
-const Nickname = styled(Text)`
-  margin-left: 20px;
-`;
-
-const FollowBtn = styled(Button)``;
 
 const getSearchTag = async (keyword) => {
   const result = await axios.get(`/search/all/%23${keyword}`);
@@ -57,7 +39,6 @@ const getSearchUser = async (keyword) => {
 
 const SearchPage = () => {
   const [currentTab, setCurrentTab] = useState('tag');
-
   const [searchData, setSearchData] = useState({
     keyword: '',
     [TAG]: null,
@@ -69,6 +50,7 @@ const SearchPage = () => {
       if (currentTab === TAG) {
         const result = await getSearchTag(keyword);
         setSearchData((state) => ({ ...state, tag: result, keyword }));
+        console.log(result);
       }
 
       if (currentTab === USER) {
@@ -106,44 +88,10 @@ const SearchPage = () => {
 
       <Tab onActive={onActive}>
         <Tab.Item title="태그" index={TAG}>
-          <PostImageList>
-            {searchData.tag &&
-              searchData.tag.map((post) => {
-                return (
-                  <Link to={`post/detail/${post._id}`} key={post._id}>
-                    <Image
-                      lazy
-                      width="100%"
-                      block
-                      threshold={0.5}
-                      src={post.image}
-                    />
-                  </Link>
-                );
-              })}
-          </PostImageList>
+          <TagSearchResult posts={searchData.tag} />
         </Tab.Item>
         <Tab.Item title="계정" index={USER}>
-          {searchData.user &&
-            searchData.user.map((data) => {
-              return (
-                <ProfileContainer key={data._id}>
-                  <Profile>
-                    <Avatar size={60} src={IMAGE_URLS.PROFILE_iMG} />
-                    <Nickname fontSize={18}>{data.fullName}</Nickname>
-                  </Profile>
-                  <FollowBtn
-                    width={100}
-                    height={30}
-                    borderRadius={10}
-                    fontSize="16px"
-                    style={{ flexShrink: 0 }}
-                  >
-                    팔로우
-                  </FollowBtn>
-                </ProfileContainer>
-              );
-            })}
+          <UserSearchResult users={searchData.user} />
         </Tab.Item>
       </Tab>
     </PageWrapper>

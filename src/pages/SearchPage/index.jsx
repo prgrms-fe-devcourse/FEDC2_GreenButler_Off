@@ -110,7 +110,7 @@ const SearchPage = () => {
             {searchData.tag &&
               searchData.tag.map((post) => {
                 return (
-                  <Link to={`post/detail/${post._id}`} key={post._id}>
+                  <Link to={`/post/detail/${post._id}`} key={post._id}>
                     <Image
                       lazy
                       width="100%"

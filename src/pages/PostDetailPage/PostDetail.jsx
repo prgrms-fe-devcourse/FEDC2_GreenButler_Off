@@ -1,59 +1,75 @@
 import styled from '@emotion/styled';
-import PostBody from 'pages/MainPage/PostBody';
+import PostItem from 'pages/MainPage/PostItem';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState } from 'react';
+import { addComment } from 'utils/apis/postApi';
 
-const PostDetail = () => {
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyOWUyOWJkNmQxOGI0MWM1YjIzOGJhMiIsImVtYWlsIjoiYWRtaW5AcHJvZ3JhbW1lcnMuY28ua3IifSwiaWF0IjoxNjU0NjcxNjI5fQ.etL5BJpmU-w7nUg1JDa_1oEHqBKkTgTxPQ0tfOfj-As';
+
+const PostDetail = ({ initialPost }) => {
+  const [post, setInitialPost] = useState(initialPost);
+  const [inputHeight, setInputHeight] = useState('30px');
+  const inputRef = useRef(null);
+
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (post._id === undefined || inputRef.current.value === undefined) {
+        return;
+      }
+      const { data } = await addComment(
+        token,
+        post._id,
+        inputRef.current.value,
+      );
+      setInitialPost({
+        ...post,
+        comments: [...post.comments, data],
+      });
+      setInputHeight('30px');
+      inputRef.current.value = '';
+    },
+    [post],
+  );
+
+  const handleResizeInputHeight = useCallback(() => {
+    const { value, scrollHeight } = inputRef.current;
+    if (value.length === 0) {
+      setInputHeight('30px');
+      return;
+    }
+    setInputHeight(scrollHeight + 'px');
+  }, [inputRef]);
+
   return (
     <Container>
-      <PostBody />
-      <CommentInputForm>
-        <CommentInput />
+      <PostItem post={post} isDetailPage={true} />
+      <CommentInputForm onSubmit={handleSubmit}>
+        <CommentInput
+          inputRef={inputRef}
+          height={inputHeight}
+          onChange={handleResizeInputHeight}
+        />
         <SubmitButton />
       </CommentInputForm>
       <CommentList>
-        <CommentItem>
-          <UserAvatar />
-          <Content>
-            <MetaInformation>
-              <UserNameText>홈가드너의일상</UserNameText>
-              <DateText>1분 전</DateText>
-            </MetaInformation>
-            <CommentText>
-              제 선인장두 얼른 꽃이 폈으면...!제 선인장두 얼른 꽃이 폈으면...!
-            </CommentText>
-          </Content>
-          <MoreButton />
-        </CommentItem>
-        <CommentItem>
-          <UserAvatar />
-          <Content>
-            <MetaInformation>
-              <UserNameText>홈가드너의일상</UserNameText>
-              <DateText>1분 전</DateText>
-            </MetaInformation>
-            <CommentText>
-              제 선인장두 얼른 꽃이 폈으면...!제 선인장두 얼른 꽃이 폈으면...!
-            </CommentText>
-          </Content>
-          <MoreButton />
-        </CommentItem>
-        <CommentItem>
-          <UserAvatar />
-          <Content>
-            <MetaInformation>
-              <UserNameText>홈가드너의일상</UserNameText>
-              <DateText>1분 전</DateText>
-            </MetaInformation>
-            <CommentText>
-              제 선인장두 얼른 꽃이 폈으면...!제 선인장두 얼른 꽃이 폈으면...!
-            </CommentText>
-          </Content>
-          <MoreButton />
-        </CommentItem>
+        {post.comments.map(({ _id, author: { fullName }, comment }) => (
+          <CommentItem key={_id}>
+            <UserAvatar />
+            <Content>
+              <MetaInformation>
+                <UserNameText>{fullName}</UserNameText>
+                <DateText>1분 전</DateText>
+              </MetaInformation>
+              <CommentText>{comment}</CommentText>
+            </Content>
+            <MoreButton />
+          </CommentItem>
+        ))}
       </CommentList>
     </Container>
   );
@@ -70,19 +86,7 @@ const CommentInputForm = styled.form`
   border: 1px solid ${theme.color.borderNormal};
 `;
 
-const CommentInput = () => {
-  const [height, setHeight] = useState('30px');
-  const textRef = useRef();
-
-  const handleResizeHeight = useCallback(() => {
-    const { value, scrollHeight } = textRef.current;
-    if (value.length === 0) {
-      setHeight('30px');
-      return;
-    }
-    setHeight(scrollHeight + 'px');
-  }, []);
-
+const CommentInput = ({ inputRef, height, onChange }) => {
   const style = {
     width: '100%',
     height,
@@ -93,10 +97,10 @@ const CommentInput = () => {
 
   return (
     <textarea
-      ref={textRef}
+      ref={inputRef}
       style={style}
       placeholder="댓글을 입력해주세요."
-      onChange={handleResizeHeight}
+      onChange={onChange}
     />
   );
 };
@@ -216,47 +220,4 @@ const MoreButton = (props) => {
   );
 };
 
-{
-  /* <UserAvatar />
-<MetaInformation>
-  <UserNameText />   
-  <DateText  />   
-</MetaInformation>
-<CommentText /> */
-}
-
 export default PostDetail;
-
-// const Textarea = () => {
-//   const autoResizeTextarea = () => {
-//     const textarea = document.querySelector('.autoTextarea');
-
-//     if (textarea) {
-//       textarea.style.height = 'auto';
-//       const height = textarea.scrollHeight; // 높이
-//       textarea.style.height = `${height + 8}px`;
-//     }
-//   };
-
-//   return (
-//     <>
-//       <textarea
-//         type="text"
-//         placeholder={`입력값을 입력해주세요!\n길이는 마음대로입니다.`}
-//         maxLength="1200"
-//         className="autoTextarea"
-//         onKeyUp={autoResizeTextarea} // keyup이되엇을때마다 autoResizeTextarea실행
-//       />
-//     </>
-//   );
-// };
-
-// const CommentInput = styled.textarea`
-//   width: 100%;
-//   border: 1px solid #d1d1d1;
-//   border-radius: 15px;
-//   color: ${theme.color.fontNormal};
-//   font-size: 18px;
-//   padding: 22px 30px;
-//   resize: none;
-// `;

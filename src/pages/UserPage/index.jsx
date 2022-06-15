@@ -2,14 +2,13 @@ import { useEffect, useState, useCallback } from 'react';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import Button from 'components/basic/Button';
-import { me, other, dummyPosts, users } from 'dummy';
 import Icon from 'components/basic/Icon';
 import { useParams } from 'react-router-dom';
 import { useUserContext } from 'contexts/UserContext';
 import { initialUserData } from 'contexts/UserContext/reducer';
 import { getUser, Follow, unFollow } from 'utils/apis/userApi';
 import { getUserPosts, getPostData } from 'utils/apis/postApi';
-import ImageContainer from './ImageContainer';
+import PostImageContainer from 'components/PostImageContainer';
 import { useNavigate } from 'react-router-dom';
 import {
   followButtonStyle,
@@ -24,17 +23,13 @@ import {
   Tab,
   Bottom,
 } from './style';
+import { currentUser } from 'dummy';
 
 const UserPage = () => {
   const navigate = useNavigate();
-  //const user = other;
-  const currentUser = me;
-  const pageUserId = '62a0ab92703fdd3a82b4e73f';
-
-  const { onFollow, onUnfollow } = useUserContext();
-  //const { currentUser, onFollow, onUnfollow  } = useUserContext();
-  //const pageUserId = useParams();
-
+  //const { currentUser, onFollow, onUnfollow } = useUserContext(); //TODO: 추후 팔로우, 팔로잉 페이지 제작시 사용
+  const { id } = useParams();
+  const pageUserId = id;
   const [user, setUser] = useState(initialUserData.currentUser);
   const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
@@ -42,41 +37,52 @@ const UserPage = () => {
 
   useEffect(() => {
     handleGetUser();
-    handleGetUserPosts();
+  }, []);
+
+  useEffect(() => {
     handleGetLikePosts();
-  }, []);
+    handleGetUserPosts();
+    handleFollowButton();
+  }, [user]);
 
+  //TODO : 추후 핸들러 분리
   const handleGetUser = useCallback(async () => {
-    const { data } = await getUser('62a0ab92703fdd3a82b4e73f');
-    //const { data } = await getUser(pageUserId);
-    setUser(data);
-  }, []);
+    if (pageUserId) {
+      const { data } = await getUser(pageUserId);
+      setUser(data);
+    }
+  }, [pageUserId]);
 
-  const likePostIds = currentUser.likes;
   const isFollwing = currentUser.following.some((id) => id === pageUserId);
   const [isFollow, setIsFollow] = useState(isFollwing);
 
   const handleGetUserPosts = useCallback(async () => {
-    const { data } = await getUserPosts('62a0ab92703fdd3a82b4e73f');
-    //const { data } = await getUserPosts(pageUserId);
-    setUserPosts(data);
-    setPosts(data);
+    if (pageUserId) {
+      const { data } = await getUserPosts(pageUserId);
+      setUserPosts(data);
+      setPosts(data);
+    }
   }, []);
 
+  //TODO: 관리자 좋아요 post 두번된게 있네? 같은 post를 여러번 좋아요할 수 있구나 이거 나중에 더미 삭제
   const handleGetLikePosts = useCallback(async () => {
-    const data = await Promise.all(
-      likePostIds.map((likePostId) => getPostData(likePostId).then((result) => result.data)),
-    );
-    setUserLikePosts(data);
-  }, []);
+    const { likes } = user;
+    if (likes.length !== 0) {
+      const data = await Promise.all(
+        likes.map((like) => getPostData(like.post).then((result) => result.data)),
+      );
+      setUserLikePosts(data);
+    }
+  }, [user]);
 
+  //TODO: 추후 팔로우, 팔로잉 페이지 만들 때 최종 완성
   const handleFollowButton = useCallback(() => {
     setIsFollow((isFollow) => !isFollow);
-    if (isFollow) {
-      onFollow({ userId: currentUser._id, followId: pageUserId });
+    /*     if (isFollow) {
+      onFollow({ userId: currentUser.id, followId: pageUserId });
     } else {
       onUnfollow({ unfollowId: pageUserId });
-    }
+    } */
   }, []);
 
   return (
@@ -124,31 +130,16 @@ const UserPage = () => {
           {isFollow ? '팔로잉' : '팔로우'}
         </Button>
       </UserInfo>
-
-      {/*  추후 Tab 컴포넌트 교체       
+      {/* //TODO: 추후 Tab 아이콘 넣는 방식으로 교체 */}
       <Tab>
-        <Tab.Item onClick={() => console.log('3')}>
-          <Icon
-            name="LIKE_ICON"
-            size={18}
-            onClick={() => setPosts(userPosts)}
-          />
-        </Tab.Item>
-        <Tab.Item onClick={() => console.log('3')}>
-          <Icon
-            name="LIKE_ICON"
-            size={18}
-            onClick={() => setPosts(userPosts)}
-          />
-        </Tab.Item>
-      </Tab>      
-      */}
-
-      <Tab>
-        <Icon name="LIKE_ICON" size={18} onClick={() => setPosts(userPosts)} />
-        <Icon name="LIKE_ICON" size={18} onClick={() => setPosts(uesrLikePosts)} />
+        <button onClick={() => setPosts(userPosts)}>
+          <Icon name="LIKE_ICON" size={18} />
+        </button>
+        <button onClick={() => setPosts(uesrLikePosts)}>
+          <Icon name="LIKE_ICON" size={18} />
+        </button>
       </Tab>
-      <ImageContainer posts={posts} />
+      <PostImageContainer posts={posts} />
       <Bottom />
     </UserContainter>
   );

@@ -1,7 +1,14 @@
 import useLocalToken from 'hooks/useLocalToken';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser, login, logout, signup } from 'utils/apis/userApi';
+import {
+  getCurrentUser,
+  login,
+  logout,
+  signup,
+  changeUserName,
+  changePassword,
+} from 'utils/apis/userApi';
 
 const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
@@ -63,15 +70,36 @@ const useHandles = () => {
     // JWT 토큰 및 로컬 스토리지 초기화
     setLocalToken('');
     localStorage.clear();
-    await logout();
+    //TODO:신영 추후 로그인 제대로 되서 토큰이 있으면 아래 주석 제거
+    //await logout();
     navigate('/login', { replace: true }); // 로그인 페이지로 이동
   }, [navigate, setLocalToken]);
+
+  //회원 이름수정
+  const handlechangeUserName = useCallback(
+    async (fullName, username = '') => {
+      console.log('CHANGENAME_HANDLE', fullName);
+      //await changeUserName(localToken, fullName, username);
+    },
+    [localToken],
+  );
+
+  //회원 비밀번호 수정
+  const handlechangePassword = useCallback(
+    async (password) => {
+      console.log('PASSWORD_HANDLE', password);
+      //await changePassword(localToken, password);
+    },
+    [localToken],
+  );
 
   return {
     handleGetCurrentUser,
     handleLogin,
     handleSignup,
     handleLogout,
+    handlechangeUserName,
+    handlechangePassword,
   };
 };
 

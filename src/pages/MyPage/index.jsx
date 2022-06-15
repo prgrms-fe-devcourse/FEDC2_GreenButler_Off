@@ -25,10 +25,10 @@ const MyPage = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [uesrLikePosts, setUserLikePosts] = useState([]);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     handleGetUserPosts();
     handleGetLikePosts();
-  }, []); */
+  }, []);
 
   const handleGetUserPosts = useCallback(async () => {
     const { id } = currentUser;

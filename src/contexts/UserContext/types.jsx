@@ -7,3 +7,4 @@ export const UNFOLLOW = 'UNFOLLOW';
 export const LOADING_ON = 'LOADING_ON';
 export const LOADING_OFF = 'LOADING_OFF';
 export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
+export const CHANGE_FULLNAME = 'CHANGE_FULLNAME';

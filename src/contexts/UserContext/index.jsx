@@ -20,7 +20,7 @@ import {
   ADD_POST,
   INIT_POST,
   UPDATE_POST,
-  EDIT_FULLNAME,
+  CHANGE_FULLNAME,
 } from './types';
 
 /* 
@@ -112,10 +112,11 @@ const UserProvider = ({ children }) => {
       console.log('FULLNAME_CONTEXT', fullName);
       if (localToken) {
         handlechangeUserName(localToken, fullName, userName);
-        dispatch({ type: EDIT_FULLNAME, payload });
+        dispatch({ type: CHANGE_FULLNAME, payload });
       } /* else {
         console.log('token error');
       } */
+      dispatch({ type: CHANGE_FULLNAME, payload });
     },
     [],
   );

@@ -8,7 +8,7 @@ import {
   LOADING_ON,
   LOADING_OFF,
   SET_NOTIFICATIONS,
-  EDIT_FULLNAME,
+  CHANGE_FULLNAME,
 } from './types';
 
 export const initialUserData = {
@@ -110,7 +110,9 @@ export const reducer = (state, { type, payload }) => {
     case LOADING_OFF: {
       return { ...state, isLoading: false };
     }
-    case EDIT_FULLNAME: {
+
+    //TODO:신영 payload는 들어오는데 payload.fullName은 안들어오는 문제
+    case CHANGE_FULLNAME: {
       console.log('FULLNAME_REDUCER_PAYLOAD', payload);
       console.log('FULLNAME_REDUCER', payload.fullName);
       return {

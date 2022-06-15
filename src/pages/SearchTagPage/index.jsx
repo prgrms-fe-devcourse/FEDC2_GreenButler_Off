@@ -1,13 +1,11 @@
-import PostImageList from 'components/PostImageList';
-import Image from 'components/basic/Image';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import PageWrapper from 'components/basic/pageWrapper';
-import styled from '@emotion/styled';
+import TagSearchResult from 'components/TagSearchResult';
 import { searchTag } from 'utils/apis/postApi';
-import axios from 'axios';
 
-const Keyword = styled.h3`
+const Header = styled.h3`
   display: block;
   text-align: center;
   margin: 40px 0 30px;
@@ -44,15 +42,8 @@ const SearchTagPage = () => {
 
   return (
     <PageWrapper header>
-      <Keyword onClick={loadPosts}>#{searchKeyword}</Keyword>
-      <PostImageList>
-        {posts &&
-          posts.map((post) => (
-            <Link to={`/post/detail/${post._id}`} key={post._id}>
-              <Image lazy width="100%" block threshold={0.5} src={post.image} />
-            </Link>
-          ))}
-      </PostImageList>
+      <Header onClick={loadPosts}>#{searchKeyword}</Header>
+      <TagSearchResult posts={posts} />
     </PageWrapper>
   );
 };

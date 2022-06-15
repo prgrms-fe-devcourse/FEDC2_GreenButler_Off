@@ -91,7 +91,7 @@ const ImageWrapper = styled.div`
 `;
 
 const Contents = styled.div`
-  padding: 20px;
+  padding: 20px 0;
 `;
 
 const IconButtons = styled.div`
@@ -119,12 +119,11 @@ const IconButton = ({ name, className, children, onClick }) => {
 const IconButtonText = ({ children, ...props }) => {
   const style = {
     color: theme.color.fontBlack,
-    fontSize: '16px',
     marginLeft: '5px',
     PointerEvent: 'none',
   };
   return (
-    <Text style={style} {...props}>
+    <Text fontSize={16} style={style} {...props}>
       {children}
     </Text>
   );
@@ -206,12 +205,11 @@ const Tag = ({ children, ...props }) => {
 const DateText = ({ children, ...props }) => {
   const style = {
     display: 'block',
-    fontSize: '16px',
     color: theme.color.fontNormal,
     margin: '18px 0',
   };
   return (
-    <Text style={style} {...props}>
+    <Text fontSize={16} style={style} {...props}>
       {children}
     </Text>
   );

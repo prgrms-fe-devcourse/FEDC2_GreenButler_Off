@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Header from './Header';
+import PageWrapper from 'components/basic/pageWrapper';
 import { getPostsPart } from 'utils/apis/postApi';
 import PostItem from './PostItem';
 import { useState, useEffect } from 'react';
@@ -22,8 +23,7 @@ const MainPage = () => {
   }, [offset]);
 
   return (
-    <Container>
-      <Header />
+    <PageWrapper header nav>
       <PostList>
         {posts?.map((post) => (
           <li key={post._id}>
@@ -31,13 +31,9 @@ const MainPage = () => {
           </li>
         ))}
       </PostList>
-    </Container>
+    </PageWrapper>
   );
 };
-
-const Container = styled.div`
-  min-height: 100vh;
-`;
 
 const PostList = styled.ul``;
 

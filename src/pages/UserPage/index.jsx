@@ -34,7 +34,7 @@ const UserPage = () => {
   const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
   const [uesrLikePosts, setUserLikePosts] = useState([]);
-  /* 
+
   useEffect(() => {
     handleGetUser();
   }, []);
@@ -43,7 +43,7 @@ const UserPage = () => {
     handleGetLikePosts();
     handleGetUserPosts();
     handleFollowButton();
-  }, [user]); */
+  }, [user]);
 
   //TODO:신영 추후 핸들러 분리
   const handleGetUser = useCallback(async () => {

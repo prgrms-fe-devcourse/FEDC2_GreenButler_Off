@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback } from 'react';
 import styled from '@emotion/styled';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
-import { me } from 'dummy';
 import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
 import { useUserContext } from 'contexts/UserContext';
@@ -12,9 +11,7 @@ import ChangeNameForm from 'components/ChangeNameForm';
 import UploadImage from 'components/UploadImage';
 
 const MyInfoPage = () => {
-  //const { currentUser, editFullName } = useUserContext();
-  const { editFullName, onLogout } = useUserContext();
-  const currentUser = me;
+  const { currentUser, editFullName, onLogout } = useUserContext();
   const [imgSrc, setImgSrc] = useState('');
   const [isNameEditor, setIsNameEditor] = useState(false);
   const [isImageEditor, setIsImageEditor] = useState(false);

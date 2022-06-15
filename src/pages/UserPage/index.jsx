@@ -23,10 +23,10 @@ import {
   Tab,
   Bottom,
 } from './style';
-import { currentUser } from 'dummy';
 
 const UserPage = () => {
   const navigate = useNavigate();
+  const { currentUser } = useUserContext();
   //const { currentUser, onFollow, onUnfollow } = useUserContext(); //TODO: 추후 팔로우, 팔로잉 페이지 제작시 사용
   const { id } = useParams();
   const pageUserId = id;
@@ -69,7 +69,9 @@ const UserPage = () => {
     const { likes } = user;
     if (likes.length !== 0) {
       const data = await Promise.all(
-        likes.map((like) => getPostData(like.post).then((result) => result.data)),
+        likes.map((like) =>
+          getPostData(like.post).then((result) => result.data),
+        ),
       );
       setUserLikePosts(data);
     }
@@ -102,20 +104,29 @@ const UserPage = () => {
         <Text style={fullNameStyle}>{user.fullName}</Text>
         <UserDetailWrapper>
           <UserDetail>
-            <Text style={{ ...smallTextStyle }} onClick={() => setPosts(userPosts)}>
+            <Text
+              style={{ ...smallTextStyle }}
+              onClick={() => setPosts(userPosts)}
+            >
               {' '}
               게시물
             </Text>
             <Text fontSize={18}> {user.posts.length}</Text>
           </UserDetail>
           <UserDetail>
-            <Text style={{ ...smallTextStyle }} onClick={() => navigate('/user/follow')}>
+            <Text
+              style={{ ...smallTextStyle }}
+              onClick={() => navigate('/user/follow')}
+            >
               팔로워
             </Text>
             <Text fontSize={18}> {user.followers.length}</Text>
           </UserDetail>
           <UserDetail>
-            <Text style={{ ...smallTextStyle }} onClick={() => navigate('/user/follow')}>
+            <Text
+              style={{ ...smallTextStyle }}
+              onClick={() => navigate('/user/follow')}
+            >
               {' '}
               팔로잉
             </Text>
@@ -124,7 +135,9 @@ const UserPage = () => {
         </UserDetailWrapper>
         <Button
           width="100%"
-          style={isFollow ? { ...followingButtonStyle } : { ...followButtonStyle }}
+          style={
+            isFollow ? { ...followingButtonStyle } : { ...followButtonStyle }
+          }
           onClick={handleFollowButton}
         >
           {isFollow ? '팔로잉' : '팔로우'}

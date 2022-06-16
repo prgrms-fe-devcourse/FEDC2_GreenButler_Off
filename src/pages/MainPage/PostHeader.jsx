@@ -26,13 +26,13 @@ const PostHeader = ({ author: { _id, fullName } }) => {
         />
         <Text style={TextStyle}>{fullName}</Text>
       </UserProfile>
-      <IconBtn className="more-button" name="SEARCH_GRAY" size={20} />
+      <IconBtn className="more-button" name="MORE" size={20} />
     </Header>
   );
 };
 
 const Header = styled.header`
-  padding: 12px 20px;
+  padding: 12px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

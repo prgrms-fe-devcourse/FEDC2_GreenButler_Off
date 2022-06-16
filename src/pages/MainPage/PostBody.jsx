@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
@@ -6,15 +6,16 @@ import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 
-// const currentUserId = '62a75e5cb1b90b0c812c9b70';
+const currentUserId = '62a75e5cb1b90b0c812c9b70';
 
 const PostBody = ({ post, isDetailPage = false }) => {
+  const [onHeart, setOnHeart] = useState(false);
   const { image, likes, comments, updatedAt } = post || {};
   const { content, contents, tags } = JSON.parse(post?.title);
 
   const navigate = useNavigate();
 
-  const HandleTodetailpage = useCallback(() => {
+  const handleTodetailpage = useCallback(() => {
     if (isDetailPage) {
       return;
     }
@@ -36,13 +37,19 @@ const PostBody = ({ post, isDetailPage = false }) => {
     [navigate],
   );
 
-  // const isFavoritePost = useMemo(() => {
-  //   return likes.some(({ _id }) => _id === currentUserId);
-  // }, [likes]);
+  const handleHeartClick = useCallback(() => {
+    setOnHeart(!onHeart);
+  }, [onHeart]);
+
+  useEffect(() => {
+    if (likes && likes.some(({ user }) => user === currentUserId)) {
+      setOnHeart(true);
+    }
+  }, []);
 
   return (
     <Container>
-      <ImageWrapper onClick={HandleTodetailpage}>
+      <ImageWrapper onClick={handleTodetailpage}>
         <Image
           src={image ? image : 'https://picsum.photos/300/300/?image=71'}
           width="100%"
@@ -51,10 +58,14 @@ const PostBody = ({ post, isDetailPage = false }) => {
       </ImageWrapper>
       <Contents>
         <IconButtons>
-          <IconButton className="heart-button" name="HEART">
+          <IconButton
+            className="heart-button"
+            name={onHeart ? 'HEART_RED' : 'HEART'}
+            onClick={handleHeartClick}
+          >
             <IconButtonText>{likes.length}</IconButtonText>
           </IconButton>
-          <IconButton className="comment-button" name="COMMENT" onClick={HandleTodetailpage}>
+          <IconButton className="comment-button" name="COMMENT" onClick={handleTodetailpage}>
             <IconButtonText>{comments.length}</IconButtonText>
           </IconButton>
         </IconButtons>

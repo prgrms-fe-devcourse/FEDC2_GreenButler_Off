@@ -1,6 +1,8 @@
 import request from './common';
 import { API_METHOD } from 'utils/constants/apiMethods';
 
+const channelId = '62a04aa2703fdd3a82b4e66e';
+
 /* 
   특정 채널의 포스트 목록을 모두 불러온다.
   Response: Post[]
@@ -8,7 +10,7 @@ import { API_METHOD } from 'utils/constants/apiMethods';
 export const getPosts = () => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/channel/${process.env.REACT_APP_CHANNEL_ID_TOTAL}`,
+    url: `/posts/channel/${channelId}`,
   });
 };
 
@@ -19,7 +21,7 @@ export const getPosts = () => {
 export const getPostsPart = ({ offset, limit }) => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/channel/${process.env.REACT_APP_CHANNEL_ID_TOTAL}`,
+    url: `/posts/channel/${channelId}`,
     params: {
       offset,
       limit,
@@ -59,7 +61,7 @@ export const addPost = (token, data) => {
   Object.keys(submitData).forEach((key) =>
     formData.append(key, submitData[key]),
   );
-  formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
+  formData.append('channelId', channelId);
 
   return request({
     method: API_METHOD.POST,
@@ -82,7 +84,7 @@ export const updatePost = (token, data) => {
   Object.keys(submitData).forEach((key) =>
     formData.append(key, submitData[key]),
   );
-  formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
+  formData.append('channelId', channelId);
 
   return request({
     method: API_METHOD.PUT,

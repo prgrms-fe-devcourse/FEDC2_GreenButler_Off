@@ -41,7 +41,7 @@ const SearchTagPage = () => {
   }, [loadPosts]);
 
   return (
-    <PageWrapper header prev>
+    <PageWrapper header prev info>
       <Header onClick={loadPosts}>#{searchKeyword}</Header>
       <TagSearchResult posts={posts} />
     </PageWrapper>

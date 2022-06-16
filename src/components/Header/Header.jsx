@@ -39,7 +39,7 @@ const InnerRight = styled.div`
   }
 `;
 
-export const Header = ({ prev, title, complete, onComplete }) => {
+export const Header = ({ prev, title, info, complete, onComplete }) => {
   const navigate = useNavigate();
   const {
     currentUser: { notifications },
@@ -56,15 +56,13 @@ export const Header = ({ prev, title, complete, onComplete }) => {
       {title && <Title>{title}</Title>}
 
       <InnerRight>
-        {!title & !complete ? (
+        {info && (
           <>
             <Badge isShow={notifications?.seen}>
               <Icon.Link to="/notification" name="NOTIFICATION" size={30} />
             </Badge>
             <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
           </>
-        ) : (
-          ''
         )}
         {complete && (
           <button onClick={onComplete}>

@@ -69,7 +69,7 @@ const useHandles = () => {
 
   const handleLogout = useCallback(async () => {
     if (localToken) {
-      await logout(localToken); //TODO:신영 로그아웃 API HEADER에 토큰 넣기
+      await logout(localToken);
     }
     // JWT 토큰 및 로컬 스토리지 초기화
     setLocalToken('');

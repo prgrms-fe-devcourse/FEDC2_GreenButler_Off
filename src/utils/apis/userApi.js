@@ -36,10 +36,13 @@ export const signup = ({ email, fullName, password }) => {
   로그아웃
   Response: User
 */
-export const logout = () => {
+export const logout = (token) => {
   return request({
     method: API_METHOD.POST,
     url: `/logout`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 

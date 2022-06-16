@@ -30,11 +30,11 @@
       }
     ],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/prop-types": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-no-constructed-context-values": "warn",
     "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
     "react/function-component-definition": [
       2,
       {

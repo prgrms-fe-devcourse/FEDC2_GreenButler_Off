@@ -20,7 +20,7 @@ const Icon = ({ name, size = 15, rotate, ...props }) => {
 
   return (
     <IconWrapper {...props} style={{ ...props.style, ...shapeStyle }}>
-      <img src={iconUrl} alt={name} style={{ iconStyle }} />
+      <img src={iconUrl} alt={name} style={ iconStyle } />
     </IconWrapper>
   );
 };

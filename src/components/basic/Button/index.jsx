@@ -2,69 +2,61 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import colors from 'utils/constants/colors';
 
-const { mainGreen, white } = colors;
+const { mainGreen } = colors;
 
 const StyledButton = styled.button`
-  ${({
-    backgroundColor,
-    width,
-    height,
-    hover,
-    active,
-    cursor,
-    style,
-    borderWidth,
-    borderColor,
-  }) => ({
-    backgroundColor,
-    width,
-    borderWidth,
-    borderColor,
-    height,
-    '&:hover': hover,
-    '&:active': active,
-    cursor,
-    ...style,
-  })}
-
-  border: ${(borderWidth, borderColor) =>
+  border: ${({ borderWidth, borderColor }) =>
     borderWidth ? `${borderWidth} solid ${borderColor}` : 'none'};
+  border-radius: ${({ borderRadius }) => borderRadius};
+  cursor: pointer;
+  padding: 0 16px;
+  white-space: nowrap;
 
-  border-radius: ${(borderRadius) => (borderRadius ? borderRadius : '10px')};
+  &:hover {
+    ${({ hover }) => hover}
+  }
+  &:active {
+    ${({ active }) => active}
+  }
+  :disabled {
+    opacity: 0.5;
+  }
 `;
 
 const Button = ({
-  backgroundColor = mainGreen,
   width = '100%',
   height = '70px',
+  color = 'white',
+  backgroundColor = mainGreen,
   borderColor = 'none',
-  borderRadius = '10px',
-  color = white,
-  fontSize = '20px',
+  borderRadius = '15px',
   borderWidth = 0,
+  fontSize = '20px',
   hover = { filter: 'brightness(95%)' },
   active = { filter: 'brightness(90%)' },
-  cursor = 'pointer',
   children,
   onClick,
+  disabled,
   ...props
 }) => {
+  const buttonStyle = {
+    width,
+    height,
+    color,
+    backgroundColor,
+    borderColor,
+    borderRadius,
+    borderWidth,
+    fontSize,
+  };
+
   return (
     <StyledButton
-      type="button"
-      backgroundColor={backgroundColor}
-      width={width}
-      height={height}
-      borderColor={borderColor}
-      borderRadius={borderRadius}
-      color={color}
-      fontSize={fontSize}
-      borderWidth={borderWidth}
-      hover={hover}
-      active={active}
-      cursor={cursor}
+      style={{ ...buttonStyle, ...props.style }}
+      hover={!disabled && hover}
+      active={!disabled && active}
       onClick={onClick}
-      {...props}
+      disabled={disabled}
     >
       {children}
     </StyledButton>
@@ -82,9 +74,9 @@ Button.propTypes = {
   fontSize: PropTypes.string,
   hover: PropTypes.object,
   active: PropTypes.object,
-  cursor: PropTypes.string,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   onClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default Button;

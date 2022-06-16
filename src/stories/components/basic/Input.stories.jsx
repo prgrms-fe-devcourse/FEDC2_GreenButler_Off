@@ -18,16 +18,7 @@ export default {
       defaultValue: 500,
       control: { type: 'range', min: 200, max: 500 },
     },
-    height: {
-      name: 'height',
-      defaultValue: 70,
-      control: { type: 'range', min: 20, max: 70 },
-    },
   },
 };
 
-export const Default = (args) => (
-  <>
-    <Input {...args} />
-  </>
-);
+export const Default = (args) => <Input {...args} />;

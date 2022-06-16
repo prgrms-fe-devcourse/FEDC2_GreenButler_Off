@@ -98,34 +98,29 @@ const UserProvider = ({ children }) => {
   }, []);
 
   //현재 유저의 닉네임을 수정
-  const onChangeFullName = useCallback((payload = { fullName: '', userName: '' }) => {
-    const { fullName, userName } = payload;
-    if (localToken) {
+  const onChangeFullName = useCallback(
+    (payload = { fullName: '', userName: '' }) => {
+      const { fullName, userName } = payload;
       handlechangeUserName(fullName, userName);
       dispatch({ type: CHANGE_FULLNAME, payload });
-    }
-    dispatch({ type: CHANGE_FULLNAME, payload }); //TODO:신영 낙관적 업뎃 나중에 필요없으면 제거
-  }, []);
+    },
+    [handlechangeUserName],
+  );
 
   //현재 유저의 프로필 사진 수정
-  const onChangeProfile = useCallback((payload = { image: '' }) => {
-    if (localToken) {
+  const onChangeProfile = useCallback(
+    (payload = { image: '' }) => {
       handlechangeProfile(payload);
       dispatch({ type: CHANGE_PROFILE, payload });
-    }
-    dispatch({ type: CHANGE_PROFILE, payload }); //TODO:신영 낙관적 업뎃 나중에 필요없으면 제거
-  }, []);
+    },
+    [handlechangeProfile],
+  );
 
-  //TODO:신영 현재 유저의 비밀번호 수정 - Reducer를 사용할 필요 없어
   const onChangePassword = useCallback(
     async (password) => {
-      //console.log('PASSWORD_CONTEXT', password);
-      //console.log('LOCALTOKEN', localToken);
-      if (localToken) {
-        handlechangePassword(localToken, password);
-      }
+      handlechangePassword(password);
     },
-    [localToken, handlechangePassword],
+    [handlechangePassword],
   );
 
   const value = useMemo(() => {

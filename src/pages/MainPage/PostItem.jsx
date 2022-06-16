@@ -6,7 +6,7 @@ import theme from 'styles/theme';
 const PostItem = ({ post, isDetailPage }) => {
   return (
     <Article>
-      <PostHeader author={post.author} />
+      <PostHeader author={post.author} isDetailPage={isDetailPage} />
       <PostBody post={post} isDetailPage={isDetailPage} />
     </Article>
   );

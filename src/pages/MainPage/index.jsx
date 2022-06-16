@@ -10,7 +10,7 @@ const MainPage = () => {
   const [posts, setPosts] = useState([]);
   const [isLoding, setIsLoding] = useState(false);
   const [offset, setOffset] = useState(0);
-  const targetRef = useRef(null);
+  const [target, setTarget] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -18,63 +18,46 @@ const MainPage = () => {
         offset,
         limit: LIMIT,
       }).then((res) => res.data);
-      setPosts([...posts, ...nextPosts]);
+      setPosts(nextPosts);
     })();
   }, []);
 
-  const onIntersect = useCallback(() => {
-    (async (entries, observer) => {
-      console.log(entries);
-      if (!entries) {
-        return;
-      }
-      if (entries[0].isIntersecting && !isLoding) {
-        observer.unobserve(entries[0].target);
-        setIsLoding(true);
-        setOffset(offset + 5);
-        const nextPosts = await getPostsPart({
-          offset,
-          limit: LIMIT,
-        }).then((res) => res.data);
-        setPosts([...posts, ...nextPosts]);
-        setIsLoding(false);
-        observer.observe(entries[0].target);
-      }
-    })();
-  }, []);
+  // const onIntersect = async ([entry], observer) => {
+  //   if (entry.isIntersecting && !isLoding) {
+  //     observer.unobserve(entry.target);
+  //     setIsLoding(true);
+  //     setOffset(offset + 5);
+  //     const nextPosts = await getPostsPart({
+  //       offset,
+  //       limit: LIMIT,
+  //     }).then((res) => res.data);
+  //     setPosts([...posts, ...nextPosts]);
+  //     setIsLoding(false);
+  //     observer.observe(entry.target);
+  //   }
+  // };
 
-  useEffect(() => {
-    let observer;
-    if (targetRef.current) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.5,
-      });
-      observer.observe(targetRef.current);
-    }
-    return () => observer && observer.disconnect();
-  }, [targetRef, onIntersect]);
+  // useEffect(() => {
+  //   let observer;
+  //   if (target) {
+  //     observer = new IntersectionObserver(onIntersect, {
+  //       threshold: 0.4,
+  //     });
+  //     observer.observe(target);
+  //   }
+  //   return () => observer && observer.disconnect();
+  // }, [target]);
 
   return (
     <PageWrapper header nav>
       <PostList>
-        {posts?.map((post, i) => {
-          const isLastItem = posts.length - 1 === i;
-          if (isLastItem) {
-            return (
-              <li key={post._id}>
-                <PostItem key={post._id} post={post} />
-              </li>
-            );
-          } else {
-            return (
-              <li key={post._id}>
-                <PostItem key={post._id} post={post} />
-              </li>
-            );
-          }
-        })}
+        {posts?.map((post) => (
+          <li key={post._id}>
+            <PostItem key={post._id} post={post} />
+          </li>
+        ))}
       </PostList>
-      <div ref={targetRef}></div>
+      <div ref={setTarget}></div>
     </PageWrapper>
   );
 };

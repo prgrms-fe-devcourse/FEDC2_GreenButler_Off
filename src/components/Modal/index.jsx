@@ -3,7 +3,6 @@ import { useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import useClickAway from '../../hooks/useClickAway';
 
-
 /*
  TODO:
  body를 container로 감싼 형태이기 때문에
@@ -13,11 +12,13 @@ import useClickAway from '../../hooks/useClickAway';
 const BackgroundDim = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vw;
+  width: 500px;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
 `;
 
 const ModalContainer = styled.div`
@@ -29,16 +30,11 @@ const ModalContainer = styled.div`
   background-color: white;
   box-shadow: 0 3px 6px rgba(0, 0, 0.2);
   box-sizing: border-box;
+  width: 300px;
+  border-radius: 15px;
 `;
 
-const Modal = ({
-  children,
-  width,
-  height,
-  visible = false,
-  onClose,
-  ...props
-}) => {
+const Modal = ({ children, width, height, visible = false, onClose, ...props }) => {
   const containerStyle = useMemo(
     () => ({
       width,
@@ -53,20 +49,16 @@ const Modal = ({
 
   const el = useMemo(() => document.createElement('div'), []);
   useEffect(() => {
-    document.body.appendChild(el);
+    document.querySelector('#default-template-container').appendChild(el);
     //모바일 view기 때문에 body에서 처리하면안됨
     return () => {
-      document.body.removeChild(el);
+      document.querySelector('#default-template-container').removeChild(el);
     };
   });
 
   return ReactDOM.createPortal(
     <BackgroundDim style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContainer
-        {...props}
-        ref={ref}
-        style={{ ...props.style, ...containerStyle }}
-      >
+      <ModalContainer {...props} ref={ref} style={{ ...props.style, ...containerStyle }}>
         {children}
       </ModalContainer>
     </BackgroundDim>,

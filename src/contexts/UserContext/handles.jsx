@@ -7,6 +7,7 @@ import {
   logout,
   signup,
   changeUserName,
+  changeProfile,
   changePassword,
 } from 'utils/apis/userApi';
 
@@ -86,6 +87,32 @@ const useHandles = () => {
     [localToken],
   );
 
+  //회원 프로필 사진 수정
+  const handlechangeProfile = useCallback(
+    async ({ image }) => {
+      const byteString = atob(image.split(',')[1]);
+
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([ia], {
+        type: 'image/jpeg',
+      });
+
+      const formData = new FormData();
+      formData.append('isCover', false);
+      formData.append('image', blob);
+
+      if (localToken && image) {
+        await changeProfile(localToken, formData);
+      }
+    },
+    [localToken],
+  );
+
   //회원 비밀번호 수정
   const handlechangePassword = useCallback(
     async (password) => {
@@ -103,6 +130,7 @@ const useHandles = () => {
     handleSignup,
     handleLogout,
     handlechangeUserName,
+    handlechangeProfile,
     handlechangePassword,
   };
 };

@@ -12,7 +12,7 @@ import UploadImage from 'components/UploadImage';
 import { EDIT, LOGOUT, KEY, TAG_DELETE, HEART_RED } from 'utils/constants/icons/names';
 
 const MyInfoPage = () => {
-  const { currentUser, onChangeFullName, onLogout } = useUserContext();
+  const { currentUser, onChangeFullName, onLogout, onChangeProfile } = useUserContext();
   const [imgSrc, setImgSrc] = useState('');
   const [isNameEditor, setIsNameEditor] = useState(false);
   const [isImageEditor, setIsImageEditor] = useState(false);
@@ -27,15 +27,22 @@ const MyInfoPage = () => {
 
   const onFileChange = useCallback((src) => {
     setImgSrc(src);
-    console.log(src);
   }, []);
+
+  const onProfileSubmit = useCallback(() => {
+    onChangeProfile({ image: imgSrc });
+  }, [imgSrc, onChangeProfile]);
 
   return (
     <PageWrapper>
       <UserContainter>
         <UserInfo>
           {' '}
-          <UserImage>
+          <UserImage
+            onClick={() => {
+              setIsImageEditor((isImageEditor) => !isImageEditor);
+            }}
+          >
             <Avatar
               size={136}
               style={{
@@ -47,36 +54,29 @@ const MyInfoPage = () => {
               }
             />
             {isImageEditor && (
-              <UploadImage
-                onChange={onFileChange}
-                style={{
-                  width: 138,
-                  borderRadius: '50%',
-                  position: 'absolute',
-                  left: 1,
-                  bottom: 2,
-                  overflow: 'hidden',
-                }}
-              />
+              <>
+                <UploadImage
+                  onChange={onFileChange}
+                  style={{
+                    width: 138,
+                    borderRadius: '50%',
+                    position: 'absolute',
+                    left: 1,
+                    bottom: 2,
+                    overflow: 'hidden',
+                  }}
+                />{' '}
+                <button
+                  style={{ position: 'absolute', bottom: 5, right: 8 }}
+                  onClick={() => {
+                    setIsNameEditor(false);
+                    imgSrc && onProfileSubmit();
+                  }}
+                >
+                  <Icon name={HEART_RED} size={18} />
+                </button>
+              </>
             )}
-            <button
-              onClick={() => {
-                setIsImageEditor((isImageEditor) => !isImageEditor);
-              }}
-            >
-              <Icon
-                name={isImageEditor ? HEART_RED : EDIT}
-                size={18}
-                style={{
-                  marginTop: '8px',
-                  marginLeft: '15px',
-                  position: 'absolute',
-                  right: 15,
-                  bottom: 7,
-                  zIndex: 2,
-                }}
-              />
-            </button>
           </UserImage>
           {isNameEditor ? (
             <NickName>

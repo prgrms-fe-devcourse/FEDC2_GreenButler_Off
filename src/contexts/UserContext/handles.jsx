@@ -116,9 +116,8 @@ const useHandles = () => {
   //회원 비밀번호 수정
   const handlechangePassword = useCallback(
     async (password) => {
-      console.log('PASSWORD_HANDLE', password);
       if (localToken && password) {
-        //await changePassword(localToken, password);
+        await changePassword(localToken, password);
       }
     },
     [localToken],

@@ -58,9 +58,7 @@ export const getPostData = (postId) => {
 export const addPost = (token, data) => {
   const submitData = { ...data, meta: JSON.stringify(data.meta) };
   const formData = new FormData();
-  Object.keys(submitData).forEach((key) =>
-    formData.append(key, submitData[key]),
-  );
+  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
   formData.append('channelId', channelId);
 
   return request({
@@ -81,9 +79,7 @@ export const addPost = (token, data) => {
 export const updatePost = (token, data) => {
   const submitData = { ...data, meta: JSON.stringify(data.meta) };
   const formData = new FormData();
-  Object.keys(submitData).forEach((key) =>
-    formData.append(key, submitData[key]),
-  );
+  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
   formData.append('channelId', channelId);
 
   return request({
@@ -134,7 +130,7 @@ export const setLike = (token, postId) => {
   특정 포스트에 좋아요한 것을 취소한다. 
   Response: Like
 */
-export const setDislike = (token, postId) => {
+export const setDisLike = (token, postId) => {
   return request({
     method: API_METHOD.DELETE,
     url: `/likes/delete`,

@@ -1,17 +1,22 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
 import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
+import { setLike, setDisLike } from 'utils/apis/postApi';
 
-const currentUserId = '62a75e5cb1b90b0c812c9b70';
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyOWUyOWJkNmQxOGI0MWM1YjIzOGJhMiIsImVtYWlsIjoiYWRtaW5AcHJvZ3JhbW1lcnMuY28ua3IifSwiaWF0IjoxNjU0NjcxNjI5fQ.etL5BJpmU-w7nUg1JDa_1oEHqBKkTgTxPQ0tfOfj-As';
+
+const currentUserId = '629e29bd6d18b41c5b238ba2';
 
 const PostBody = ({ post, isDetailPage = false }) => {
-  const [onHeart, setOnHeart] = useState(false);
-  const { image, likes, comments, updatedAt } = post || {};
+  const { _id, image, likes, comments, updatedAt } = post || {};
   const { content, contents, tags } = JSON.parse(post?.title);
+  const [onHeart, setOnHeart] = useState(false);
+  const [heartCount, setHeartCount] = useState(likes.length);
 
   const navigate = useNavigate();
 
@@ -39,7 +44,14 @@ const PostBody = ({ post, isDetailPage = false }) => {
 
   const handleHeartClick = useCallback(() => {
     setOnHeart(!onHeart);
-  }, [onHeart]);
+    if (!onHeart) {
+      setHeartCount(heartCount + 1);
+      // setLike(token, _id);
+    } else {
+      setHeartCount(heartCount - 1);
+      // setDisLike(token, _id);
+    }
+  }, [_id, onHeart, heartCount]);
 
   useEffect(() => {
     if (likes && likes.some(({ user }) => user === currentUserId)) {
@@ -63,7 +75,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
             name={onHeart ? 'HEART_RED' : 'HEART'}
             onClick={handleHeartClick}
           >
-            <IconButtonText>{likes.length}</IconButtonText>
+            <IconButtonText>{heartCount}</IconButtonText>
           </IconButton>
           <IconButton className="comment-button" name="COMMENT" onClick={handleTodetailpage}>
             <IconButtonText>{comments.length}</IconButtonText>

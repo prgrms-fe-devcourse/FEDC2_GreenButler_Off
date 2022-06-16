@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const { headerHeight } = theme.value;
 const { borderLight, mainWhite } = theme.color;
@@ -32,28 +32,12 @@ const InnerRight = styled.div`
 `;
 
 export const Header = () => {
-  const navigate = useNavigate();
-
-  const { pathname } = useLocation();
-
-  const hidePrev = ['/', '/user/mypage', '/search', '/post/detail'];
-  const hideHeader = ['/login', '/join'];
-  const onClickPrev = () => {
-    navigate(-1);
-  };
-
-  if (hideHeader.includes(pathname)) {
-    return;
-  }
-
   return (
     <HeaderContainer>
       <InnerLeft>
-        {!hidePrev.includes(pathname) && (
-          <button onClick={onClickPrev}>
-            <Icon name="ARROW_LEFT" size={20} />
-          </button>
-        )}
+        <button onClick={onClickPrev}>
+          <Icon name="ARROW_LEFT" size={20} />
+        </button>
       </InnerLeft>
       <InnerRight>
         <Link to="/notification">

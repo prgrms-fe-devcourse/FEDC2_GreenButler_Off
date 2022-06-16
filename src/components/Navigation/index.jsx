@@ -40,15 +40,7 @@ const NavItem = styled.li`
   cursor: pointer;
 `;
 
-export const Navigation = () => {
-  const { pathname } = useLocation();
-
-  const showTab = ['/', '/user/mypage', '/search', '/post/detail'];
-
-  if (!showTab.includes(pathname)) {
-    return;
-  }
-
+export const Navigation = ({ pathname }) => {
   return (
     <NavContainer>
       <NavList>

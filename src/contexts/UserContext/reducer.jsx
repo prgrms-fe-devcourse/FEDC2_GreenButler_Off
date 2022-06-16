@@ -9,6 +9,7 @@ import {
   LOADING_OFF,
   SET_NOTIFICATIONS,
   CHANGE_FULLNAME,
+  CHANGE_PROFILE,
 } from './types';
 
 export const initialUserData = {
@@ -109,14 +110,22 @@ export const reducer = (state, { type, payload }) => {
       return { ...state, isLoading: false };
     }
 
-    //TODO:신영 payload는 들어오는데 payload.fullName은 안들어오는 문제
     case CHANGE_FULLNAME: {
-      console.log('FULLNAME_REDUCER_PAYLOAD', payload.fullName);
       return {
         ...state,
         currentUser: {
           ...state.currentUser,
           fullName: payload.fullName,
+        },
+      };
+    }
+
+    case CHANGE_PROFILE: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          image: payload.image,
         },
       };
     }

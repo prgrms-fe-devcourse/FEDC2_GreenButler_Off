@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
@@ -7,15 +7,17 @@ import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
 import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
+import Button from 'components/basic/Button';
 import ChangeNameForm from 'components/ChangeNameForm';
 import UploadImage from 'components/UploadImage';
-import { EDIT, LOGOUT, KEY, TAG_DELETE, HEART_RED } from 'utils/constants/icons/names';
+import { EDIT, LOGOUT, KEY, TAG_DELETE } from 'utils/constants/icons/names';
 
 const MyInfoPage = () => {
   const { currentUser, onChangeFullName, onLogout, onChangeProfile } = useUserContext();
   const [imgSrc, setImgSrc] = useState('');
   const [isNameEditor, setIsNameEditor] = useState(false);
   const [isImageEditor, setIsImageEditor] = useState(false);
+  const nameEditRef = useRef();
 
   const onFullNameChange = useCallback(
     (value) => {
@@ -33,16 +35,30 @@ const MyInfoPage = () => {
     onChangeProfile({ image: imgSrc });
   }, [imgSrc, onChangeProfile]);
 
+  const handleCloseEditor = (e) => {
+    const isOutClick =
+      isNameEditor &&
+      !e.target.matches('img') &&
+      (!nameEditRef.current || !nameEditRef.current.contains(e.target));
+
+    if (isOutClick) {
+      setIsNameEditor(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', handleCloseEditor);
+    return () => {
+      window.removeEventListener('click', handleCloseEditor);
+    };
+  }, [isNameEditor]);
+
   return (
     <PageWrapper>
       <UserContainter>
-        <UserInfo>
+        <UserProfile>
           {' '}
-          <UserImage
-            onClick={() => {
-              setIsImageEditor((isImageEditor) => !isImageEditor);
-            }}
-          >
+          <UserImage>
             <Avatar
               size={136}
               style={{
@@ -52,43 +68,14 @@ const MyInfoPage = () => {
                 currentUser.image ||
                 `https://user-images.githubusercontent.com/79133602/173279398-ac52268b-082f-4fd2-8748-b60dad85b069.png`
               }
+              onClick={() => {
+                setIsImageEditor(true);
+              }}
             />
-            {isImageEditor && (
-              <>
-                <UploadImage
-                  onChange={onFileChange}
-                  style={{
-                    width: 138,
-                    borderRadius: '50%',
-                    position: 'absolute',
-                    left: 1,
-                    bottom: 2,
-                    overflow: 'hidden',
-                  }}
-                />{' '}
-                <button
-                  style={{ position: 'absolute', bottom: 5, right: 8 }}
-                  onClick={() => {
-                    setIsNameEditor(false);
-                    imgSrc && onProfileSubmit();
-                  }}
-                >
-                  <Icon name={HEART_RED} size={18} />
-                </button>
-              </>
-            )}
           </UserImage>
           {isNameEditor ? (
-            <NickName>
-              <ChangeNameForm handleSubmit={onFullNameChange} />{' '}
-              <button
-                style={{ position: 'absolute', bottom: 65, right: 8 }}
-                onClick={() => {
-                  setIsNameEditor(false);
-                }}
-              >
-                <Icon name={TAG_DELETE} size={18} />
-              </button>
+            <NickName ref={nameEditRef}>
+              <ChangeNameForm handleSubmit={onFullNameChange} />
             </NickName>
           ) : (
             //TODO:신영 추후 이름변경 취소 백그라운드 클릭 이벤트리스너 따로 만들기, 및 컴포넌트 분리
@@ -100,7 +87,7 @@ const MyInfoPage = () => {
                   lineHeight: '34.75px',
                   cursor: 'pointer',
                 }}
-                fontSize={22}
+                fontSize={24}
               >
                 {currentUser.fullName}
               </Text>
@@ -113,40 +100,28 @@ const MyInfoPage = () => {
               </button>
             </NickName>
           )}
-          {/* //TODO:신영 컴포넌트 분리
-           */}
-          <UserDetailWrapper>
+        </UserProfile>
+        {/* //TODO:신영 컴포넌트 분리
+         */}
+        <UserDetailWrapper>
+          <UserDetail>
+            <Text style={{ marginLeft: '30px' }} fontSize={20}>
+              Email
+            </Text>
+            <Text
+              style={{
+                marginLeft: '10px',
+              }}
+              fontSize={20}
+              color={theme.color.fontNormal}
+            >
+              {currentUser.email}
+            </Text>
+          </UserDetail>
+          <Link to="/user/myInfo/edit">
             <UserDetail>
-              <Text style={{ marginLeft: '30px' }} fontSize={20}>
-                Email
-              </Text>
-              <Text
-                style={{
-                  marginLeft: '10px',
-                }}
-                fontSize={20}
-                color={theme.color.fontNormal}
-              >
-                {currentUser.email}
-              </Text>
-            </UserDetail>
-            <Link to="/user/myInfo/edit">
-              <UserDetail>
-                <Icon
-                  name={KEY}
-                  size={18}
-                  style={{
-                    marginTop: '2px',
-                    marginLeft: '28px',
-                    marginRight: '10px',
-                  }}
-                />
-                <Text fontSize={18}>비밀번호 변경하기</Text>
-              </UserDetail>
-            </Link>
-            <UserDetail onClick={onLogout}>
               <Icon
-                name={LOGOUT}
+                name={KEY}
                 size={18}
                 style={{
                   marginTop: '2px',
@@ -154,10 +129,47 @@ const MyInfoPage = () => {
                   marginRight: '10px',
                 }}
               />
-              <Text fontSize={18}>로그아웃</Text>
-            </UserDetail>{' '}
-          </UserDetailWrapper>
-        </UserInfo>
+              <Text fontSize={18}>비밀번호 변경하기</Text>
+            </UserDetail>
+          </Link>
+          <UserDetail onClick={onLogout}>
+            <Icon
+              name={LOGOUT}
+              size={18}
+              style={{
+                marginTop: '2px',
+                marginLeft: '28px',
+                marginRight: '10px',
+              }}
+            />
+            <Text fontSize={18}>로그아웃</Text>
+          </UserDetail>{' '}
+        </UserDetailWrapper>
+        {/*   //TODO:신영 Modal 추후 refactor/MyPagesBasic 작업시 교체 및 분리
+         */}
+        {isImageEditor && (
+          <Modal>
+            <Icon
+              name={TAG_DELETE}
+              onClick={() => {
+                setIsImageEditor(false);
+              }}
+            />
+            <Text>프로필을 변경하시겠습니까?</Text>
+            <UploadImage
+              onChange={onFileChange}
+              style={{ borderRadius: '50%', overflow: 'hidden', width: '140px' }}
+            />{' '}
+            <Button
+              onClick={() => {
+                setIsImageEditor(false);
+                imgSrc && onProfileSubmit();
+              }}
+            >
+              확인
+            </Button>
+          </Modal>
+        )}
       </UserContainter>
     </PageWrapper>
   );
@@ -172,18 +184,20 @@ const UserContainter = styled.div`
   background-color: white;
 `;
 
+const UserProfile = styled.div`
+  text-align: center;
+  margin: 120px auto 30px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const UserImage = styled.div`
   width: 140px;
   height: 140px;
   position: relative;
   background-color: white;
-  margin: 0 auto 0 auto;
-`;
-
-const UserInfo = styled.div`
-  text-align: center;
-  margin: 120px auto 0 auto;
-  position: relative;
 `;
 
 const NickName = styled.div`
@@ -191,7 +205,7 @@ const NickName = styled.div`
   justify-content: center;
   align-items: center;
   width: 300px;
-  margin: 20px auto 0 auto;
+  margin: 5px 0 0 0;
   position: relative;
   cursor: pointer;
 `;
@@ -219,4 +233,20 @@ const UserDetail = styled.div`
   border-bottom: 1px solid ${theme.color.borderLight};
   display: flex;
   align-items: center;
+`;
+
+const Modal = styled.div`
+  background-color: ${theme.color.mainWhite};
+  width: 100%;
+  height: 500px;
+  position: absolute;
+  bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  border: 1px solid ${theme.color.borderLight};
+  box-sizing: border-box;
+  padding: 22px 80px;
+  align-items: center;
+  justify-content: space-around;
 `;

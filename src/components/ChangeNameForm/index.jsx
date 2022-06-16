@@ -24,14 +24,8 @@ const ChangeNameForm = ({ handleSubmit }) => {
           marginRight: 'auto',
         }}
       >
-        <InputForm.Input
-          placeholder="이름을 입력해주세요"
-          onChange={handleChange}
-          value={value}
-        />
-        <InputForm.Button
-          style={{ width: 54, height: 34, fontSize: 13, fontWeight: 700 }}
-        >
+        <InputForm.Input placeholder="이름을 입력해주세요" onChange={handleChange} value={value} />
+        <InputForm.Button style={{ width: 54, height: 34, fontSize: 13, fontWeight: 700 }}>
           수정
         </InputForm.Button>
       </InputForm>

@@ -14,6 +14,7 @@ import {
   ADD_POST,
   INIT_POST,
   UPDATE_POST,
+  CHANGE_PROFILE,
   CHANGE_FULLNAME,
 } from './types';
 
@@ -38,6 +39,7 @@ const UserProvider = ({ children }) => {
     handleSignup,
     handleLogout,
     handlechangeUserName,
+    handlechangeProfile,
     handlechangePassword,
   } = useHandles();
 
@@ -102,7 +104,16 @@ const UserProvider = ({ children }) => {
       handlechangeUserName(fullName, userName);
       dispatch({ type: CHANGE_FULLNAME, payload });
     }
-    handlechangeUserName(fullName, userName);
+    dispatch({ type: CHANGE_FULLNAME, payload }); //TODO:신영 낙관적 업뎃 나중에 필요없으면 제거
+  }, []);
+
+  //현재 유저의 프로필 사진 수정
+  const onChangeProfile = useCallback((payload = { image: '' }) => {
+    if (localToken) {
+      handlechangeProfile(payload);
+      dispatch({ type: CHANGE_PROFILE, payload });
+    }
+    dispatch({ type: CHANGE_PROFILE, payload }); //TODO:신영 낙관적 업뎃 나중에 필요없으면 제거
   }, []);
 
   //TODO:신영 현재 유저의 비밀번호 수정 - Reducer를 사용할 필요 없어
@@ -128,6 +139,7 @@ const UserProvider = ({ children }) => {
       onFollow,
       onUnfollow,
       onChangeFullName,
+      onChangeProfile,
       onChangePassword,
     };
   }, [
@@ -140,6 +152,7 @@ const UserProvider = ({ children }) => {
     onFollow,
     onUnfollow,
     onChangeFullName,
+    onChangeProfile,
     onChangePassword,
   ]);
 

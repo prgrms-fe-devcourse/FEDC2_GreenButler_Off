@@ -1,43 +1,43 @@
 import styled from '@emotion/styled';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Badge from 'components/basic/Badge';
+import { useUserContext } from 'contexts/UserContext';
+import FixedContainer from 'components/FixedContainer';
 
 const { headerHeight } = theme.value;
-const { borderLight, mainWhite } = theme.color;
+const { borderLight } = theme.color;
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled(FixedContainer)`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  height: ${headerHeight};
-  max-width: 500px;
+  justify-content: space-between;
   padding: 30px 20px;
   border-bottom: 1px solid ${borderLight};
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  z-index: 100;
-  background-color: ${mainWhite};
 `;
 
 const InnerLeft = styled.div``;
+
 const InnerRight = styled.div`
-  a:not(:first-of-type) {
+  display: flex;
+
+  & > * {
     margin-left: 20px;
   }
 `;
 
 export const Header = () => {
   const navigate = useNavigate();
+  const {
+    currentUser: { notifications },
+  } = useUserContext();
 
   const { pathname } = useLocation();
 
   const hidePrev = ['/', '/user/mypage', '/search', '/post/detail'];
   const hideHeader = ['/login', '/join'];
+
   const onClickPrev = () => {
     navigate(-1);
   };
@@ -47,21 +47,17 @@ export const Header = () => {
   }
 
   return (
-    <HeaderContainer>
+    <HeaderContainer top height={headerHeight}>
       <InnerLeft>
         {!hidePrev.includes(pathname) && (
-          <button onClick={onClickPrev}>
-            <Icon name="ARROW_LEFT" size={20} />
-          </button>
+          <Icon.Button name="ARROW_LEFT" size={20} onClick={onClickPrev} />
         )}
       </InnerLeft>
       <InnerRight>
-        <Link to="/notification">
-          <Icon name="NOTIFICATION" size={30} />
-        </Link>
-        <Link to="/user/myinfo">
-          <Icon name="MY_INFO" size={30} />
-        </Link>
+        <Badge isShow={notifications?.seen}>
+          <Icon.Link to="/notification" name="NOTIFICATION" size={30} />
+        </Badge>
+        <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
       </InnerRight>
     </HeaderContainer>
   );

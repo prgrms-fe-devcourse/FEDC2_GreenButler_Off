@@ -67,19 +67,21 @@ const useHandles = () => {
   );
 
   const handleLogout = useCallback(async () => {
+    if (localToken) {
+      await logout(localToken); //TODO:신영 로그아웃 API HEADER에 토큰 넣기
+    }
     // JWT 토큰 및 로컬 스토리지 초기화
     setLocalToken('');
     localStorage.clear();
-    //TODO:신영 추후 로그인 제대로 되서 토큰이 있으면 아래 주석 제거
-    //await logout();
     navigate('/login', { replace: true }); // 로그인 페이지로 이동
-  }, [navigate, setLocalToken]);
+  }, [navigate, localToken, setLocalToken]);
 
   //회원 이름수정
   const handlechangeUserName = useCallback(
     async (fullName, username = '') => {
-      console.log('CHANGENAME_HANDLE', fullName);
-      //await changeUserName(localToken, fullName, username);
+      if (localToken && fullName) {
+        await changeUserName(localToken, fullName, username);
+      }
     },
     [localToken],
   );
@@ -88,7 +90,9 @@ const useHandles = () => {
   const handlechangePassword = useCallback(
     async (password) => {
       console.log('PASSWORD_HANDLE', password);
-      //await changePassword(localToken, password);
+      if (localToken && password) {
+        //await changePassword(localToken, password);
+      }
     },
     [localToken],
   );

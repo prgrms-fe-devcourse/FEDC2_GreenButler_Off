@@ -9,27 +9,26 @@ import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
 import ChangeNameForm from 'components/ChangeNameForm';
 import UploadImage from 'components/UploadImage';
-import { EDIT, LOGOUT, KEY, TAG_DELETE } from 'utils/constants/icons/names';
+import { EDIT, LOGOUT, KEY, TAG_DELETE, HEART_RED } from 'utils/constants/icons/names';
 
 const MyInfoPage = () => {
-  const { currentUser, editFullName, onLogout } = useUserContext();
+  const { currentUser, onChangeFullName, onLogout } = useUserContext();
   const [imgSrc, setImgSrc] = useState('');
   const [isNameEditor, setIsNameEditor] = useState(false);
   const [isImageEditor, setIsImageEditor] = useState(false);
 
-  const handleSubmit = useCallback(
+  const onFullNameChange = useCallback(
     (value) => {
-      editFullName({ payload: { fullName: value, userName: '' } });
+      onChangeFullName({ fullName: value, userName: '' });
       setIsNameEditor(false);
     },
-    [editFullName],
+    [onChangeFullName],
   );
 
   const onFileChange = useCallback((src) => {
     setImgSrc(src);
+    console.log(src);
   }, []);
-
-  useEffect(() => {}, [handleSubmit]);
 
   return (
     <PageWrapper>
@@ -66,7 +65,7 @@ const MyInfoPage = () => {
               }}
             >
               <Icon
-                name={isImageEditor ? TAG_DELETE : EDIT}
+                name={isImageEditor ? HEART_RED : EDIT}
                 size={18}
                 style={{
                   marginTop: '8px',
@@ -81,7 +80,7 @@ const MyInfoPage = () => {
           </UserImage>
           {isNameEditor ? (
             <NickName>
-              <ChangeNameForm handleSubmit={handleSubmit} />{' '}
+              <ChangeNameForm handleSubmit={onFullNameChange} />{' '}
               <button
                 style={{ position: 'absolute', bottom: 65, right: 8 }}
                 onClick={() => {

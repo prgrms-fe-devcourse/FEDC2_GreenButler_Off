@@ -9,6 +9,7 @@ import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
 import ChangeNameForm from 'components/ChangeNameForm';
 import UploadImage from 'components/UploadImage';
+import { EDIT, LOGOUT, KEY, TAG_DELETE } from 'utils/constants/icons/names';
 
 const MyInfoPage = () => {
   const { currentUser, editFullName, onLogout } = useUserContext();
@@ -45,24 +46,7 @@ const MyInfoPage = () => {
                 currentUser.image ||
                 `https://user-images.githubusercontent.com/79133602/173279398-ac52268b-082f-4fd2-8748-b60dad85b069.png`
               }
-            />{' '}
-            <button
-              onClick={() => {
-                setIsImageEditor(true);
-              }}
-            >
-              <Icon
-                name="LIKE_ICON"
-                size={18}
-                style={{
-                  marginTop: '8px',
-                  marginLeft: '5px',
-                  position: 'absolute',
-                  right: 15,
-                  bottom: 7,
-                }}
-              />
-            </button>
+            />
             {isImageEditor && (
               <UploadImage
                 onChange={onFileChange}
@@ -72,12 +56,41 @@ const MyInfoPage = () => {
                   position: 'absolute',
                   left: 1,
                   bottom: 2,
+                  overflow: 'hidden',
                 }}
               />
             )}
+            <button
+              onClick={() => {
+                setIsImageEditor((isImageEditor) => !isImageEditor);
+              }}
+            >
+              <Icon
+                name={isImageEditor ? TAG_DELETE : EDIT}
+                size={18}
+                style={{
+                  marginTop: '8px',
+                  marginLeft: '15px',
+                  position: 'absolute',
+                  right: 15,
+                  bottom: 7,
+                  zIndex: 2,
+                }}
+              />
+            </button>
           </UserImage>
           {isNameEditor ? (
-            <ChangeNameForm handleSubmit={handleSubmit} />
+            <NickName>
+              <ChangeNameForm handleSubmit={handleSubmit} />{' '}
+              <button
+                style={{ position: 'absolute', bottom: 65, right: 8 }}
+                onClick={() => {
+                  setIsNameEditor(false);
+                }}
+              >
+                <Icon name={TAG_DELETE} size={18} />
+              </button>
+            </NickName>
           ) : (
             //TODO:신영 추후 이름변경 취소 백그라운드 클릭 이벤트리스너 따로 만들기, 및 컴포넌트 분리
             <NickName>
@@ -97,11 +110,7 @@ const MyInfoPage = () => {
                   setIsNameEditor(true);
                 }}
               >
-                <Icon
-                  name="LIKE_ICON"
-                  size={18}
-                  style={{ marginTop: '5px', marginLeft: '5px' }}
-                />
+                <Icon name={EDIT} size={18} style={{ marginTop: '5px', marginLeft: '2px' }} />
               </button>
             </NickName>
           )}
@@ -125,7 +134,7 @@ const MyInfoPage = () => {
             <Link to="/user/myInfo/edit">
               <UserDetail>
                 <Icon
-                  name="LIKE_ICON"
+                  name={KEY}
                   size={18}
                   style={{
                     marginTop: '2px',
@@ -138,7 +147,7 @@ const MyInfoPage = () => {
             </Link>
             <UserDetail onClick={onLogout}>
               <Icon
-                name="LIKE_ICON"
+                name={LOGOUT}
                 size={18}
                 style={{
                   marginTop: '2px',
@@ -182,7 +191,9 @@ const NickName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0 0 0;
+  width: 300px;
+  margin: 20px auto 0 auto;
+  position: relative;
   cursor: pointer;
 `;
 

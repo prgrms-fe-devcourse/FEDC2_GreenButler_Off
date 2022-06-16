@@ -32,9 +32,7 @@ const useHandles = () => {
       // JWT 토큰 및 로컬 스토리지 초기화
       setLocalToken('');
       localStorage.clear();
-
       const res = await login(inputData);
-      console.log(res);
       if (res.data.token) {
         setLocalToken(res.data.token); // 로그인 성공 시, JWT 토큰 갱신
         navigate('/', { replace: true }); // 메인페이지로 이동
@@ -52,7 +50,6 @@ const useHandles = () => {
       // JWT 토큰 및 로컬 스토리지 초기화
       setLocalToken('');
       localStorage.clear();
-
       const { data, error } = await signup(inputData);
       if (data.token) {
         setLocalToken(data.token); // 회원가입 성공 시, JWT 토큰 갱신

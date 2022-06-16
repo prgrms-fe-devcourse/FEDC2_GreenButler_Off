@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const { headerHeight } = theme.value;
 const { borderLight, mainWhite } = theme.color;
@@ -32,6 +32,11 @@ const InnerRight = styled.div`
 `;
 
 export const Header = () => {
+  const navigate = useNavigate();
+  const onClickPrev = () => {
+    navigate(-1);
+  };
+
   return (
     <HeaderContainer>
       <InnerLeft>

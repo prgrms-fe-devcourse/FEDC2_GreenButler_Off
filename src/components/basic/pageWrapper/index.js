@@ -1,3 +1,5 @@
+import Header from 'components/Header/Header';
+import Navigation from 'components/Navigation';
 import theme from 'styles/theme';
 
 const { headerHeight, navHeight, pagePadding } = theme.value;
@@ -10,7 +12,13 @@ const PageWrapper = ({ children, header, nav }) => {
     paddingBottom: nav ? navHeight : 0,
   };
 
-  return <div style={{ ...wrapperStyle }}>{children}</div>;
+  return (
+    <div style={{ ...wrapperStyle }}>
+      <Header />
+      {children}
+      <Navigation />
+    </div>
+  );
 };
 
 export default PageWrapper;

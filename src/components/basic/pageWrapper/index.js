@@ -13,10 +13,10 @@ const PageWrapper = ({ children, header, nav }) => {
   };
 
   return (
-    <div style={{ ...wrapperStyle }}>
-      <Header />
-      {children}
-      <Navigation />
+    <div>
+      {header && <Header />}
+      <div style={{ ...wrapperStyle }}> {children}</div>
+      {nav && <Navigation />}
     </div>
   );
 };

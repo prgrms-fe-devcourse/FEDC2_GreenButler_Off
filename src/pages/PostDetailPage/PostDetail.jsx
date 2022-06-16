@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import PostItem from 'pages/MainPage/PostItem';
 import Avatar from 'components/basic/Avatar';
-import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState } from 'react';

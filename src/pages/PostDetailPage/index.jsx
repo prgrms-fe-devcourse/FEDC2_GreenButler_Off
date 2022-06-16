@@ -7,7 +7,6 @@ const PostDetailPage = () => {
   const location = useLocation({});
   return (
     <PageWrapper header nav>
-      <Profile userName="gonggong" />
       <PostDetail initialPost={location.state.post} />
     </PageWrapper>
   );

@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Header from './Header';
 import PageWrapper from 'components/basic/pageWrapper';
 import { getPostsPart } from 'utils/apis/postApi';
 import PostItem from './PostItem';

@@ -16,15 +16,25 @@ const TabItemWrapper = styled.div`
   cursor: pointer;
 `;
 
-const TabItem = ({ title, active, onClick, ...props }) => {
+const TabItem = ({ title, icon, active, onClick, ...props }) => {
   const fontStyle = {
     fontWeight: active ? 500 : 'normal',
   };
+
   return (
     <TabItemWrapper active={active} onClick={onClick} {...props}>
-      <Text fontSize={20} block style={{ ...fontStyle }}>
-        {title}
-      </Text>
+      {icon && 'active' in icon
+        ? active && icon.active
+          ? icon.active
+          : icon.inactive
+          ? icon.inactive
+          : null
+        : icon}
+      {title && (
+        <Text fontSize={20} block style={{ ...fontStyle }}>
+          {title}
+        </Text>
+      )}
     </TabItemWrapper>
   );
 };

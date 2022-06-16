@@ -22,7 +22,7 @@ const Image = ({
   width,
   height,
   alt,
-  mode,
+  mode = 'cover',
   ...props
 }) => {
   const [loaded, setLoaded] = useState(false);
@@ -31,7 +31,6 @@ const Image = ({
   const imageStyle = {
     display: block ? 'block' : undefined,
     width,
-    height,
     objectFit: mode,
   };
 
@@ -44,11 +43,9 @@ const Image = ({
     const handleLoadImage = () => setLoaded(true);
 
     const imgElement = imgRef.current;
-    imgElement &&
-      imgElement.addEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
+    imgElement && imgElement.addEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
     return () => {
-      imgElement &&
-        imgElement.removeEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
+      imgElement && imgElement.removeEventListener(LOAD_IMG_EVENT_TYPE, handleLoadImage);
     };
   }, [lazy]);
 
@@ -65,6 +62,8 @@ const Image = ({
       ref={imgRef}
       src={loaded ? src : placeholder}
       alt={alt}
+      width={width}
+      height={height}
       style={{ ...props.style, ...imageStyle }}
     />
   );

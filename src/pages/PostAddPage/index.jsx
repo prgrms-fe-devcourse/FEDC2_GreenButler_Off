@@ -90,7 +90,11 @@ const PostAddPage = () => {
 
   return (
     <>
+<<<<<<< HEAD
       <PageWrapper title="게시물 등록" header prev style={{ paddingBottom: 100 }}>
+=======
+      <PageWrapper header style={{ paddingBottom: 100 }}>
+>>>>>>> ff4dd2897e42ce04b14f16827b3ccb8805c78865
         <UploadImage onChange={onFileChange} />
 
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />

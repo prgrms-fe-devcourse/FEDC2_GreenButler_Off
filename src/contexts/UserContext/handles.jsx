@@ -58,6 +58,7 @@ const useHandles = () => {
         setLocalToken(data.token); // 회원가입 성공 시, JWT 토큰 갱신
         navigate('/', { replace: true }); // 메인 페이지로 이동 (로그인을 건너뛴다)
         alert('회원가입 성공');
+        await login(inputData);
       } else if (error.code === 400) {
         alert('회원가입 실패');
       }

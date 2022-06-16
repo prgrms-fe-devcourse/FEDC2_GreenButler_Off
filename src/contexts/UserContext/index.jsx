@@ -1,10 +1,4 @@
-import {
-  useContext,
-  useCallback,
-  useReducer,
-  useMemo,
-  createContext,
-} from 'react';
+import { useContext, useCallback, useReducer, useMemo, createContext, useEffect } from 'react';
 import { reducer, initialUserData } from './reducer';
 import useLocalToken from 'hooks/useLocalToken';
 import useHandles from './handles';
@@ -36,10 +30,7 @@ export const useUserContext = () => useContext(UserContext);
   2) isLoading: 로딩 중인지 여부
 */
 const UserProvider = ({ children }) => {
-  const [{ currentUser, isLoading }, dispatch] = useReducer(
-    reducer,
-    initialUserData,
-  ); // 데이터의 갱신은 reducer 함수로 관리한다.
+  const [{ currentUser, isLoading }, dispatch] = useReducer(reducer, initialUserData); // 데이터의 갱신은 reducer 함수로 관리한다.
   const [localToken] = useLocalToken(); // JWT 토큰
   const {
     handleGetCurrentUser,
@@ -105,23 +96,14 @@ const UserProvider = ({ children }) => {
   }, []);
 
   //현재 유저의 닉네임을 수정
-  const editFullName = useCallback(
-    (payload = { fullName: '', userName: '' }) => {
-      console.log('FULLNAME_CONTEXT_PAYLOAD', payload);
-      const { fullName, userName } = payload;
-      console.log('FULLNAME_CONTEXT', fullName);
-
-      if (localToken) {
-        handlechangeUserName(localToken, fullName, userName);
-        dispatch({ type: CHANGE_FULLNAME, payload });
-      } /* else {
-        console.log('token error');
-      } */
-      //TODO:신영 아래 API 실제 연동시 삭제
+  const onChangeFullName = useCallback((payload = { fullName: '', userName: '' }) => {
+    const { fullName, userName } = payload;
+    if (localToken) {
+      handlechangeUserName(fullName, userName);
       dispatch({ type: CHANGE_FULLNAME, payload });
-    },
-    [],
-  );
+    }
+    handlechangeUserName(fullName, userName);
+  }, []);
 
   //TODO:신영 현재 유저의 비밀번호 수정 - Reducer를 사용할 필요 없어
   const onChangePassword = useCallback(
@@ -145,7 +127,7 @@ const UserProvider = ({ children }) => {
       onGetCurrentUser,
       onFollow,
       onUnfollow,
-      editFullName,
+      onChangeFullName,
       onChangePassword,
     };
   }, [
@@ -157,7 +139,7 @@ const UserProvider = ({ children }) => {
     onGetCurrentUser,
     onFollow,
     onUnfollow,
-    editFullName,
+    onChangeFullName,
     onChangePassword,
   ]);
 

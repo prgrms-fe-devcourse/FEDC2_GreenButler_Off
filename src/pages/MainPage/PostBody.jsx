@@ -24,12 +24,12 @@ const PostBody = ({ post, isDetailPage = false }) => {
     if (isDetailPage) {
       return;
     }
-    navigate('/post/detail', {
+    navigate(`/post/detail/?id=${_id}`, {
       state: {
         post,
       },
     });
-  }, [post, isDetailPage, navigate]);
+  }, [_id, post, isDetailPage, navigate]);
 
   const handleTagClick = useCallback(
     (tag) => {

@@ -27,7 +27,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
 
   const handleTagClick = useCallback(
     (tag) => {
-      navigate('/search/tag', {
+      navigate(`/search/tag/${tag}`, {
         state: {
           tag,
         },
@@ -54,11 +54,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
           <IconButton className="heart-button" name="HEART">
             <IconButtonText>{likes.length}</IconButtonText>
           </IconButton>
-          <IconButton
-            className="comment-button"
-            name="COMMENT"
-            onClick={HandleTodetailpage}
-          >
+          <IconButton className="comment-button" name="COMMENT" onClick={HandleTodetailpage}>
             <IconButtonText>{comments.length}</IconButtonText>
           </IconButton>
         </IconButtons>

@@ -6,6 +6,7 @@ const Text = ({
   paragraph,
   fontSize = 24,
   strong,
+  fontWeight = 400,
   underline,
   delete: del,
   color,
@@ -17,7 +18,7 @@ const Text = ({
   const Tag = block ? 'div' : paragraph ? 'p' : 'span';
 
   const fontStyle = {
-    fontWeight: strong ? 'bold' : undefined,
+    fontWeight: strong ? 'bold' : fontWeight,
     fontSize,
     textDecoration: underline ? 'underline' : undefined,
     color,

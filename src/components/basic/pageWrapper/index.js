@@ -4,7 +4,7 @@ import theme from 'styles/theme';
 
 const { headerHeight, navHeight, pagePadding } = theme.value;
 
-const PageWrapper = ({ children, header, nav }) => {
+const PageWrapper = ({ children, header, nav, prev }) => {
   const wrapperStyle = {
     paddingTop: header ? headerHeight : 0,
     paddingLeft: pagePadding,
@@ -14,7 +14,7 @@ const PageWrapper = ({ children, header, nav }) => {
 
   return (
     <div>
-      {header && <Header />}
+      {header && <Header prev={prev} />}
       <div style={{ ...wrapperStyle }}> {children}</div>
       {nav && <Navigation />}
     </div>

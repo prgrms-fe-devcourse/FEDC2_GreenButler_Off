@@ -23,16 +23,26 @@ const HeaderContainer = styled.header`
   z-index: 100;
   background-color: ${mainWhite};
 `;
+const Title = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 const InnerLeft = styled.div``;
 const InnerRight = styled.div`
+  display: flex;
+  align-items: center;
+
   a:not(:first-of-type) {
     margin-left: 20px;
   }
 `;
 
-export const Header = () => {
+export const Header = ({ prev, title }) => {
   const navigate = useNavigate();
+
   const onClickPrev = () => {
     navigate(-1);
   };
@@ -40,17 +50,12 @@ export const Header = () => {
   return (
     <HeaderContainer>
       <InnerLeft>
-        <button onClick={onClickPrev}>
-          <Icon name="ARROW_LEFT" size={20} />
-        </button>
+        {prev && <Icon.Button name="ARROW_LEFT" size={20} onClick={onClickPrev} />}
       </InnerLeft>
+      <Title>{title}</Title>
       <InnerRight>
-        <Link to="/notification">
-          <Icon name="NOTIFICATION" size={30} />
-        </Link>
-        <Link to="/user/myinfo">
-          <Icon name="MY_INFO" size={30} />
-        </Link>
+        <Icon.Link to="/notification" name="NOTIFICATION" size={30} />
+        <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
       </InnerRight>
     </HeaderContainer>
   );

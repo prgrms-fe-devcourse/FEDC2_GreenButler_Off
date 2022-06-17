@@ -68,7 +68,7 @@ export const addPost = (token, data) => {
       'Content-Type': `multipart/form-data`, // 이미지 전송을 위함
       Authorization: `Bearer ${token}`,
     },
-    data: formData,
+    data: data,
   });
 };
 

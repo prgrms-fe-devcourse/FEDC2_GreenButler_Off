@@ -78,7 +78,7 @@ const SearchPage = () => {
   }, [currentTab]);
 
   return (
-    <PageWrapper header nav>
+    <PageWrapper header nav info>
       <InputForm
         name="search"
         placeholder="검색어를 입력해주세요."

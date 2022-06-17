@@ -9,6 +9,8 @@ import {
   changeUserName,
   changeProfile,
   changePassword,
+  Follow,
+  unFollow,
 } from 'utils/apis/userApi';
 
 const useHandles = () => {
@@ -121,6 +123,26 @@ const useHandles = () => {
     [localToken],
   );
 
+  //팔로우
+  const handlefollow = useCallback(
+    async (userId) => {
+      if (localToken && userId) {
+        await Follow(localToken, userId);
+      }
+    },
+    [localToken],
+  );
+
+  //언팔
+  const handleUnFollow = useCallback(
+    async (followId) => {
+      if (localToken && followId) {
+        await unFollow(localToken, followId);
+      }
+    },
+    [localToken],
+  );
+
   return {
     handleGetCurrentUser,
     handleLogin,
@@ -129,6 +151,8 @@ const useHandles = () => {
     handlechangeUserName,
     handlechangeProfile,
     handlechangePassword,
+    handlefollow,
+    handleUnFollow,
   };
 };
 

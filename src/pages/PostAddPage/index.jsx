@@ -8,6 +8,8 @@ import TagAddForm from 'components/TagAddForm';
 import theme from 'styles/theme';
 import PageWrapper from 'components/basic/pageWrapper';
 import FixedContainer from 'components/FixedContainer';
+import useLocalToken from 'hooks/useLocalToken';
+import { addPost } from 'utils/apis/postApi';
 
 const { fontNormal, borderNormal, mainBlack } = theme.color;
 
@@ -26,9 +28,8 @@ const TextArea = styled.textarea`
   }
 `;
 
-const handleDataForm = async ({ text, tags, imgSrc }) => {
+const srcToBlob = (imgSrc) => {
   const byteString = atob(imgSrc.split(',')[1]);
-  const title = { content: text, tags };
 
   const ab = new ArrayBuffer(byteString.length);
   const ia = new Uint8Array(ab);
@@ -40,26 +41,24 @@ const handleDataForm = async ({ text, tags, imgSrc }) => {
     type: 'image/jpeg',
   });
 
+  return blob;
+};
+
+const handleDataForm = async (data) => {
   const formData = new FormData();
-  formData.append('image', blob);
-  formData.append('title', JSON.stringify(title));
-  formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
+  Object.keys(data).forEach((key) => formData.append(key, data[key]));
 
-  const headers = {
-    'Content-Type': 'multipart/form-data',
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyYTc1ZTVjYjFiOTBiMGM4MTJjOWI3MCIsImVtYWlsIjoiMzI1QG5hdmVyLmNvbSJ9LCJpYXQiOjE2NTUxMzYyMTd9.w4YDSceQD83VMiKaTnJYEmcDEKNQAWT1Al9iyFGEL74`,
-  };
-
-  const result = await axios.post(`/posts/create`, formData, { headers });
-  console.log(result);
+  return formData;
 };
 
 const PostAddPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
-  const [text, setText] = useState('');
+  const [content, setContent] = useState('');
 
   const navigate = useNavigate();
+
+  const [token, setValue] = useLocalToken();
 
   const onAddTag = useCallback(
     (value) => {
@@ -80,7 +79,18 @@ const PostAddPage = () => {
   );
 
   const onClickAddBtn = async () => {
-    await handleDataForm({ text, tags, imgSrc });
+    const ImageBlob = srcToBlob(imgSrc);
+    const title = JSON.stringify({ content, tags });
+    const formData = await handleDataForm({
+      title,
+      image: ImageBlob,
+      channelId: '62a04aa2703fdd3a82b4e66e',
+    });
+
+    if (token) {
+      const result = await addPost(token, formData);
+      console.log(result);
+    }
     navigate('/');
   };
 
@@ -90,13 +100,17 @@ const PostAddPage = () => {
 
   return (
     <>
+<<<<<<< HEAD
+      <PageWrapper title="게시물 등록" header prev style={{ paddingBottom: 100 }}>
+=======
       <PageWrapper header style={{ paddingBottom: 100 }}>
+>>>>>>> ff4dd2897e42ce04b14f16827b3ccb8805c78865
         <UploadImage onChange={onFileChange} />
 
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <TextArea
           onChange={(e) => {
-            setText(e.target.value);
+            setContent(e.target.value);
           }}
           placeholder="내 식물의 성장 글을 작성해주세요."
           rows={10}

@@ -1,6 +1,8 @@
 import request from './common';
 import { API_METHOD } from 'utils/constants/apiMethods';
 
+const channelId = '62a04aa2703fdd3a82b4e66e';
+
 /* 
   특정 채널의 포스트 목록을 모두 불러온다.
   Response: Post[]
@@ -8,7 +10,7 @@ import { API_METHOD } from 'utils/constants/apiMethods';
 export const getPosts = () => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/channel/${process.env.REACT_APP_CHANNEL_ID_TOTAL}`,
+    url: `/posts/channel/${channelId}`,
   });
 };
 
@@ -19,7 +21,7 @@ export const getPosts = () => {
 export const getPostsPart = ({ offset, limit }) => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/channel/${process.env.REACT_APP_CHANNEL_ID_TOTAL}`,
+    url: `/posts/channel/${channelId}`,
     params: {
       offset,
       limit,
@@ -56,10 +58,8 @@ export const getPostData = (postId) => {
 export const addPost = (token, data) => {
   const submitData = { ...data, meta: JSON.stringify(data.meta) };
   const formData = new FormData();
-  Object.keys(submitData).forEach((key) =>
-    formData.append(key, submitData[key]),
-  );
-  formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
+  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
+  formData.append('channelId', channelId);
 
   return request({
     method: API_METHOD.POST,
@@ -68,7 +68,7 @@ export const addPost = (token, data) => {
       'Content-Type': `multipart/form-data`, // 이미지 전송을 위함
       Authorization: `Bearer ${token}`,
     },
-    data: formData,
+    data: data,
   });
 };
 
@@ -79,10 +79,8 @@ export const addPost = (token, data) => {
 export const updatePost = (token, data) => {
   const submitData = { ...data, meta: JSON.stringify(data.meta) };
   const formData = new FormData();
-  Object.keys(submitData).forEach((key) =>
-    formData.append(key, submitData[key]),
-  );
-  formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
+  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
+  formData.append('channelId', channelId);
 
   return request({
     method: API_METHOD.PUT,
@@ -132,7 +130,7 @@ export const setLike = (token, postId) => {
   특정 포스트에 좋아요한 것을 취소한다. 
   Response: Like
 */
-export const setDislike = (token, postId) => {
+export const setDisLike = (token, likeId) => {
   return request({
     method: API_METHOD.DELETE,
     url: `/likes/delete`,
@@ -140,7 +138,7 @@ export const setDislike = (token, postId) => {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      id: postId,
+      id: likeId,
     },
   });
 };
@@ -188,12 +186,5 @@ export const searchTag = (keyword) => {
   return request({
     method: API_METHOD.GET,
     url: `/search/all/%23${keyword}`,
-  });
-};
-
-export const searchUser = (keyword) => {
-  return request({
-    method: API_METHOD.GET,
-    url: `/search/users/${keyword}`,
   });
 };

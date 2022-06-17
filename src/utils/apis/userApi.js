@@ -36,10 +36,13 @@ export const signup = ({ email, fullName, password }) => {
   로그아웃
   Response: User
 */
-export const logout = () => {
+export const logout = (token) => {
   return request({
     method: API_METHOD.POST,
     url: `/logout`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
@@ -81,9 +84,11 @@ export const searchUsers = (fullName) => {
 
 /* 
   특정 유저를 팔로우한다.
-  Response: Follow 
+  Response: Follow  
+  TODO:신영 userId === 팔로우 당하는 사람 id
 */
 export const Follow = (token, userId) => {
+  //console.log('API_USERID', userId);
   return request({
     method: API_METHOD.POST,
     url: `/follow/create`,
@@ -98,10 +103,11 @@ export const Follow = (token, userId) => {
 
 /* 
   특정 유저를 언팔로우한다.
-  Response: Follow 
+  Response: Follow  
+  TODO:신영 id === 팔로우객체 _id
 */
 export const unFollow = (token, id) => {
-  return request({
+  /*   return request({
     method: API_METHOD.DELETE,
     url: `/follow/delete`,
     headers: {
@@ -110,7 +116,7 @@ export const unFollow = (token, id) => {
     data: {
       id,
     },
-  });
+  }); */
 };
 
 /* 
@@ -118,7 +124,7 @@ export const unFollow = (token, id) => {
   Response: User
 */
 export const changeUserName = (token, fullName, username) => {
-  return request({
+  /*   return request({
     method: API_METHOD.PUT,
     url: `/settings/update-user`,
     headers: {
@@ -128,6 +134,21 @@ export const changeUserName = (token, fullName, username) => {
       ...(fullName && { fullName }),
       ...(username && { username }),
     },
+  }); */
+};
+
+/* 
+  나의 profile 사진을 변경한다.
+  Response: User
+*/
+export const changeProfile = (token, formData) => {
+  return request({
+    method: API_METHOD.POST,
+    url: `/users/upload-photo`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: formData,
   });
 };
 
@@ -156,7 +177,27 @@ export const getNotifications = (token) => {
     method: API_METHOD.GET,
     url: `/notifications`,
     headers: {
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+/* 
+  상대방에게 알림을 보낸다.
+  Response: Notification
+*/
+export const setNotification = (token, type, typeId, userId, postId) => {
+  return request({
+    method: API_METHOD.POST,
+    url: `/notifications/create`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      notificationType: type,
+      notificationTypeId: typeId,
+      userId,
+      postId,
     },
   });
 };

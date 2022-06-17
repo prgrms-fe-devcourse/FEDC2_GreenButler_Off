@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  timeout: 2000, // 마감시한: 서버 응답이 2초를 넘으면 실패로 간주
+  timeout: 3000, // 마감시한: 서버 응답이 3초를 넘으면 실패로 간주
 });
 instance.defaults.baseURL = process.env.REACT_APP_API_URL; // baseURL 설정
 instance.interceptors.response.use(onFulfilled, onRejected); // 서버 응답 시 처리 설정

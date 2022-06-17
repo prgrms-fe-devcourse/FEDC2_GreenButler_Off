@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import Header from './Header';
 import PageWrapper from 'components/basic/pageWrapper';
 import { getPostsPart } from 'utils/apis/postApi';
 import PostItem from './PostItem';
 import { useState, useEffect } from 'react';
 
-const LIMIT = 5;
+const LIMIT = 15;
 
 const MainPage = () => {
   const [posts, setPosts] = useState([]);

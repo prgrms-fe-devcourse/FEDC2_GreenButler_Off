@@ -10,6 +10,8 @@ import {
   SET_NOTIFICATIONS,
   CHANGE_FULLNAME,
   CHANGE_PROFILE,
+  LIKE,
+  DISLIKE,
 } from './types';
 
 export const initialUserData = {
@@ -109,7 +111,6 @@ export const reducer = (state, { type, payload }) => {
     case LOADING_OFF: {
       return { ...state, isLoading: false };
     }
-
     case CHANGE_FULLNAME: {
       return {
         ...state,
@@ -131,6 +132,34 @@ export const reducer = (state, { type, payload }) => {
     }
     default: {
       return state;
+    }
+    case LIKE: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          likes: [
+            ...state.currentUser.likes,
+            {
+              _id: payload._id,
+              user: payload.user,
+              post: payload.post,
+              createdAt: payload.createdAt,
+              updatedAt: payload.updatedAt,
+              __v: payload.__v,
+            },
+          ],
+        },
+      };
+    }
+    case DISLIKE: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          likes: state.currentUser.likes.filter(({ _id }) => _id !== payload._id),
+        },
+      };
     }
   }
 };

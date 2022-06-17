@@ -1,4 +1,4 @@
-import { useContext, useCallback, useReducer, useMemo, createContext, useEffect } from 'react';
+import { useContext, useCallback, useReducer, useMemo, createContext } from 'react';
 import { reducer, initialUserData } from './reducer';
 import useLocalToken from 'hooks/useLocalToken';
 import useHandles from './handles';
@@ -16,6 +16,8 @@ import {
   UPDATE_POST,
   CHANGE_PROFILE,
   CHANGE_FULLNAME,
+  LIKE,
+  DISLIKE,
 } from './types';
 
 /* 
@@ -123,6 +125,14 @@ const UserProvider = ({ children }) => {
     [handlechangePassword],
   );
 
+  const onLike = useCallback((like) => {
+    dispatch({ type: LIKE, payload: like });
+  }, []);
+
+  const onDisLike = useCallback((like) => {
+    dispatch({ type: DISLIKE, payload: like });
+  }, []);
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -136,6 +146,8 @@ const UserProvider = ({ children }) => {
       onChangeFullName,
       onChangeProfile,
       onChangePassword,
+      onLike,
+      onDisLike,
     };
   }, [
     currentUser,
@@ -149,6 +161,8 @@ const UserProvider = ({ children }) => {
     onChangeFullName,
     onChangeProfile,
     onChangePassword,
+    onLike,
+    onDisLike,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

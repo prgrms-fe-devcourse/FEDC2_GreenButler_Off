@@ -6,6 +6,8 @@ import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { setLike, setDisLike } from 'utils/apis/postApi';
+import { setNotification } from 'utils/apis/userApi';
+import { useUserContext } from 'contexts/UserContext';
 
 const token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyOWUyOWJkNmQxOGI0MWM1YjIzOGJhMiIsImVtYWlsIjoiYWRtaW5AcHJvZ3JhbW1lcnMuY28ua3IifSwiaWF0IjoxNjU0NjcxNjI5fQ.etL5BJpmU-w7nUg1JDa_1oEHqBKkTgTxPQ0tfOfj-As';
@@ -13,11 +15,12 @@ const token =
 const currentUserId = '629e29bd6d18b41c5b238ba2';
 
 const PostBody = ({ post, isDetailPage = false }) => {
-  const { _id: postId, image, likes, comments, updatedAt } = post || {};
+  const { _id: postId, image, likes, comments, updatedAt, author } = post || {};
   const { content, contents, tags } = JSON.parse(post?.title);
   const [onHeart, setOnHeart] = useState(false);
   const [heartCount, setHeartCount] = useState(likes.length);
   const [likeId, setLikeId] = useState('');
+  const { onLike, onDisLike } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -49,16 +52,19 @@ const PostBody = ({ post, isDetailPage = false }) => {
       setHeartCount(heartCount + 1);
       if (postId) {
         const like = await setLike(token, postId).then((res) => res.data);
+        onLike(like);
         setLikeId(like._id);
+        // await setNotification(token, 'LIKE', like._id, author._id, postId);
       }
     } else {
       setHeartCount(heartCount - 1);
       if (likeId) {
-        await setDisLike(token, likeId).then((res) => res.data);
+        const like = await setDisLike(token, likeId).then((res) => res.data);
+        onDisLike(like);
         setLikeId('');
       }
     }
-  }, [onHeart, heartCount, postId, likeId]);
+  }, [onHeart, heartCount, postId, likeId, onLike, onDisLike]);
 
   useEffect(() => {
     const array = likes?.map(({ user, _id }) => {

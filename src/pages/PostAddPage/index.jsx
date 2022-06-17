@@ -8,6 +8,8 @@ import TagAddForm from 'components/TagAddForm';
 import theme from 'styles/theme';
 import PageWrapper from 'components/basic/pageWrapper';
 import FixedContainer from 'components/FixedContainer';
+import useLocalToken from 'hooks/useLocalToken';
+import { addPost } from 'utils/apis/postApi';
 
 const { fontNormal, borderNormal, mainBlack } = theme.color;
 
@@ -43,15 +45,9 @@ const handleDataForm = async ({ text, tags, imgSrc }) => {
   const formData = new FormData();
   formData.append('image', blob);
   formData.append('title', JSON.stringify(title));
-  formData.append('channelId', process.env.REACT_APP_CHANNEL_ID_TOTAL);
+  formData.append('channelId', '62a04aa2703fdd3a82b4e66e');
 
-  const headers = {
-    'Content-Type': 'multipart/form-data',
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyYTc1ZTVjYjFiOTBiMGM4MTJjOWI3MCIsImVtYWlsIjoiMzI1QG5hdmVyLmNvbSJ9LCJpYXQiOjE2NTUxMzYyMTd9.w4YDSceQD83VMiKaTnJYEmcDEKNQAWT1Al9iyFGEL74`,
-  };
-
-  const result = await axios.post(`/posts/create`, formData, { headers });
-  console.log(result);
+  return formData;
 };
 
 const PostAddPage = () => {
@@ -60,6 +56,8 @@ const PostAddPage = () => {
   const [text, setText] = useState('');
 
   const navigate = useNavigate();
+
+  const [storedValue, setValue] = useLocalToken();
 
   const onAddTag = useCallback(
     (value) => {
@@ -80,7 +78,13 @@ const PostAddPage = () => {
   );
 
   const onClickAddBtn = async () => {
-    await handleDataForm({ text, tags, imgSrc });
+    const formData = await handleDataForm({ text, tags, imgSrc });
+    const token = storedValue;
+
+    if (token) {
+      const result = await addPost(token, formData);
+      console.log(result);
+    }
     navigate('/');
   };
 

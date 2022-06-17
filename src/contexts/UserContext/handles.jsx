@@ -7,6 +7,7 @@ import {
   logout,
   signup,
   changeUserName,
+  changeProfile,
   changePassword,
 } from 'utils/apis/userApi';
 
@@ -65,19 +66,47 @@ const useHandles = () => {
   );
 
   const handleLogout = useCallback(async () => {
+    if (localToken) {
+      await logout(localToken); //TODO:신영 로그아웃 API HEADER에 토큰 넣기
+    }
     // JWT 토큰 및 로컬 스토리지 초기화
     setLocalToken('');
     localStorage.clear();
-    //TODO:신영 추후 로그인 제대로 되서 토큰이 있으면 아래 주석 제거
-    //await logout();
     navigate('/login', { replace: true }); // 로그인 페이지로 이동
-  }, [navigate, setLocalToken]);
+  }, [navigate, localToken, setLocalToken]);
 
   //회원 이름수정
   const handlechangeUserName = useCallback(
     async (fullName, username = '') => {
-      console.log('CHANGENAME_HANDLE', fullName);
-      //await changeUserName(localToken, fullName, username);
+      if (localToken && fullName) {
+        await changeUserName(localToken, fullName, username);
+      }
+    },
+    [localToken],
+  );
+
+  //회원 프로필 사진 수정
+  const handlechangeProfile = useCallback(
+    async ({ image }) => {
+      const byteString = atob(image.split(',')[1]);
+
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([ia], {
+        type: 'image/jpeg',
+      });
+
+      const formData = new FormData();
+      formData.append('isCover', false);
+      formData.append('image', blob);
+
+      if (localToken && image) {
+        await changeProfile(localToken, formData);
+      }
     },
     [localToken],
   );
@@ -85,8 +114,9 @@ const useHandles = () => {
   //회원 비밀번호 수정
   const handlechangePassword = useCallback(
     async (password) => {
-      console.log('PASSWORD_HANDLE', password);
-      //await changePassword(localToken, password);
+      if (localToken && password) {
+        await changePassword(localToken, password);
+      }
     },
     [localToken],
   );
@@ -97,6 +127,7 @@ const useHandles = () => {
     handleSignup,
     handleLogout,
     handlechangeUserName,
+    handlechangeProfile,
     handlechangePassword,
   };
 };

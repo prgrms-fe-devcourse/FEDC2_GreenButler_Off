@@ -132,6 +132,21 @@ export const changeUserName = (token, fullName, username) => {
 };
 
 /* 
+  나의 profile 사진을 변경한다.
+  Response: User
+*/
+export const changeProfile = (token, formData) => {
+  return request({
+    method: API_METHOD.POST,
+    url: `/users/upload-photo`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: formData,
+  });
+};
+
+/* 
   나의 계정 비밀번호를 변경한다. 
 */
 export const changePassword = (token, password) => {

@@ -174,7 +174,27 @@ export const getNotifications = (token) => {
     method: API_METHOD.GET,
     url: `/notifications`,
     headers: {
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+/* 
+  상대방에게 알림을 보낸다.
+  Response: Notification
+*/
+export const setNotification = (token, type, typeId, userId, postId) => {
+  return request({
+    method: API_METHOD.POST,
+    url: `/notifications/create`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      notificationType: type,
+      notificationTypeId: typeId,
+      userId,
+      postId,
     },
   });
 };

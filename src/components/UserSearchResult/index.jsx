@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import { IMAGE_URLS } from 'utils/constants/images';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -18,13 +19,19 @@ const Profile = styled.div`
 `;
 
 const UserSearchResult = ({ users }) => {
+  const navigate = useNavigate();
+
+  const onClickProfile = (userId) => {
+    navigate(`/user/${userId}`);
+  };
+
   return (
     <>
       {users &&
         users.map((user) => {
           return (
             <ProfileContainer key={user._id}>
-              <Profile>
+              <Profile onClick={() => onClickProfile(user._id)}>
                 <Avatar size={60} src={IMAGE_URLS.PROFILE_IMG} />
                 <Text style={{ marginLeft: 20 }} fontSize={18} block>
                   {user.fullName}

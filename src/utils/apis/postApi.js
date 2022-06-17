@@ -56,12 +56,19 @@ export const getPostData = (postId) => {
   : FormData를 전송하는 것이 필요. 아래와 같이 FormData로 변환 후 전송한다. (테스트 필요)
 */
 export const addPost = (token, data) => {
+<<<<<<< HEAD
+  const submitData = { ...data, meta: JSON.stringify(data.meta) };
+  const formData = new FormData();
+  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
+  formData.append('channelId', channelId);
+=======
   // const submitData = { ...data, meta: JSON.stringify(data.meta) };
   // const formData = new FormData();
   // Object.keys(submitData).forEach((key) =>
   //   formData.append(key, submitData[key]),
   // );
   // formData.append('channelId', channelId);
+>>>>>>> c3bccb23aa5eb71259d692eb70b1611368210535
 
   return request({
     method: API_METHOD.POST,
@@ -188,12 +195,5 @@ export const searchTag = (keyword) => {
   return request({
     method: API_METHOD.GET,
     url: `/search/all/%23${keyword}`,
-  });
-};
-
-export const searchUser = (keyword) => {
-  return request({
-    method: API_METHOD.GET,
-    url: `/search/users/${keyword}`,
   });
 };

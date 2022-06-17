@@ -2,7 +2,6 @@
   "name": "greenbutler",
   "version": "0.1.0",
   "private": true,
-  "homepage":"https://starlit-syrniki-c9fd0d.netlify.app/",
   "dependencies": {
     "@emotion/babel-preset-css-prop": "^11.2.0",
     "@emotion/react": "^11.9.0",
@@ -73,4 +72,5 @@
     "prop-types": "^15.8.1",
     "webpack": "^5.73.0"
   },
+  "proxy": "http://kdt.frontend.2nd.programmers.co.kr:5007"
 }

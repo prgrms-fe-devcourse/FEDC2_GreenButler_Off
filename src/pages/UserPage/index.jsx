@@ -26,14 +26,16 @@ import {
 
 const UserPage = () => {
   const navigate = useNavigate();
-  const { currentUser } = useUserContext();
-  //const { currentUser, onFollow, onUnfollow } = useUserContext(); //TODO:신영 추후 팔로우, 팔로잉 페이지 제작시 사용
+  const { currentUser, onFollow, onUnfollow } = useUserContext();
   const { id } = useParams();
   const pageUserId = id;
   const [user, setUser] = useState(initialUserData.currentUser);
   const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
   const [uesrLikePosts, setUserLikePosts] = useState([]);
+  const isFollwing = currentUser.following.some((following) => following.user === pageUserId);
+  const followData = currentUser.following.filter((following) => following.user === pageUserId);
+  const [isFollow, setIsFollow] = useState(isFollwing);
 
   useEffect(() => {
     handleGetUser();
@@ -42,7 +44,6 @@ const UserPage = () => {
   useEffect(() => {
     handleGetLikePosts();
     handleGetUserPosts();
-    handleFollowButton();
   }, [user]);
 
   //TODO:신영 추후 핸들러 분리
@@ -53,25 +54,20 @@ const UserPage = () => {
     }
   }, [pageUserId]);
 
-  const isFollwing = currentUser.following.some((id) => id === pageUserId);
-  const [isFollow, setIsFollow] = useState(isFollwing);
-
   const handleGetUserPosts = useCallback(async () => {
     if (pageUserId) {
       const { data } = await getUserPosts(pageUserId);
       setUserPosts(data);
       setPosts(data);
     }
-  }, []);
+  }, [pageUserId]);
 
   //TODO:신영 관리자 좋아요 post 두번된게 있네? 같은 post를 여러번 좋아요할 수 있구나 이거 나중에 더미 삭제
   const handleGetLikePosts = useCallback(async () => {
     const { likes } = user;
     if (likes.length !== 0) {
       const data = await Promise.all(
-        likes.map((like) =>
-          getPostData(like.post).then((result) => result.data),
-        ),
+        likes.map((like) => getPostData(like.post).then((result) => result.data)),
       );
       setUserLikePosts(data);
     }
@@ -80,11 +76,11 @@ const UserPage = () => {
   //TODO:신영 추후 팔로우, 팔로잉 페이지 만들 때 최종 완성
   const handleFollowButton = useCallback(() => {
     setIsFollow((isFollow) => !isFollow);
-    /*     if (isFollow) {
-      onFollow({ userId: currentUser.id, followId: pageUserId });
+    if (isFollow) {
+      onFollow({ userId: pageUserId, followId: followData.id });
     } else {
       onUnfollow({ unfollowId: pageUserId });
-    } */
+    }
   }, []);
 
   return (
@@ -123,7 +119,6 @@ const UserPage = () => {
             </UserDetail>
             <UserDetail onClick={() => navigate('/user/follow')}>
               <Text fontSize={16} color={theme.color.fontNormal}>
-                {' '}
                 팔로잉
               </Text>
               <Text fontSize={18}> {currentUser.following.length}</Text>
@@ -131,9 +126,7 @@ const UserPage = () => {
           </UserDetailWrapper>
           <Button
             width="100%"
-            style={
-              isFollow ? { ...followingButtonStyle } : { ...followButtonStyle }
-            }
+            style={isFollow ? { ...followingButtonStyle } : { ...followButtonStyle }}
             onClick={handleFollowButton}
           >
             {isFollow ? '팔로잉' : '팔로우'}
@@ -142,10 +135,10 @@ const UserPage = () => {
         {/* //TODO:신영 추후 Tab 아이콘 넣는 방식으로 교체 */}
         <Tab>
           <button onClick={() => setPosts(userPosts)}>
-            <Icon name="LIKE_ICON" size={18} />
+            <Icon name="GRID" size={18} />
           </button>
           <button onClick={() => setPosts(uesrLikePosts)}>
-            <Icon name="LIKE_ICON" size={18} />
+            <Icon name="HEART" size={18} />
           </button>
         </Tab>
         <PostImageContainer posts={posts} />

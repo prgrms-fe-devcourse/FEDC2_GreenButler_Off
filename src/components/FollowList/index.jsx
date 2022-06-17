@@ -40,12 +40,10 @@ const followingButtonStyle = {
 };
 
 //TODO: follows 데이터 구조
-// const followData = [{ followId: '', userData: {}}]; // 팔로잉 기준 전부 isFollow true
+// const followData = [{ followId: '', userData: {}, followData: {}}]; // 팔로잉 기준 전부 isFollow true
 
 const FollowList = ({ followList, tab }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
-  const { follwing, followers } = currentUser;
-  console.log(followList, 'followList');
 
   const hadleToggleFollow = useCallback((followId, type, userId = '') => {
     if (type === UNFOLLOW) {
@@ -54,11 +52,6 @@ const FollowList = ({ followList, tab }) => {
       onFollow({ userId, followId });
     }
   }, []);
-
-  useEffect(() => {
-    console.log('CURRENT_FOLLOWER', currentUser.followers);
-    console.log('CURRENT_FOLLOWING', currentUser.following);
-  }, [currentUser]);
 
   return (
     //TODO: user._id:
@@ -73,7 +66,9 @@ const FollowList = ({ followList, tab }) => {
                   {userData.fullName}
                 </Text>
               </Profile>
-              {currentUser.id === followData.follow || tab === FOLLOWING ? (
+              {currentUser.id === followData.follow ||
+              tab === FOLLOWING ||
+              currentUser.following.some((following) => following._id === followId) ? (
                 <Button
                   width={100}
                   height={30}

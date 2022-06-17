@@ -28,7 +28,7 @@ const SignupPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [tokenInfo, setTokenInfo] = useLocalStorage('tokenInfo', '');
   const navigate = useNavigate();
-  const { onSignup, currentUser } = useUserContext();
+  const { onSignup } = useUserContext();
 
   const openModal = () => {
     setShowModal(true);
@@ -44,7 +44,6 @@ const SignupPage = () => {
         fullName,
         password,
       });
-      console.log(currentUser);
     } catch (e) {
       e.message = 'SignupError';
       openModal();

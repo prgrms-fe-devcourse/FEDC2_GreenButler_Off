@@ -1,0 +1,6 @@
+[[redirects]]
+from = "/proxy/*"
+  to = "http://kdt.frontend.2nd.programmers.co.kr:5007/:splat"  
+  status = 200
+  force = true
+

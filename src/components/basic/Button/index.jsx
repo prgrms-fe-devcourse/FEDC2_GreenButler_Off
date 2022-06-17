@@ -5,8 +5,6 @@ import colors from 'utils/constants/colors';
 const { mainGreen } = colors;
 
 const StyledButton = styled.button`
-  border: ${({ borderWidth, borderColor }) =>
-    borderWidth ? `${borderWidth} solid ${borderColor}` : 'none'};
   border-radius: ${({ borderRadius }) => borderRadius};
   cursor: pointer;
   padding: 0 16px;
@@ -44,9 +42,8 @@ const Button = ({
     height,
     color,
     backgroundColor,
-    borderColor,
+    border: `${borderWidth ? borderWidth : 0}px solid ${borderColor ? borderColor : 'none'}`,
     borderRadius,
-    borderWidth,
     fontSize,
   };
 

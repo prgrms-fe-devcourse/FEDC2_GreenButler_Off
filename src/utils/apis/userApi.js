@@ -1,5 +1,6 @@
 import request from './common';
 import { API_METHOD } from 'utils/constants/apiMethods';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 
 /* 
   로그인
@@ -8,7 +9,7 @@ import { API_METHOD } from 'utils/constants/apiMethods';
 export const login = ({ email, password }) => {
   return request({
     method: API_METHOD.POST,
-    url: `/login`,
+    url: `${PROXY}/login`,
     data: {
       email,
       password,
@@ -23,7 +24,7 @@ export const login = ({ email, password }) => {
 export const signup = ({ email, fullName, password }) => {
   return request({
     method: API_METHOD.POST,
-    url: `/signup`,
+    url: `${PROXY}/signup`,
     data: {
       email,
       fullName,
@@ -36,10 +37,13 @@ export const signup = ({ email, fullName, password }) => {
   로그아웃
   Response: User
 */
-export const logout = () => {
+export const logout = (token) => {
   return request({
     method: API_METHOD.POST,
-    url: `/logout`,
+    url: `${PROXY}/logout`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
@@ -50,7 +54,7 @@ export const logout = () => {
 export const getCurrentUser = (token) => {
   return request({
     method: API_METHOD.GET,
-    url: `/auth-user`,
+    url: `${PROXY}/auth-user`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -64,7 +68,7 @@ export const getCurrentUser = (token) => {
 export const getUser = (userId) => {
   return request({
     method: API_METHOD.GET,
-    url: `/users/${userId}`,
+    url: `${PROXY}/users/${userId}`,
   });
 };
 
@@ -75,18 +79,20 @@ export const getUser = (userId) => {
 export const searchUsers = (fullName) => {
   return request({
     method: API_METHOD.GET,
-    url: `/search/users/${fullName}`,
+    url: `${PROXY}/search/users/${fullName}`,
   });
 };
 
 /* 
   특정 유저를 팔로우한다.
-  Response: Follow 
+  Response: Follow  
+  TODO:신영 userId === 팔로우 당하는 사람 id
 */
 export const Follow = (token, userId) => {
+  //console.log('API_USERID', userId);
   return request({
     method: API_METHOD.POST,
-    url: `/follow/create`,
+    url: `${PROXY}/follow/create`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -98,19 +104,20 @@ export const Follow = (token, userId) => {
 
 /* 
   특정 유저를 언팔로우한다.
-  Response: Follow 
+  Response: Follow  
+  TODO:신영 id === 팔로우객체 _id
 */
 export const unFollow = (token, id) => {
-  return request({
+  /*   return request({
     method: API_METHOD.DELETE,
-    url: `/follow/delete`,
+    url: `${PROXY}/follow/delete`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
     data: {
       id,
     },
-  });
+  }); */
 };
 
 /* 
@@ -118,9 +125,9 @@ export const unFollow = (token, id) => {
   Response: User
 */
 export const changeUserName = (token, fullName, username) => {
-  return request({
+  /*   return request({
     method: API_METHOD.PUT,
-    url: `/settings/update-user`,
+    url: `${PROXY}/settings/update-user`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -128,6 +135,21 @@ export const changeUserName = (token, fullName, username) => {
       ...(fullName && { fullName }),
       ...(username && { username }),
     },
+  }); */
+};
+
+/* 
+  나의 profile 사진을 변경한다.
+  Response: User
+*/
+export const changeProfile = (token, formData) => {
+  return request({
+    method: API_METHOD.POST,
+    url: `${PROXY}/users/upload-photo`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: formData,
   });
 };
 
@@ -137,7 +159,7 @@ export const changeUserName = (token, fullName, username) => {
 export const changePassword = (token, password) => {
   return request({
     method: API_METHOD.PUT,
-    url: `/settings/update-password`,
+    url: `${PROXY}/settings/update-password`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -154,7 +176,7 @@ export const changePassword = (token, password) => {
 export const getNotifications = (token) => {
   return request({
     method: API_METHOD.GET,
-    url: `/notifications`,
+    url: `${PROXY}/notifications`,
     headers: {
       authorization: `Bearer ${token}`,
     },

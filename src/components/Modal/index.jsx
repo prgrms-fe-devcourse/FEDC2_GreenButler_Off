@@ -2,6 +2,9 @@ import styled from '@emotion/styled';
 import { useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import useClickAway from '../../hooks/useClickAway';
+import ModalButton from './ModalButton';
+import ModalContent from './ModalContent';
+import React from 'react';
 
 /*
  TODO:
@@ -25,24 +28,22 @@ const ModalContainer = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 50%);
-  padding: 8px;
+  transform: translate(-50%, -50%);
+  padding: 25px;
   background-color: white;
-  box-shadow: 0 3px 6px rgba(0, 0, 0.2);
+  box-shadow: rgb(99 99 99 / 14%) 0px 2px 6px 2px;
   box-sizing: border-box;
-  width: 300px;
+  max-width: 390px;
+  width: 90%;
   border-radius: 15px;
 `;
 
-const Modal = ({ children, width, height, visible = false, onClose, ...props }) => {
-  const containerStyle = useMemo(
-    () => ({
-      width,
-      height,
-    }),
-    [width, height],
-  );
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 5px;
+`;
 
+const Modal = ({ children, visible = false, onClose, ...props }) => {
   const ref = useClickAway(() => {
     onClose && onClose();
   });
@@ -56,14 +57,25 @@ const Modal = ({ children, width, height, visible = false, onClose, ...props }) 
     };
   });
 
+  const content = React.Children.toArray(children).filter(
+    (element) => element.props.__TYPE === 'Modal.Content',
+  );
+  const buttons = React.Children.toArray(children).filter(
+    (element) => element.props.__TYPE === 'Modal.Button',
+  );
+
   return ReactDOM.createPortal(
     <BackgroundDim style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContainer {...props} ref={ref} style={{ ...props.style, ...containerStyle }}>
-        {children}
+      <ModalContainer {...props} ref={ref} style={{ ...props.style }}>
+        {content}
+        <ButtonContainer>{buttons}</ButtonContainer>
       </ModalContainer>
     </BackgroundDim>,
     el,
   );
 };
+
+Modal.Content = ModalContent;
+Modal.Button = ModalButton;
 
 export default Modal;

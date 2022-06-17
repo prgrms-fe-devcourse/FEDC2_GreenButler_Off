@@ -35,44 +35,28 @@ const NavItem = styled.li`
 export const Navigation = () => {
   const { pathname } = useLocation();
 
-  const showTab = ['/', '/user/mypage', '/search', '/post/detail'];
-
-  if (!showTab.includes(pathname)) {
-    return;
-  }
-
   return (
     <NavContainer bottom height={navHeight}>
       <NavList>
         <NavItem>
-          <Link to="/">
-            {pathname === '/' ? (
-              <Icon name="HOME_ACTIVE" size={27} />
-            ) : (
-              <Icon name="HOME" size={27} />
-            )}
-          </Link>
+          <Icon.Link to="/" name={pathname === '/' ? 'HOME_ACTIVE' : 'HOME'} size={27} />
         </NavItem>
         <NavItem>
           <Icon.Link to="/post/create" name="ADD_POST" size={27} />
         </NavItem>
         <NavItem>
-          <Link to="/search">
-            {pathname === '/search' ? (
-              <Icon name="SEARCH_ACTIVE" size={27} />
-            ) : (
-              <Icon name="SEARCH" size={27} />
-            )}
-          </Link>
+          <Icon.Link
+            to="/search"
+            name={pathname === '/search' ? 'SEARCH_ACTIVE' : 'SEARCH'}
+            size={27}
+          />
         </NavItem>
         <NavItem>
-          <Link to="/user/mypage">
-            {pathname === '/user/mypage' ? (
-              <Icon name="MY_PAGE_ACTIVE" size={27} />
-            ) : (
-              <Icon name="MY_PAGE" size={27} />
-            )}
-          </Link>
+          <Icon.Link
+            to="/user/mypage"
+            name={pathname === '/user/mypage' ? 'MY_PAGE_ACTIVE' : 'MY_PAGE'}
+            size={27}
+          />
         </NavItem>
       </NavList>
     </NavContainer>

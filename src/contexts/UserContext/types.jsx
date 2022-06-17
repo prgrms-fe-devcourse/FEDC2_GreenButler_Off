@@ -9,3 +9,5 @@ export const LOADING_OFF = 'LOADING_OFF';
 export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
 export const CHANGE_FULLNAME = 'CHANGE_FULLNAME';
 export const CHANGE_PROFILE = 'CHANGE_PROFILE';
+export const LIKE = 'LIKE';
+export const DISLIKE = 'DISLIKE';

@@ -10,7 +10,8 @@ const MainPage = () => {
   const [posts, setPosts] = useState([]);
   const [isLoding, setIsLoding] = useState(false);
   const [offset, setOffset] = useState(0);
-  const [target, setTarget] = useState('');
+  const [max, setMax] = useState(0);
+  const targetRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -19,45 +20,58 @@ const MainPage = () => {
         limit: LIMIT,
       }).then((res) => res.data);
       setPosts(nextPosts);
+      setOffset(offset + 5);
+      setMax(nextPosts[0].channel.posts.length);
     })();
   }, []);
 
-  // const onIntersect = async ([entry], observer) => {
-  //   if (entry.isIntersecting && !isLoding) {
-  //     observer.unobserve(entry.target);
-  //     setIsLoding(true);
-  //     setOffset(offset + 5);
-  //     const nextPosts = await getPostsPart({
-  //       offset,
-  //       limit: LIMIT,
-  //     }).then((res) => res.data);
-  //     setPosts([...posts, ...nextPosts]);
-  //     setIsLoding(false);
-  //     observer.observe(entry.target);
-  //   }
-  // };
+  const onIntersect = useCallback(
+    async ([entry], observer) => {
+      if (entry.isIntersecting && !isLoding && offset < max) {
+        observer.disconnect(entry.target);
+        setIsLoding(true);
+        setOffset(offset + 5);
+        const nextPosts = await getPostsPart({
+          offset,
+          limit: LIMIT,
+        }).then((res) => res.data);
+        setPosts([...posts, ...nextPosts]);
+        setIsLoding(false);
+      }
+    },
+    [isLoding, offset, max, posts],
+  );
 
-  // useEffect(() => {
-  //   let observer;
-  //   if (target) {
-  //     observer = new IntersectionObserver(onIntersect, {
-  //       threshold: 0.4,
-  //     });
-  //     observer.observe(target);
-  //   }
-  //   return () => observer && observer.disconnect();
-  // }, [target]);
+  useEffect(() => {
+    let observer;
+    if (targetRef.current) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4,
+      });
+      observer.observe(targetRef.current);
+    }
+    return () => observer && observer.disconnect();
+  }, [targetRef, onIntersect]);
 
   return (
     <PageWrapper header nav>
       <PostList>
-        {posts?.map((post) => (
-          <li key={post._id}>
-            <PostItem key={post._id} post={post} />
-          </li>
-        ))}
+        {posts?.map((post, i) => {
+          if (posts.length - 1 === i) {
+            return (
+              <li key={i} ref={targetRef}>
+                <PostItem key={i} post={post} />
+              </li>
+            );
+          } else {
+            return (
+              <li key={i}>
+                <PostItem key={i} post={post} />
+              </li>
+            );
+          }
+        })}
       </PostList>
-      <div ref={setTarget}></div>
     </PageWrapper>
   );
 };
@@ -65,18 +79,3 @@ const MainPage = () => {
 const PostList = styled.ul``;
 
 export default MainPage;
-
-// useEffect(() => {
-//   const observer = new IntersectionObserver((entries) => {
-//     if (entries[0].isIntersecting && targetRef.current) {
-//       console.log('화면 끝...', entries[0]);
-//     }
-//   }, observerOption);
-
-//   if (targetRef.current) {
-//     observer.observe(targetRef.current);
-//   }
-//   return () => {
-//     observer.disconnect();
-//   };
-// }, [targetRef]);

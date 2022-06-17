@@ -21,9 +21,8 @@ const StyledInput = styled.input`
   padding: 22px 22px;
   border-radius: 15px;
   box-sizing: border-box;
-  border: 1px solid
-    ${({ inValid }) =>
       inValid ? theme.color.mainRed : theme.color.borderNormal};
+  border: 1px solid ${({ inValid }) => (inValid ? theme.color.mainRed : theme.color.borderNormal)};
 
   ::placeholder {
     color: #a3a3a3;
@@ -45,6 +44,7 @@ const NewInput = ({
   fontSize = '18px',
   placeholder,
   onChange,
+  value,
   ...props
 }) => {
   const InputStyle = {
@@ -69,6 +69,7 @@ const NewInput = ({
         inputStyle={InputStyle}
         onChange={handleChange}
         inValid={inValid}
+        value={value}
       />
     </InputWrapper>
   );

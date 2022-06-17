@@ -135,10 +135,10 @@ const UserPage = () => {
         {/* //TODO:신영 추후 Tab 아이콘 넣는 방식으로 교체 */}
         <Tab>
           <button onClick={() => setPosts(userPosts)}>
-            <Icon name="LIKE_ICON" size={18} />
+            <Icon name="GRID" size={18} />
           </button>
           <button onClick={() => setPosts(uesrLikePosts)}>
-            <Icon name="LIKE_ICON" size={18} />
+            <Icon name="HEART" size={18} />
           </button>
         </Tab>
         <PostImageContainer posts={posts} />

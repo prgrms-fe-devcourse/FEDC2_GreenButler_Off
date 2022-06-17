@@ -43,9 +43,7 @@ const MyPage = () => {
     const { likes } = currentUser;
     if (likes.length !== 0) {
       const data = await Promise.all(
-        likes.map((like) =>
-          getPostData(like.post).then((result) => result.data),
-        ),
+        likes.map((like) => getPostData(like.post).then((result) => result.data)),
       );
       setUserLikePosts(data);
     }
@@ -101,10 +99,10 @@ const MyPage = () => {
       */}
         <Tab>
           <button onClick={() => setPosts(userPosts)}>
-            <Icon name="LIKE_ICON" size={18} />
+            <Icon name="GRID" size={18} />
           </button>
           <button onClick={() => setPosts(uesrLikePosts)}>
-            <Icon name="LIKE_ICON" size={18} />
+            <Icon name="HEART" size={18} />
           </button>
         </Tab>
         <PostImageContainer posts={posts} />

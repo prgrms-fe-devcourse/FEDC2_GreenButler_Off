@@ -1,6 +1,6 @@
 import request from './common';
 import { API_METHOD } from 'utils/constants/apiMethods';
-
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 const channelId = '62a04aa2703fdd3a82b4e66e';
 
 /* 
@@ -10,7 +10,7 @@ const channelId = '62a04aa2703fdd3a82b4e66e';
 export const getPosts = () => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/channel/${channelId}`,
+    url: `${PROXY}/posts/channel/${channelId}`,
   });
 };
 
@@ -21,7 +21,7 @@ export const getPosts = () => {
 export const getPostsPart = ({ offset, limit }) => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/channel/${channelId}`,
+    url: `${PROXY}/posts/channel/${channelId}`,
     params: {
       offset,
       limit,
@@ -36,7 +36,7 @@ export const getPostsPart = ({ offset, limit }) => {
 export const getUserPosts = (userId) => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/author/${userId}`,
+    url: `${PROXY}/posts/author/${userId}`,
   });
 };
 
@@ -47,7 +47,7 @@ export const getUserPosts = (userId) => {
 export const getPostData = (postId) => {
   return request({
     method: API_METHOD.GET,
-    url: `/posts/${postId}`,
+    url: `${PROXY}/posts/${postId}`,
   });
 };
 
@@ -63,12 +63,12 @@ export const addPost = (token, data) => {
 
   return request({
     method: API_METHOD.POST,
-    url: `/posts/create`,
+    url: `${PROXY}/posts/create`,
     headers: {
       'Content-Type': `multipart/form-data`, // 이미지 전송을 위함
       Authorization: `Bearer ${token}`,
     },
-    data: data,
+    data: formData,
   });
 };
 
@@ -84,7 +84,7 @@ export const updatePost = (token, data) => {
 
   return request({
     method: API_METHOD.PUT,
-    url: `/posts/update`,
+    url: `${PROXY}/posts/update`,
     headers: {
       'Content-Type': `multipart/form-data`,
       Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ export const updatePost = (token, data) => {
 export const deletePost = (token, postId) => {
   return request({
     method: API_METHOD.DELETE,
-    url: `/posts/delete`,
+    url: `${PROXY}/posts/delete`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -116,7 +116,7 @@ export const deletePost = (token, postId) => {
 export const setLike = (token, postId) => {
   return request({
     method: API_METHOD.POST,
-    url: `/likes/create`,
+    url: `${PROXY}/likes/create`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -130,15 +130,15 @@ export const setLike = (token, postId) => {
   특정 포스트에 좋아요한 것을 취소한다. 
   Response: Like
 */
-export const setDisLike = (token, likeId) => {
+export const setDislike = (token, postId) => {
   return request({
     method: API_METHOD.DELETE,
-    url: `/likes/delete`,
+    url: `${PROXY}/likes/delete`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      id: likeId,
+      id: postId,
     },
   });
 };
@@ -150,7 +150,7 @@ export const setDisLike = (token, likeId) => {
 export const addComment = (token, postId, comment) => {
   return request({
     method: API_METHOD.POST,
-    url: `/comments/create`,
+    url: `${PROXY}/comments/create`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -168,7 +168,7 @@ export const addComment = (token, postId, comment) => {
 export const deleteComment = (token, postId) => {
   return request({
     method: API_METHOD.DELETE,
-    url: `/comments/delete`,
+    url: `${PROXY}/comments/delete`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -185,6 +185,13 @@ export const deleteComment = (token, postId) => {
 export const searchTag = (keyword) => {
   return request({
     method: API_METHOD.GET,
-    url: `/search/all/%23${keyword}`,
+    url: `${PROXY}/search/all/%23${keyword}`,
+  });
+};
+
+export const searchUser = (keyword) => {
+  return request({
+    method: API_METHOD.GET,
+    url: `${PROXY}/search/users/${keyword}`,
   });
 };

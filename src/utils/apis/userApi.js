@@ -1,5 +1,6 @@
 import request from './common';
 import { API_METHOD } from 'utils/constants/apiMethods';
+const PROXY = window.location.hostname === 'localhost' ? '' : '/proxy';
 
 /* 
   로그인
@@ -8,7 +9,7 @@ import { API_METHOD } from 'utils/constants/apiMethods';
 export const login = ({ email, password }) => {
   return request({
     method: API_METHOD.POST,
-    url: `/login`,
+    url: `${PROXY}/login`,
     data: {
       email,
       password,
@@ -23,7 +24,7 @@ export const login = ({ email, password }) => {
 export const signup = ({ email, fullName, password }) => {
   return request({
     method: API_METHOD.POST,
-    url: `/signup`,
+    url: `${PROXY}/signup`,
     data: {
       email,
       fullName,
@@ -39,7 +40,7 @@ export const signup = ({ email, fullName, password }) => {
 export const logout = (token) => {
   return request({
     method: API_METHOD.POST,
-    url: `/logout`,
+    url: `${PROXY}/logout`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -53,7 +54,7 @@ export const logout = (token) => {
 export const getCurrentUser = (token) => {
   return request({
     method: API_METHOD.GET,
-    url: `/auth-user`,
+    url: `${PROXY}/auth-user`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -67,7 +68,7 @@ export const getCurrentUser = (token) => {
 export const getUser = (userId) => {
   return request({
     method: API_METHOD.GET,
-    url: `/users/${userId}`,
+    url: `${PROXY}/users/${userId}`,
   });
 };
 
@@ -78,7 +79,7 @@ export const getUser = (userId) => {
 export const searchUsers = (fullName) => {
   return request({
     method: API_METHOD.GET,
-    url: `/search/users/${fullName}`,
+    url: `${PROXY}/search/users/${fullName}`,
   });
 };
 
@@ -91,7 +92,7 @@ export const Follow = (token, userId) => {
   //console.log('API_USERID', userId);
   return request({
     method: API_METHOD.POST,
-    url: `/follow/create`,
+    url: `${PROXY}/follow/create`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -109,7 +110,7 @@ export const Follow = (token, userId) => {
 export const unFollow = (token, id) => {
   /*   return request({
     method: API_METHOD.DELETE,
-    url: `/follow/delete`,
+    url: `${PROXY}/follow/delete`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -126,7 +127,7 @@ export const unFollow = (token, id) => {
 export const changeUserName = (token, fullName, username) => {
   /*   return request({
     method: API_METHOD.PUT,
-    url: `/settings/update-user`,
+    url: `${PROXY}/settings/update-user`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -144,7 +145,7 @@ export const changeUserName = (token, fullName, username) => {
 export const changeProfile = (token, formData) => {
   return request({
     method: API_METHOD.POST,
-    url: `/users/upload-photo`,
+    url: `${PROXY}/users/upload-photo`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -158,7 +159,7 @@ export const changeProfile = (token, formData) => {
 export const changePassword = (token, password) => {
   return request({
     method: API_METHOD.PUT,
-    url: `/settings/update-password`,
+    url: `${PROXY}/settings/update-password`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -175,29 +176,9 @@ export const changePassword = (token, password) => {
 export const getNotifications = (token) => {
   return request({
     method: API_METHOD.GET,
-    url: `/notifications`,
+    url: `${PROXY}/notifications`,
     headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};
-
-/* 
-  상대방에게 알림을 보낸다.
-  Response: Notification
-*/
-export const setNotification = (token, type, typeId, userId, postId) => {
-  return request({
-    method: API_METHOD.POST,
-    url: `/notifications/create`,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    data: {
-      notificationType: type,
-      notificationTypeId: typeId,
-      userId,
-      postId,
+      authorization: `Bearer ${token}`,
     },
   });
 };

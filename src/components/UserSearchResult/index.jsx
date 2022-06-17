@@ -27,7 +27,7 @@ const UserSearchResult = ({ users }) => {
           return (
             <ProfileContainer key={user._id}>
               <Profile>
-                <Avatar size={60} src={IMAGE_URLS.PROFILE_iMG} />
+                <Avatar size={60} src={IMAGE_URLS.PROFILE_IMG} />
                 <Text style={{ marginLeft: 20 }} fontSize={18} block>
                   {user.fullName}
                 </Text>

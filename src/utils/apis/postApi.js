@@ -130,7 +130,7 @@ export const setLike = (token, postId) => {
   특정 포스트에 좋아요한 것을 취소한다. 
   Response: Like
 */
-export const setDisLike = (token, postId) => {
+export const setDisLike = (token, likeId) => {
   return request({
     method: API_METHOD.DELETE,
     url: `/likes/delete`,
@@ -138,7 +138,7 @@ export const setDisLike = (token, postId) => {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      id: postId,
+      id: likeId,
     },
   });
 };

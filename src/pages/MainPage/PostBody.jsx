@@ -13,10 +13,11 @@ const token =
 const currentUserId = '629e29bd6d18b41c5b238ba2';
 
 const PostBody = ({ post, isDetailPage = false }) => {
-  const { _id, image, likes, comments, updatedAt } = post || {};
+  const { _id: postId, image, likes, comments, updatedAt } = post || {};
   const { content, contents, tags } = JSON.parse(post?.title);
   const [onHeart, setOnHeart] = useState(false);
   const [heartCount, setHeartCount] = useState(likes.length);
+  const [likeId, setLikeId] = useState('');
 
   const navigate = useNavigate();
 
@@ -24,12 +25,12 @@ const PostBody = ({ post, isDetailPage = false }) => {
     if (isDetailPage) {
       return;
     }
-    navigate(`/post/detail/?id=${_id}`, {
+    navigate(`/post/detail/?id=${postId}`, {
       state: {
         post,
       },
     });
-  }, [_id, post, isDetailPage, navigate]);
+  }, [postId, post, isDetailPage, navigate]);
 
   const handleTagClick = useCallback(
     (tag) => {
@@ -42,20 +43,32 @@ const PostBody = ({ post, isDetailPage = false }) => {
     [navigate],
   );
 
-  const handleHeartClick = useCallback(() => {
+  const handleHeartClick = useCallback(async () => {
     setOnHeart(!onHeart);
     if (!onHeart) {
       setHeartCount(heartCount + 1);
-      // setLike(token, _id);
+      if (postId) {
+        const like = await setLike(token, postId).then((res) => res.data);
+        setLikeId(like._id);
+      }
     } else {
       setHeartCount(heartCount - 1);
-      // setDisLike(token, _id);
+      if (likeId) {
+        await setDisLike(token, likeId).then((res) => res.data);
+        setLikeId('');
+      }
     }
-  }, [_id, onHeart, heartCount]);
+  }, [onHeart, heartCount, postId, likeId]);
 
   useEffect(() => {
-    if (likes && likes.some(({ user }) => user === currentUserId)) {
+    const array = likes?.map(({ user, _id }) => {
+      if (user === currentUserId) {
+        return _id;
+      }
+    });
+    if (array.length) {
       setOnHeart(true);
+      setLikeId(array[0]);
     }
   }, []);
 

@@ -28,9 +28,8 @@ const TextArea = styled.textarea`
   }
 `;
 
-const handleDataForm = async ({ text, tags, imgSrc }) => {
+const srcToBlob = (imgSrc) => {
   const byteString = atob(imgSrc.split(',')[1]);
-  const title = { content: text, tags };
 
   const ab = new ArrayBuffer(byteString.length);
   const ia = new Uint8Array(ab);
@@ -42,10 +41,12 @@ const handleDataForm = async ({ text, tags, imgSrc }) => {
     type: 'image/jpeg',
   });
 
+  return blob;
+};
+
+const handleDataForm = async (data) => {
   const formData = new FormData();
-  formData.append('image', blob);
-  formData.append('title', JSON.stringify(title));
-  formData.append('channelId', '62a04aa2703fdd3a82b4e66e');
+  Object.keys(data).forEach((key) => formData.append(key, data[key]));
 
   return formData;
 };
@@ -53,11 +54,11 @@ const handleDataForm = async ({ text, tags, imgSrc }) => {
 const PostAddPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
-  const [text, setText] = useState('');
+  const [content, setContent] = useState('');
 
   const navigate = useNavigate();
 
-  const [storedValue, setValue] = useLocalToken();
+  const [token, setValue] = useLocalToken();
 
   const onAddTag = useCallback(
     (value) => {
@@ -78,8 +79,13 @@ const PostAddPage = () => {
   );
 
   const onClickAddBtn = async () => {
-    const formData = await handleDataForm({ text, tags, imgSrc });
-    const token = storedValue;
+    const ImageBlob = srcToBlob(imgSrc);
+    const title = JSON.stringify({ content, tags });
+    const formData = await handleDataForm({
+      title,
+      image: ImageBlob,
+      channelId: '62a04aa2703fdd3a82b4e66e',
+    });
 
     if (token) {
       const result = await addPost(token, formData);
@@ -100,7 +106,7 @@ const PostAddPage = () => {
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <TextArea
           onChange={(e) => {
-            setText(e.target.value);
+            setContent(e.target.value);
           }}
           placeholder="내 식물의 성장 글을 작성해주세요."
           rows={10}

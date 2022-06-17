@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'components/basic/Image';
 import { Link } from 'react-router-dom';
 import PostImageList from 'components/PostImageList';
+import PropTypes from 'prop-types';
 
 const PostImageContainer = React.memo(function ImageContainer({ posts }) {
   const dummyPlace = 'https://via.placeholder.com/200';
@@ -35,3 +36,7 @@ const PostImageContainer = React.memo(function ImageContainer({ posts }) {
 });
 
 export default PostImageContainer;
+
+PostImageContainer.prototype = {
+  posts: PropTypes.array,
+};

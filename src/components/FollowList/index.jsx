@@ -66,9 +66,7 @@ const FollowList = ({ followList, tab }) => {
                   {userData.fullName}
                 </Text>
               </Profile>
-              {currentUser.id === followData.follow ||
-              tab === FOLLOWING ||
-              currentUser.following.some((following) => following._id === followId) ? (
+              {currentUser.id === followData.follow || tab === FOLLOWING ? (
                 <Button
                   width={100}
                   height={30}

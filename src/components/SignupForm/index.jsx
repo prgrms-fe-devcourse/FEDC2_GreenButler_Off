@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import theme from 'styles/theme';
 import PropTypes from 'prop-types';
 import Text from 'components/basic/Text';
+import useValidInputs from 'hooks/useValidInputs';
 
 const StyledForm = styled.form`
   margin-top: 54px;
@@ -66,55 +67,51 @@ const SignupForm = ({
   inValidPasswordCheck = false,
 }) => {
   const [currentEmailInvalid, setEmailInvalid] = useState(inValidEmail);
-  const [currentPasswordInvalid, setPasswordInvalid] =
-    useState(inValidPassword);
-  const [currentPasswordCheckInvalid, setPasswordCheckInvalid] =
-    useState(inValidPasswordCheck);
-  const [currentFullNameInvalid, setFullNameInvalid] =
-    useState(inValidFullName);
-  const { isLoading, values, errors, handleChange, handleSubmit } = useForm({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    onSubmit,
-    validate: ({ email, password, fullName, passwordCheck }) => {
-      const newErrors = {};
+  const [currentPasswordInvalid, setPasswordInvalid] = useState(inValidPassword);
+  const [currentPasswordCheckInvalid, setPasswordCheckInvalid] = useState(inValidPasswordCheck);
+  const [currentFullNameInvalid, setFullNameInvalid] = useState(inValidFullName);
+  const { isLoading, values, errors, handleChange, handleSubmit, errorPassword, errorfullName } =
+    useValidInputs({
+      initialValues: {
+        email: '',
+        password: '',
+      },
+      onSubmit,
+      validate: ({ email, password, fullName, passwordCheck }) => {
+        const newErrors = {};
 
-      if (!email) {
-        newErrors.email = '! 이메일을 입력해주세요.';
-        setEmailInvalid(true);
-      } else if (!emailValid(email)) {
-        newErrors.email = '! 이메일 형식이 아닙니다.';
-        setEmailInvalid(true);
-      } else {
-        setEmailInvalid(false);
-      }
-      if (!fullName) {
-        newErrors.fullName = '! 닉네임을 입력해주세요';
-        setFullNameInvalid(true);
-      } else if (fullNameValid(fullName)) {
-        newErrors.fullName = '! 특수문자를 제외한 닉네임을 입력해주세요';
-        setFullNameInvalid(true);
-      } else {
-        setFullNameInvalid(false);
-      }
-      if (!password || password.length < 8 || password.length > 10) {
-        newErrors.password = '! 비밀번호를 8-10자 사이로 입력해주세요.';
-        setPasswordInvalid(true);
-      } else {
-        setPasswordInvalid(false);
-      }
-      if (password !== passwordCheck) {
-        newErrors.passwordCheck = '! 비밀번호가 일치하지 않습니다.';
-        setPasswordCheckInvalid(true);
-      } else {
-        setPasswordCheckInvalid(false);
-      }
+        if (!email) {
+          newErrors.email = '! 이메일을 입력해주세요.';
+          setEmailInvalid(true);
+        } else if (!emailValid(email)) {
+          newErrors.email = '! 이메일 형식이 아닙니다.';
+          setEmailInvalid(true);
+        } else {
+          setEmailInvalid(false);
+        }
+        if (!fullName) {
+          newErrors.fullName = '! 닉네임을 입력해주세요.';
+          setFullNameInvalid(true);
+        } else {
+          setFullNameInvalid(false);
+        }
+        if (!password) {
+          newErrors.password = '! 비밀번호를 입력해주세요.';
+          setPasswordInvalid(true);
+        } else {
+          setPasswordInvalid(false);
+        }
+        if (password !== passwordCheck) {
+          newErrors.passwordCheck = '! 비밀번호가 일치하지 않습니다.';
+          setPasswordCheckInvalid(true);
+        } else {
+          setPasswordCheckInvalid(false);
+        }
 
-      return newErrors;
-    },
-  });
+        return newErrors;
+      },
+      max: 10,
+    });
 
   return (
     <StyledForm onSubmit={handleSubmit}>
@@ -138,11 +135,15 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentFullNameInvalid}
+          inValid={currentFullNameInvalid || errorfullName ? true : false}
           placeholder={'닉네임을 입력해주세요.'}
           onChange={handleChange}
         ></Input>
-        {errors.fullName && <ErrorText>{errors.fullName}</ErrorText>}
+        {errorfullName ? (
+          <ErrorText>{errorfullName}</ErrorText>
+        ) : (
+          errors.fullName && <ErrorText>{errors.fullName}</ErrorText>
+        )}
       </InputWrapper>
       <InputWrapper>
         <Input
@@ -152,11 +153,16 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentPasswordInvalid}
+          inValid={currentPasswordInvalid || errorPassword ? true : false}
           placeholder={'비밀번호를 입력해주세요.'}
           onChange={handleChange}
+          value={values.password}
         ></Input>
-        {errors.password && <ErrorText>{errors.password}</ErrorText>}
+        {errorPassword ? (
+          <ErrorText>{errorPassword}</ErrorText>
+        ) : (
+          errors.password && <ErrorText>{errors.password}</ErrorText>
+        )}
       </InputWrapper>
       <InputWrapper>
         <Input

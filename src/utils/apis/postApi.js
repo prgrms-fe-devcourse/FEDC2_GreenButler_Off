@@ -188,10 +188,3 @@ export const searchTag = (keyword) => {
     url: `/search/all/%23${keyword}`,
   });
 };
-
-export const searchUser = (keyword) => {
-  return request({
-    method: API_METHOD.GET,
-    url: `/search/users/${keyword}`,
-  });
-};

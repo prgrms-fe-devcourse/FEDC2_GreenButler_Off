@@ -1,33 +1,14 @@
-import InputForm from 'components/basic/Input/InputForm';
 import { useCallback, useEffect, useState } from 'react';
 import Tab from 'components/basic/Tab';
-import PostImageList from 'components/PostImageList';
-
-import axios from 'axios';
-import Image from 'components/basic/Image';
-import styled from '@emotion/styled';
-
-import Avatar from 'components/basic/Avatar';
-import Text from 'components/basic/Text';
-import { IMAGE_URLS } from 'utils/constants/images';
-import Button from 'components/basic/Button';
-import { Link } from 'react-router-dom';
+import InputForm from 'components/basic/Input/InputForm';
 import PageWrapper from 'components/basic/pageWrapper';
 import TagSearchResult from 'components/TagSearchResult';
 import UserSearchResult from 'components/UserSearchResult';
+import { searchUsers } from 'utils/apis/userApi';
+import { searchTag } from 'utils/apis/postApi';
 
 const TAG = 'tag';
 const USER = 'user';
-
-const getSearchTag = async (keyword) => {
-  const result = await axios.get(`/search/all/%23${keyword}`);
-  return result.data;
-};
-
-const getSearchUser = async (keyword) => {
-  const result = await axios.get(`/search/users/${keyword}`);
-  return result.data;
-};
 
 /*
   TODO:
@@ -48,28 +29,31 @@ const SearchPage = () => {
   const onSearch = useCallback(
     async (keyword) => {
       if (currentTab === TAG) {
-        const result = await getSearchTag(keyword);
-        setSearchData((state) => ({ ...state, tag: result, keyword }));
-        console.log(result);
+        const { data } = await searchTag(keyword);
+        setSearchData((state) => ({ ...state, tag: data, keyword }));
+        console.log(data);
       }
 
       if (currentTab === USER) {
-        const result = await getSearchUser(keyword);
-        setSearchData((state) => ({ ...state, user: result, keyword }));
-        console.log(result);
+        const { data } = await searchUsers(keyword);
+        setSearchData((state) => ({ ...state, user: data, keyword }));
+        console.log(data);
       }
     },
     [currentTab],
   );
 
-  const onActive = (value) => {
+  const onActive = useCallback((value) => {
     setCurrentTab(value);
-  };
+  }, []);
 
-  const onSubmit = (keyword) => {
-    setSearchData({ keyword: '', [TAG]: null, [USER]: null });
-    onSearch(keyword);
-  };
+  const onSubmit = useCallback(
+    (keyword) => {
+      setSearchData({ keyword: '', [TAG]: null, [USER]: null });
+      onSearch(keyword);
+    },
+    [onSearch],
+  );
 
   useEffect(() => {
     if (searchData.keyword && searchData[currentTab] === null) {

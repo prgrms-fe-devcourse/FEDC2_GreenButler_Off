@@ -1,15 +1,13 @@
-import Button from 'components/basic/Button';
 import styled from '@emotion/styled';
+import Button from 'components/basic/Button';
 import PropTypes from 'prop-types';
 
 const StyledButton = styled(Button)`
-  margin-top: 30px;
+  font-weight: 500;
 `;
+
 const ModalButton = ({ children, onClick, ...props }) => {
   return (
-    // <StyledButton onClick={() => onClose()} height={60}>
-    //   {children}
-    // </StyledButton>
     <StyledButton {...props} onClick={() => onClick()} height={60} borderRadius={12}>
       {children}
     </StyledButton>

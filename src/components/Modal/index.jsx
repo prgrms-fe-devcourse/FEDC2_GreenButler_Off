@@ -1,16 +1,10 @@
+import React from 'react';
 import styled from '@emotion/styled';
-import { useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
+import { useEffect, useMemo } from 'react';
 import useClickAway from '../../hooks/useClickAway';
 import ModalButton from './ModalButton';
 import ModalContent from './ModalContent';
-import React from 'react';
-
-/*
- TODO:
- body를 container로 감싼 형태이기 때문에
- container 바깥으로 빠져나가는 현상 발생하여 해결 필요
- */
 
 const BackgroundDim = styled.div`
   position: fixed;
@@ -40,7 +34,8 @@ const ModalContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 5px;
+  gap: 8px;
+  margin-top: 30px;
 `;
 
 const Modal = ({ children, visible = false, onClose, ...props }) => {
@@ -51,7 +46,7 @@ const Modal = ({ children, visible = false, onClose, ...props }) => {
   const el = useMemo(() => document.createElement('div'), []);
   useEffect(() => {
     document.querySelector('#default-template-container').appendChild(el);
-    //모바일 view기 때문에 body에서 처리하면안됨
+
     return () => {
       document.querySelector('#default-template-container').removeChild(el);
     };

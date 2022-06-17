@@ -29,17 +29,15 @@ const Description = styled(Text)`
 
 const ModalContent = ({ title, description }) => {
   return (
-    <>
-      <Inner>
-        <Image width={55} height={55} src={FLOWERPOT} />
-        <Title block fontSize={26} strong>
-          {title}
-        </Title>
-        <Description block fontSize={16} color={fontDark}>
-          {description}
-        </Description>
-      </Inner>
-    </>
+    <Inner>
+      <Image width={55} height={55} src={FLOWERPOT} />
+      <Title block fontSize={26} strong>
+        {title}
+      </Title>
+      <Description block fontSize={16} color={fontDark}>
+        {description}
+      </Description>
+    </Inner>
   );
 };
 

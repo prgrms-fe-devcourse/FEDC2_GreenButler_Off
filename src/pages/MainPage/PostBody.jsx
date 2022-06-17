@@ -1,4 +1,6 @@
-import { useCallback } from 'react';
+/** @jsxImportSource @emotion/react */
+import { jsx, css } from '@emotion/react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Image from 'components/basic/Image';
@@ -6,11 +8,10 @@ import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 
-// const currentUserId = '62a75e5cb1b90b0c812c9b70';
-
 const PostBody = ({ post, isDetailPage = false }) => {
   const { image, likes, comments, updatedAt } = post || {};
   const { content, contents, tags } = JSON.parse(post?.title);
+  const [isShown, setIsShown] = useState(false);
 
   const navigate = useNavigate();
 
@@ -36,6 +37,10 @@ const PostBody = ({ post, isDetailPage = false }) => {
     [navigate],
   );
 
+  const handleMoreClick = () => {
+    setIsShown(true);
+  };
+
   // const isFavoritePost = useMemo(() => {
   //   return likes.some(({ _id }) => _id === currentUserId);
   // }, [likes]);
@@ -58,7 +63,14 @@ const PostBody = ({ post, isDetailPage = false }) => {
             <IconButtonText>{comments.length}</IconButtonText>
           </IconButton>
         </IconButtons>
-        <Paragraph>{content ? content : contents}</Paragraph>
+        <TextContainer>
+          <Paragraph isDetailPage={isDetailPage} isShown={isShown}>
+            {content ? content : contents}
+          </Paragraph>
+          {!isDetailPage && content.length > 50 && !isShown && (
+            <MoreText onClick={handleMoreClick}>더보기</MoreText>
+          )}
+        </TextContainer>
         <Tags>
           {tags.map((tag, i) => (
             <Tag key={i} onClick={() => handleTagClick(tag)}>
@@ -125,59 +137,38 @@ const IconButtonText = ({ children, ...props }) => {
   );
 };
 
-// const Paragraph = ({ children }) => {
-//   const style = {
-//     width: '280px',
-//     maxHeight: '56px',
-//     lineheight: '26px',
-//     fontSize: '20px',
-//     margin: '18px 0',
-//   };
-
-//   const lineClamp = css`
-//     display: -webkit-box;
-//     word-wrap: break-word;
-//     text-overflow: ellipsis;
-//     overflow: hidden;
-//     -webkit-line-clamp: 2;
-//     -webkit-box-orient: vertical;
-//   `;
-
-//   return (
-//     <p style={style} css={lineClamp}>
-//       {children}
-//     </p>
-//   );
-// };
-
-const Paragraph = styled.p`
-  width: 280px;
-  max-height: 56px;
-  line-height: 26px;
-  font-size: 20px;
+const TextContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
   margin: 18px 0;
-
-  display: -webkit-box;
-  word-wrap: break-word;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 `;
 
-// const Paragraph = ({ children, ...props }) => {
-//   const style = {
-//     fontSize: 20,
-//     lineHeight: '28px',
-//     padding: '17px 0',
-//   };
+const Paragraph = styled.span`
+  display: inline-block;
+  width: 84%;
+  line-height: 26px;
+  font-size: 20px;
+  word-break: keep-all;
 
-//   return (
-//     <Text paragraph style={style} {...props}>
-//       {children}
-//     </Text>
-//   );
-// };
+  ${({ isDetailPage, isShown }) =>
+    !isDetailPage &&
+    !isShown &&
+    css`
+      max-height: 56px;
+      display: -webkit-box;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    `}
+`;
+
+const MoreText = styled.button`
+  font-size: 16px;
+  padding: 0;
+  margin-left: 2px;
+  color: ${theme.color.fontNormal};
+`;
 
 const Tags = styled.div``;
 
@@ -212,3 +203,28 @@ const DateText = ({ children, ...props }) => {
 };
 
 export default PostBody;
+
+// const Paragraph = ({ children }) => {
+//   const style = {
+//     width: '280px',
+//     maxHeight: '56px',
+//     lineheight: '26px',
+//     fontSize: '20px',
+//     margin: '18px 0',
+//   };
+
+//   const lineClamp = css`
+//     display: -webkit-box;
+//     word-wrap: break-word;
+//     text-overflow: ellipsis;
+//     overflow: hidden;
+//     -webkit-line-clamp: 2;
+//     -webkit-box-orient: vertical;
+//   `;
+
+//   return (
+//     <p style={style} css={lineClamp}>
+//       {children}
+//     </p>
+//   );
+// };

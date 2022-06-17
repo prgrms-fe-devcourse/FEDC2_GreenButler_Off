@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import IconBtn from './IconButton';
 import Profile from 'components/Profile';
 
-const PostHeader = ({ author: { _id, fullName } }) => {
+const currentUserId = '62a75e5cb1b90b0c812c9b70';
+
+const PostHeader = ({ author: { _id, fullName }, isDetailPage }) => {
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
     navigate('/user/mypage', {
@@ -14,10 +16,14 @@ const PostHeader = ({ author: { _id, fullName } }) => {
     });
   }, [navigate, _id]);
 
+  const isMyPost = useMemo(() => {
+    return _id === currentUserId && isDetailPage;
+  }, [_id, isDetailPage]);
+
   return (
     <Header>
       <Profile userName={fullName} onClick={handleClick} />
-      <IconBtn className="more-button" name="MORE" size={20} />
+      {isMyPost && <IconBtn className="more-button" name="MORE" size={20} />}
     </Header>
   );
 };

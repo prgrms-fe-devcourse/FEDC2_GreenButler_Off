@@ -1,25 +1,37 @@
 import styled from '@emotion/styled';
-import Icon from 'components/basic/Icon';
-import theme from 'styles/theme';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Badge from 'components/basic/Badge';
+import { useNavigate } from 'react-router-dom';
 import { useUserContext } from 'contexts/UserContext';
 import FixedContainer from 'components/FixedContainer';
+import Badge from 'components/basic/Badge';
+import Icon from 'components/basic/Icon';
+import Text from 'components/basic/Text';
+import theme from 'styles/theme';
 
-const { headerHeight } = theme.value;
+const { headerHeight, pagePadding } = theme.value;
 const { borderLight } = theme.color;
 
 const HeaderContainer = styled(FixedContainer)`
+  border-bottom: 1px solid ${borderLight};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px 20px;
-  border-bottom: 1px solid ${borderLight};
+  padding: 0 ${pagePadding};
 `;
 
-const InnerLeft = styled.div``;
+const Title = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 500;
+`;
 
 const InnerRight = styled.div`
+  position: absolute;
+  top: 50%;
+  right: ${pagePadding};
+  transform: translateY(-50%);
   display: flex;
 
   & > * {
@@ -27,37 +39,38 @@ const InnerRight = styled.div`
   }
 `;
 
-export const Header = () => {
+export const Header = ({ prev, title, info, complete, onComplete }) => {
   const navigate = useNavigate();
   const {
     currentUser: { notifications },
   } = useUserContext();
 
-  const { pathname } = useLocation();
-
-  const hidePrev = ['/', '/user/mypage', '/search', '/post/detail'];
-  const hideHeader = ['/login', '/join'];
-
   const onClickPrev = () => {
     navigate(-1);
   };
 
-  if (hideHeader.includes(pathname)) {
-    return;
-  }
-
   return (
     <HeaderContainer top height={headerHeight}>
-      <InnerLeft>
-        {!hidePrev.includes(pathname) && (
-          <Icon.Button name="ARROW_LEFT" size={20} onClick={onClickPrev} />
-        )}
-      </InnerLeft>
+      <div>{prev && <Icon.Button name="ARROW_LEFT" size={20} onClick={onClickPrev} />}</div>
+
+      {title && <Title>{title}</Title>}
+
       <InnerRight>
-        <Badge isShow={notifications?.seen}>
-          <Icon.Link to="/notification" name="NOTIFICATION" size={30} />
-        </Badge>
-        <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
+        {info && (
+          <>
+            <Badge isShow={notifications?.seen}>
+              <Icon.Link to="/notification" name="NOTIFICATION" size={30} />
+            </Badge>
+            <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
+          </>
+        )}
+        {complete && (
+          <button onClick={onComplete}>
+            <Text fontSize={20} fontWeight={500}>
+              완료
+            </Text>
+          </button>
+        )}
       </InnerRight>
     </HeaderContainer>
   );

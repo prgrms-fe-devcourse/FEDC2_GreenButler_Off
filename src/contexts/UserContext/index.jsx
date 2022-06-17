@@ -1,10 +1,4 @@
-import {
-  useContext,
-  useCallback,
-  useReducer,
-  useMemo,
-  createContext,
-} from 'react';
+import { useContext, useCallback, useReducer, useMemo, createContext, useEffect } from 'react';
 import { reducer, initialUserData } from './reducer';
 import useLocalToken from 'hooks/useLocalToken';
 import useHandles from './handles';
@@ -20,6 +14,7 @@ import {
   ADD_POST,
   INIT_POST,
   UPDATE_POST,
+  CHANGE_PROFILE,
   CHANGE_FULLNAME,
 } from './types';
 
@@ -36,10 +31,7 @@ export const useUserContext = () => useContext(UserContext);
   2) isLoading: 로딩 중인지 여부
 */
 const UserProvider = ({ children }) => {
-  const [{ currentUser, isLoading }, dispatch] = useReducer(
-    reducer,
-    initialUserData,
-  ); // 데이터의 갱신은 reducer 함수로 관리한다.
+  const [{ currentUser, isLoading }, dispatch] = useReducer(reducer, initialUserData); // 데이터의 갱신은 reducer 함수로 관리한다.
   const [localToken] = useLocalToken(); // JWT 토큰
   const {
     handleGetCurrentUser,
@@ -47,7 +39,10 @@ const UserProvider = ({ children }) => {
     handleSignup,
     handleLogout,
     handlechangeUserName,
+    handlechangeProfile,
     handlechangePassword,
+    handlefollow,
+    handleUnFollow,
   } = useHandles();
 
   // 현재 유저의 정보를 서버로부터 가져온다.
@@ -95,44 +90,46 @@ const UserProvider = ({ children }) => {
   }, [handleLogout]);
 
   // 특정 유저를 팔로우한 경우, currentUser의 정보 갱신
+  //TODO:신영 userId: 팔로우 당한 사람 id, followId: FOLLOW 객체의 _id
   const onFollow = useCallback((payload = { userId: '', followId: '' }) => {
+    console.log('CONTEXT_FOLLOW_USERID', payload.userId);
+    console.log('CONTEXT_FOLLOW_FOLLOWID', payload.followId);
+    handlefollow(payload.followId);
     dispatch({ type: FOLLOW, payload });
   }, []);
 
   // 특정 유저를 언팔로우한 경우, currentUser의 정보 갱신
+  //TODO:신영 FOLLOW 객체의 _id
   const onUnfollow = useCallback((payload = { unfollowId: '' }) => {
+    console.log('CONTEXT_FOLLOW_UNFOLLOWID', payload.unfollowId);
+    handleUnFollow(payload.unfollowId);
     dispatch({ type: UNFOLLOW, payload });
   }, []);
 
   //현재 유저의 닉네임을 수정
-  const editFullName = useCallback(
+  const onChangeFullName = useCallback(
     (payload = { fullName: '', userName: '' }) => {
-      console.log('FULLNAME_CONTEXT_PAYLOAD', payload);
       const { fullName, userName } = payload;
-      console.log('FULLNAME_CONTEXT', fullName);
-
-      if (localToken) {
-        handlechangeUserName(localToken, fullName, userName);
-        dispatch({ type: CHANGE_FULLNAME, payload });
-      } /* else {
-        console.log('token error');
-      } */
-      //TODO:신영 아래 API 실제 연동시 삭제
+      handlechangeUserName(fullName, userName);
       dispatch({ type: CHANGE_FULLNAME, payload });
     },
-    [],
+    [handlechangeUserName],
   );
 
-  //TODO:신영 현재 유저의 비밀번호 수정 - Reducer를 사용할 필요 없어
+  //현재 유저의 프로필 사진 수정
+  const onChangeProfile = useCallback(
+    (payload = { image: '' }) => {
+      handlechangeProfile(payload);
+      dispatch({ type: CHANGE_PROFILE, payload });
+    },
+    [handlechangeProfile],
+  );
+
   const onChangePassword = useCallback(
     async (password) => {
-      //console.log('PASSWORD_CONTEXT', password);
-      //console.log('LOCALTOKEN', localToken);
-      if (localToken) {
-        handlechangePassword(localToken, password);
-      }
+      handlechangePassword(password);
     },
-    [localToken, handlechangePassword],
+    [handlechangePassword],
   );
 
   const value = useMemo(() => {
@@ -145,7 +142,8 @@ const UserProvider = ({ children }) => {
       onGetCurrentUser,
       onFollow,
       onUnfollow,
-      editFullName,
+      onChangeFullName,
+      onChangeProfile,
       onChangePassword,
     };
   }, [
@@ -157,7 +155,8 @@ const UserProvider = ({ children }) => {
     onGetCurrentUser,
     onFollow,
     onUnfollow,
-    editFullName,
+    onChangeFullName,
+    onChangeProfile,
     onChangePassword,
   ]);
 

@@ -16,6 +16,7 @@ const PostImageContainer = React.memo(function ImageContainer({ posts }) {
             style={{
               overflow: 'hidden',
               cursor: 'pointer',
+              paddingBottom: '100%',
             }}
             width="100%"
             height="100%"

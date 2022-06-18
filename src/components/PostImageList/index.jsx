@@ -5,7 +5,6 @@ const ImageContainer = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 30%);
-  grid-auto-rows: 148px;
   gap: 10px;
   justify-content: center;
   margin-top: 10px;

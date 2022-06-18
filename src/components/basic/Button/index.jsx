@@ -49,6 +49,7 @@ const Button = ({
 
   return (
     <StyledButton
+      {...props}
       style={{ ...buttonStyle, ...props.style }}
       hover={!disabled && hover}
       active={!disabled && active}

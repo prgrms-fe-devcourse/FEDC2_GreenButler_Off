@@ -9,12 +9,10 @@ import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { setLike, setDisLike } from 'utils/apis/postApi';
 import { setNotification } from 'utils/apis/userApi';
+import useLocalToken from 'hooks/useLocalToken';
 import { useUserContext } from 'contexts/UserContext';
 
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyOWUyOWJkNmQxOGI0MWM1YjIzOGJhMiIsImVtYWlsIjoiYWRtaW5AcHJvZ3JhbW1lcnMuY28ua3IifSwiaWF0IjoxNjU0NjcxNjI5fQ.etL5BJpmU-w7nUg1JDa_1oEHqBKkTgTxPQ0tfOfj-As';
-
-const currentUserId = '629e29bd6d18b41c5b238ba2';
+// const currentUserId = '629e29bd6d18b41c5b238ba2';
 
 const PostBody = ({ post, isDetailPage = false }) => {
   const { _id: postId, image, likes, comments, updatedAt, author } = post || {};
@@ -24,6 +22,8 @@ const PostBody = ({ post, isDetailPage = false }) => {
   const [likeId, setLikeId] = useState('');
   const { onLike, onDisLike } = useUserContext();
   const [isShown, setIsShown] = useState(false);
+  const [localToken] = useLocalToken();
+  const { currentUser } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -53,31 +53,34 @@ const PostBody = ({ post, isDetailPage = false }) => {
     setOnHeart(!onHeart);
     if (!onHeart) {
       setHeartCount(heartCount + 1);
-      if (postId) {
-        const like = await setLike(token, postId).then((res) => res.data);
+      if (localToken && postId) {
+        const like = await setLike(localToken, postId).then((res) => res.data);
         onLike(like);
         setLikeId(like._id);
         // await setNotification(token, 'LIKE', like._id, author._id, postId);
       }
     } else {
       setHeartCount(heartCount - 1);
-      if (likeId) {
-        const like = await setDisLike(token, likeId).then((res) => res.data);
+      if (localToken && likeId) {
+        const like = await setDisLike(localToken, likeId).then((res) => res.data);
         onDisLike(like);
         setLikeId('');
       }
     }
-  }, [onHeart, heartCount, postId, likeId, onLike, onDisLike]);
+  }, [onHeart, heartCount, postId, likeId, onLike, onDisLike, localToken]);
 
   useEffect(() => {
-    const array = likes?.map(({ user, _id }) => {
-      if (user === currentUserId) {
-        return _id;
-      }
-    });
-    if (array.length) {
+    let likeId;
+    const isMyLikePost =
+      likes.filter(({ user, _id }) => {
+        if (user === currentUser.id) {
+          likeId = _id;
+          return true;
+        }
+      }).length > 0;
+    if (isMyLikePost) {
       setOnHeart(true);
-      setLikeId(array[0]);
+      setLikeId(likeId);
     }
   }, []);
 
@@ -111,7 +114,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
           <Paragraph isDetailPage={isDetailPage} isShown={isShown}>
             {content ? content : contents}
           </Paragraph>
-          {!isDetailPage && content.length > 50 && !isShown && (
+          {!isDetailPage && content?.length > 50 && !isShown && (
             <MoreText onClick={handleMoreClick}>더보기</MoreText>
           )}
         </TextContainer>
@@ -122,7 +125,6 @@ const PostBody = ({ post, isDetailPage = false }) => {
             </Tag>
           ))}
         </Tags>
-        <DateText>{updatedAt.substr(0, 10)}</DateText>
       </Contents>
     </Container>
   );

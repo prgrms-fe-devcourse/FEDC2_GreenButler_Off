@@ -11,6 +11,8 @@ import { addPost } from 'utils/apis/postApi';
 import theme from 'styles/theme';
 import Modal from 'components/Modal';
 
+import { imageToFile, objectToForm } from 'utils/functions/converter';
+
 const { fontNormal, borderNormal, mainBlack } = theme.color;
 
 const TextArea = styled.textarea`
@@ -27,29 +29,6 @@ const TextArea = styled.textarea`
     color: ${fontNormal};
   }
 `;
-
-const srcToBlob = (imgSrc) => {
-  const byteString = atob(imgSrc.split(',')[1]);
-
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
-
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-  const blob = new Blob([ia], {
-    type: 'image/jpeg',
-  });
-
-  return blob;
-};
-
-const handleDataForm = async (data) => {
-  const formData = new FormData();
-  Object.keys(data).forEach((key) => formData.append(key, data[key]));
-
-  return formData;
-};
 
 const PostAddPage = () => {
   const [tags, setTags] = useState([]);
@@ -86,9 +65,9 @@ const PostAddPage = () => {
       return;
     }
 
-    const ImageBlob = srcToBlob(imgSrc);
+    const ImageBlob = imageToFile(imgSrc);
     const title = JSON.stringify({ content, tags });
-    const formData = await handleDataForm({
+    const formData = await objectToForm({
       title,
       image: ImageBlob,
       channelId: '62a04aa2703fdd3a82b4e66e',
@@ -108,6 +87,7 @@ const PostAddPage = () => {
   const onCloseModal = () => {
     setShowModal(false);
   };
+
   return (
     <>
       <PageWrapper title="게시물 등록" header prev style={{ paddingBottom: 100 }}>

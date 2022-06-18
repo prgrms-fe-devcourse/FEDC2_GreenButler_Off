@@ -4,19 +4,21 @@ import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
 import { useNavigate } from 'react-router-dom';
 import ChangePasswordForm from 'components/ChangePasswordForm';
+import { useState } from 'react';
 
 const MyInfoEditPage = () => {
   const { onChangePassword } = useUserContext();
+  const [isInvalid, setIsInvalid] = useState(true);
   const navigate = useNavigate();
 
   const handleSubmit = (password) => {
-    onChangePassword(password);
+    !isInvalid && onChangePassword(password);
     //TODO:신영 모달창을 띄우고 비밀번호가 변경됐습니다. 이후 내정보로 이동할지?
     navigate(-1);
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper header prev complete onComplete={handleSubmit}>
       <UserContainter>
         <UserInfo>
           <Text
@@ -31,7 +33,7 @@ const MyInfoEditPage = () => {
           >
             비밀번호를 설정해주세요
           </Text>
-          <ChangePasswordForm onSubmit={handleSubmit} />
+          <ChangePasswordForm onSubmit={handleSubmit} setIsInvalid={setIsInvalid} />
         </UserInfo>
       </UserContainter>
     </PageWrapper>

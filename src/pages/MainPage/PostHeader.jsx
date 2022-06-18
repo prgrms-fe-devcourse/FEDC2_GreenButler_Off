@@ -3,10 +3,10 @@ import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import IconBtn from './IconButton';
 import Profile from 'components/Profile';
-
-const currentUserId = '62a75e5cb1b90b0c812c9b70';
+import { useUserContext } from 'contexts/UserContext';
 
 const PostHeader = ({ author: { _id, fullName }, isDetailPage }) => {
+  const { currentUser } = useUserContext();
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
     navigate('/user/mypage', {
@@ -17,8 +17,8 @@ const PostHeader = ({ author: { _id, fullName }, isDetailPage }) => {
   }, [navigate, _id]);
 
   const isMyPost = useMemo(() => {
-    return _id === currentUserId && isDetailPage;
-  }, [_id, isDetailPage]);
+    return _id === currentUser.id && isDetailPage;
+  }, [_id, currentUser.id, isDetailPage]);
 
   return (
     <Header>

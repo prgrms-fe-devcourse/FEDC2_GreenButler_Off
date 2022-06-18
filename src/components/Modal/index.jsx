@@ -33,8 +33,6 @@ const ModalContainer = styled.div`
   border-radius: 15px;
 `;
 
-const ContentContainer = styled.div``;
-
 const ButtonContainer = styled.div`
   display: flex;
   gap: 8px;
@@ -71,13 +69,6 @@ const Modal = ({ children, visible = false, onClose, ...props }) => {
       custom = element;
     }
   }
-
-  // const content = React.Children.toArray(children).filter(
-  //   (element) => element.props.__TYPE === 'Modal.Content',
-  // );
-  // const buttons = React.Children.toArray(children).filter(
-  //   (element) => element.props.__TYPE === 'Modal.Button',
-  // );
 
   const Container = content ? ModalContainer : 'div';
 

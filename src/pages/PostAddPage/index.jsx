@@ -1,15 +1,14 @@
+import styled from '@emotion/styled';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from '@emotion/styled';
-import axios from 'axios';
 import Button from 'components/basic/Button';
 import UploadImage from 'components/UploadImage';
 import TagAddForm from 'components/TagAddForm';
-import theme from 'styles/theme';
 import PageWrapper from 'components/basic/pageWrapper';
 import FixedContainer from 'components/FixedContainer';
 import useLocalToken from 'hooks/useLocalToken';
 import { addPost } from 'utils/apis/postApi';
+import theme from 'styles/theme';
 
 const { fontNormal, borderNormal, mainBlack } = theme.color;
 

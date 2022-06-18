@@ -4,7 +4,7 @@ import { getPostsPart } from 'utils/apis/postApi';
 import PostItem from './PostItem';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-const LIMIT = 15;
+const LIMIT = 5;
 
 const MainPage = () => {
   const [posts, setPosts] = useState([]);
@@ -28,7 +28,7 @@ const MainPage = () => {
   const onIntersect = useCallback(
     async ([entry], observer) => {
       if (entry.isIntersecting && !isLoding && offset < max) {
-        observer.disconnect(entry.target);
+        observer.disconnect();
         setIsLoding(true);
         setOffset(offset + 5);
         const nextPosts = await getPostsPart({

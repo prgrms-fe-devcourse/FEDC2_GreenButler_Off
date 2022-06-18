@@ -54,7 +54,7 @@ const MyInfoPage = () => {
   }, [isNameEditor]);
 
   return (
-    <PageWrapper>
+    <PageWrapper header prev title="내정보">
       <UserContainter>
         <UserProfile>
           {' '}

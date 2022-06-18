@@ -40,12 +40,17 @@ const UserPage = () => {
 
   useEffect(() => {
     handleGetUser();
-  }, []);
+  }, []); //TODO: 이걸로 POSTS도 받아오기 실시간 정보 반영
 
   useEffect(() => {
     handleGetLikePosts();
     handleGetUserPosts();
   }, [user]);
+
+  useEffect(() => {
+    handleGetLikePosts();
+    handleGetUserPosts();
+  }, [isFollow]);
 
   //TODO:신영 추후 핸들러 분리
   const handleGetUser = useCallback(async () => {
@@ -76,16 +81,17 @@ const UserPage = () => {
 
   //TODO:신영 추후 팔로우, 팔로잉 페이지 만들 때 최종 완성
   const handleFollowButton = useCallback(() => {
-    setIsFollow((isFollow) => !isFollow);
     if (isFollow) {
-      onFollow({ userId: pageUserId, followId: followData.id });
+      setIsFollow(false);
+      onUnfollow({ unfollowId: followData.id });
     } else {
-      onUnfollow({ unfollowId: pageUserId });
+      setIsFollow(true);
+      onFollow({ userId: pageUserId, followId: followData.id });
     }
-  }, []);
+  }, [isFollow]);
 
   return (
-    <PageWrapper>
+    <PageWrapper header prev nav>
       <UserContainter>
         <UserInfo>
           <Avatar
@@ -109,13 +115,13 @@ const UserPage = () => {
               </Text>
               <Text fontSize={18}> {currentUser.posts.length}</Text>
             </UserDetail>
-            <UserDetail onClick={() => navigate('/user/follow')}>
+            <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
               <Text fontSize={16} color={theme.color.fontNormal}>
                 팔로워
               </Text>
               <Text fontSize={18}> {currentUser.followers.length}</Text>
             </UserDetail>
-            <UserDetail onClick={() => navigate('/user/follow')}>
+            <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
               <Text fontSize={16} color={theme.color.fontNormal}>
                 팔로잉
               </Text>

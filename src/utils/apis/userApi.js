@@ -124,17 +124,17 @@ export const unFollow = (token, id) => {
   Response: User
 */
 export const changeUserName = (token, fullName, username) => {
-  /*   return request({
+  return request({
     method: API_METHOD.PUT,
     url: `/settings/update-user`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      ...(fullName && { fullName }),
-      ...(username && { username }),
+      fullName,
+      username,
     },
-  }); */
+  });
 };
 
 /* 

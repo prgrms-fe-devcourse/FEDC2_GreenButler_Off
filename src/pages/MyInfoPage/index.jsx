@@ -11,6 +11,7 @@ import Button from 'components/basic/Button';
 import ChangeNameForm from 'components/ChangeNameForm';
 import UploadImage from 'components/UploadImage';
 import { EDIT, LOGOUT, KEY, TAG_DELETE } from 'utils/constants/icons/names';
+import { IMAGE_URLS } from 'utils/constants/images';
 
 const MyInfoPage = () => {
   const { currentUser, onChangeFullName, onLogout, onChangeProfile } = useUserContext();
@@ -64,10 +65,7 @@ const MyInfoPage = () => {
               style={{
                 cursor: 'pointer',
               }}
-              src={
-                currentUser.image ||
-                `https://user-images.githubusercontent.com/79133602/173279398-ac52268b-082f-4fd2-8748-b60dad85b069.png`
-              }
+              src={currentUser.image || IMAGE_URLS.PROFILE_IMG}
               onClick={() => {
                 setIsImageEditor(true);
               }}

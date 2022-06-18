@@ -52,8 +52,12 @@ const MyPage = () => {
   return (
     <PageWrapper header nav info prev>
       <UserContainter>
-        <UserInfo>
-          <Avatar size={136} src={currentUser.image || IMAGE_URLS.PROFILE_IMG} />
+        <UserInfo style={{ cursor: 'pointer' }}>
+          <Avatar
+            size={136}
+            src={currentUser.image || IMAGE_URLS.PROFILE_IMG}
+            onClick={() => navigate('/user/MyInfo')}
+          />
           <Text style={{ ...fullNameStyle }}>{currentUser.fullName}</Text>
           <UserDetailWrapper>
             <UserDetail>
@@ -61,6 +65,7 @@ const MyPage = () => {
                 fontSize={16}
                 color={theme.color.fontNormal}
                 onClick={() => setPosts(userPosts)}
+                mm
               >
                 게시물
               </Text>

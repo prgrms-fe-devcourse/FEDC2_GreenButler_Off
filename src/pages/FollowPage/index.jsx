@@ -39,12 +39,9 @@ const FollowPage = () => {
   useEffect(() => {
     handleGetFollowing();
     handleGetFollowers();
-    console.log(user);
   }, [user]);
 
-  useEffect(() => {
-    console.log(user.following);
-  }, [currentUser]);
+  useEffect(() => {}, [currentUser]);
 
   const [currentTab, setCurrentTab] = useState(FOLLOWER);
   const onActive = (value) => {

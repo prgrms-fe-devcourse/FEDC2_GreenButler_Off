@@ -80,7 +80,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
       setLikeId(array[0]);
     }
   }, []);
-  
+
   const handleMoreClick = () => {
     setIsShown(true);
   };
@@ -111,7 +111,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
           <Paragraph isDetailPage={isDetailPage} isShown={isShown}>
             {content ? content : contents}
           </Paragraph>
-          {!isDetailPage && content.length > 50 && !isShown && (
+          {!isDetailPage && content?.length > 50 && !isShown && (
             <MoreText onClick={handleMoreClick}>더보기</MoreText>
           )}
         </TextContainer>
@@ -122,7 +122,6 @@ const PostBody = ({ post, isDetailPage = false }) => {
             </Tag>
           ))}
         </Tags>
-        <DateText>{updatedAt.substr(0, 10)}</DateText>
       </Contents>
     </Container>
   );

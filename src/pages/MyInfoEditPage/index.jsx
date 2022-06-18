@@ -3,7 +3,7 @@ import Text from 'components/basic/Text';
 import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Input from 'components/basic/Input';
 import theme from 'styles/theme';
 import useDebounce from 'hooks/useDebounce';
@@ -46,7 +46,6 @@ const MyInfoEditPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!passwordInvalid && !confirmInvalid) {
-      console.log('ehoT');
       onChangePassword(password);
       navigate(-1);
     }

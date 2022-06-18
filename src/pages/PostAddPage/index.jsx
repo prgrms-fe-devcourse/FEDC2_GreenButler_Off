@@ -111,10 +111,8 @@ const PostAddPage = () => {
           placeholder="내 식물의 성장 글을 작성해주세요."
           rows={10}
         ></TextArea>
-        <FixedContainer bottom>
-          <Button style={{ marginTop: '15px', marginBottom: '15px' }} onClick={onClickAddBtn}>
-            게시물 등록
-          </Button>
+        <FixedContainer bottom style={{ padding: 15 }}>
+          <Button onClick={onClickAddBtn}>게시물 등록</Button>
         </FixedContainer>
       </PageWrapper>
     </>

@@ -4,25 +4,6 @@ import { useState } from 'react';
 import theme from 'styles/theme';
 import useDebounce from 'hooks/useDebounce';
 
-const UserEditForm = styled.form`
-  margin: 10px 5px 0 5px;
-  padding: 22px 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin: 20px 0 0 0;
-  padding-bottom: 90px;
-`;
-
-const ErrorText = styled.span`
-  text-align: left;
-  margin-top: 5px;
-  margin-left: 5px;
-  font-size: 12px;
-  color: ${theme.color.mainRed};
-`;
-
 const ChangePasswordForm = ({ onSubmit }) => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -51,7 +32,7 @@ const ChangePasswordForm = ({ onSubmit }) => {
       !newErrors.password && setPasswordInvalid(false);
       !newErrors.confirm && setConfirmInvalid(false);
     },
-    500,
+    300,
     [password, confirm],
   );
 
@@ -82,7 +63,10 @@ const ChangePasswordForm = ({ onSubmit }) => {
         type="password"
         name="confirm"
         inValid={confirmInvalid}
-        onChange={(e) => setConfirm(e.target.value)}
+        onChange={(e) => {
+          setConfirm(e.target.value);
+          validate();
+        }}
       ></Input>
       {errors.confirm && <ErrorText>{errors.confirm}</ErrorText>}
     </UserEditForm>
@@ -90,3 +74,22 @@ const ChangePasswordForm = ({ onSubmit }) => {
 };
 
 export default ChangePasswordForm;
+
+const UserEditForm = styled.form`
+  margin: 10px 5px 0 5px;
+  padding: 22px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 20px 0 0 0;
+  padding-bottom: 90px;
+`;
+
+const ErrorText = styled.span`
+  text-align: left;
+  margin-top: 5px;
+  margin-left: 5px;
+  font-size: 12px;
+  color: ${theme.color.mainRed};
+`;

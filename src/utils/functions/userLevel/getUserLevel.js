@@ -14,7 +14,6 @@ import level from './levels';
 */
 export default function getUserLevel({ posts, comments }) {
   const score = 2 * posts.length + comments.length + getLikeCount(posts);
-  console.log('score', score);
   if (score >= 0 && score < 30) {
     return level.one;
   }

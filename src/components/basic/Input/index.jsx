@@ -21,7 +21,6 @@ const StyledInput = styled.input`
   padding: 22px 22px;
   border-radius: 15px;
   box-sizing: border-box;
-      inValid ? theme.color.mainRed : theme.color.borderNormal};
   border: 1px solid ${({ inValid }) => (inValid ? theme.color.mainRed : theme.color.borderNormal)};
 
   ::placeholder {

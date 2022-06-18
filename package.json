@@ -71,6 +71,5 @@
     "prettier": "^2.6.2",
     "prop-types": "^15.8.1",
     "webpack": "^5.73.0"
-  },
-  "proxy": "http://kdt.frontend.2nd.programmers.co.kr:5007"
+  }
 }

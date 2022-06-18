@@ -186,7 +186,7 @@ const UserContainter = styled.div`
 
 const UserProfile = styled.div`
   text-align: center;
-  margin: 120px auto 30px auto;
+  margin: 50px auto 30px auto;
   position: relative;
   display: flex;
   flex-direction: column;

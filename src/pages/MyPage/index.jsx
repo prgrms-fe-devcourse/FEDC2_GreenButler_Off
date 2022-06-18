@@ -11,7 +11,6 @@ import PageWrapper from 'components/basic/pageWrapper';
 import { IMAGE_URLS } from 'utils/constants/images';
 import {
   fullNameStyle,
-  smallTextStyle,
   UserContainter,
   UserInfo,
   UserDetailWrapper,
@@ -51,7 +50,7 @@ const MyPage = () => {
   }, []);
 
   return (
-    <PageWrapper header nav>
+    <PageWrapper header nav info prev>
       <UserContainter>
         <UserInfo>
           <Avatar size={136} src={currentUser.image || IMAGE_URLS.PROFILE_IMG} />

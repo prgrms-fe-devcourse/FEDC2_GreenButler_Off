@@ -79,6 +79,11 @@ const PostAddPage = () => {
   );
 
   const onClickAddBtn = async () => {
+    if (!imgSrc && !content) {
+      alert('이미지 등록 및 게시글을 작성해주세요.');
+      return;
+    }
+
     const ImageBlob = srcToBlob(imgSrc);
     const title = JSON.stringify({ content, tags });
     const formData = await handleDataForm({

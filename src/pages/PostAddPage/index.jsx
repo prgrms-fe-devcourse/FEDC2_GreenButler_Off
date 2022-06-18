@@ -9,6 +9,7 @@ import FixedContainer from 'components/FixedContainer';
 import useLocalToken from 'hooks/useLocalToken';
 import { addPost } from 'utils/apis/postApi';
 import theme from 'styles/theme';
+import Modal from 'components/Modal';
 
 const { fontNormal, borderNormal, mainBlack } = theme.color;
 
@@ -54,7 +55,8 @@ const PostAddPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
   const [content, setContent] = useState('');
-
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
 
   const [token, setValue] = useLocalToken();
@@ -78,8 +80,9 @@ const PostAddPage = () => {
   );
 
   const onClickAddBtn = async () => {
-    if (!imgSrc && !content) {
-      alert('이미지 등록 및 게시글을 작성해주세요.');
+    if (!imgSrc || !content) {
+      setModalMessage(!imgSrc ? '이미지를 등록해주세요!' : '게시글을 작성해주세요!');
+      setShowModal(true);
       return;
     }
 
@@ -102,6 +105,9 @@ const PostAddPage = () => {
     setImgSrc(src);
   }, []);
 
+  const onCloseModal = () => {
+    setShowModal(false);
+  };
   return (
     <>
       <PageWrapper title="게시물 등록" header prev style={{ paddingBottom: 100 }}>
@@ -118,6 +124,10 @@ const PostAddPage = () => {
         <FixedContainer bottom style={{ padding: 15 }}>
           <Button onClick={onClickAddBtn}>게시물 등록</Button>
         </FixedContainer>
+        <Modal visible={showModal} onClose={onCloseModal}>
+          <Modal.Content title={modalMessage} />
+          <Modal.Button onClick={onCloseModal}>확인</Modal.Button>
+        </Modal>
       </PageWrapper>
     </>
   );

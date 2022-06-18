@@ -80,7 +80,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
       setLikeId(array[0]);
     }
   }, []);
-  
+
   const handleMoreClick = () => {
     setIsShown(true);
   };

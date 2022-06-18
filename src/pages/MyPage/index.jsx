@@ -8,6 +8,7 @@ import { getUserPosts, getPostData } from 'utils/apis/postApi';
 import PostImageContainer from 'components/PostImageContainer';
 import { useNavigate } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
+import { IMAGE_URLS } from 'utils/constants/images';
 import {
   fullNameStyle,
   smallTextStyle,
@@ -61,10 +62,7 @@ const MyPage = () => {
             style={{
               cursor: 'pointer',
             }}
-            src={
-              currentUser.image ||
-              `https://user-images.githubusercontent.com/79133602/173279398-ac52268b-082f-4fd2-8748-b60dad85b069.png`
-            }
+            src={currentUser.image || IMAGE_URLS.PROFILE_IMG}
           />
           <Text style={{ ...fullNameStyle }}>{currentUser.fullName}</Text>
           {/* //TODO:신영 추후 컴포넌트 분리 근데 Text 인라인 스타일이 갑자기 안먹히네?...*/}

@@ -12,6 +12,7 @@ import { getUserPosts, getPostData } from 'utils/apis/postApi';
 import PostImageContainer from 'components/PostImageContainer';
 import { useNavigate } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
+import { IMAGE_URLS } from 'utils/constants/images';
 import {
   followButtonStyle,
   followingButtonStyle,
@@ -92,10 +93,7 @@ const UserPage = () => {
             style={{
               cursor: 'pointer',
             }}
-            src={
-              user.image ||
-              'https://user-images.githubusercontent.com/79133602/173309944-eb758bba-9df4-4b11-a580-b62324c22ef6.png'
-            }
+            src={user.image || IMAGE_URLS.PROFILE_IMG}
           />
           <Text style={fullNameStyle}>{user.fullName}</Text>
           {/* //TODO:신영 추후 컴포넌트 분리 */}

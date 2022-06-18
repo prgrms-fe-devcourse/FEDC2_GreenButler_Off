@@ -25,7 +25,7 @@ const Router = () => {
       <Route path="/" element={<MainPage />} />
       <Route path="/post/create" element={<PostAddPage />} />
       <Route path="/post/edit" element={<PostEditPage />} />
-      <Route path="/post/detail" element={<PostDetailPage />} />
+      <Route path="/post/detail/:id" element={<PostDetailPage />} />
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/user/:id" element={<UserPage />} />
       <Route path="/user/follow/:id" element={<FollowPage />} />

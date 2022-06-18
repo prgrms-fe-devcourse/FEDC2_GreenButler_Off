@@ -26,7 +26,7 @@ const FollowPage = () => {
       setUser(currentUser);
       setIsMyFollow(true);
     }
-  }, [currentUser]);
+  }, []);
 
   //TODO:신영 현재 페이지 유저의 정보 => 전역데이터가 아닌 경우 context를 사용할 수 없어서 직접 api 호출
   const handleGetUser = useCallback(async () => {
@@ -41,6 +41,10 @@ const FollowPage = () => {
     handleGetFollowers();
     console.log(user);
   }, [user]);
+
+  useEffect(() => {
+    console.log(user.following);
+  }, [currentUser]);
 
   const [currentTab, setCurrentTab] = useState(FOLLOWER);
   const onActive = (value) => {

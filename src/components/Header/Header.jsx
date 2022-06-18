@@ -59,7 +59,7 @@ export const Header = ({ prev, title, info, complete, onComplete }) => {
         {info && (
           <>
             <Badge isShow={notifications?.seen}>
-              <Icon.Link to="/users/notification" name="NOTIFICATION" size={30} />
+              <Icon.Link to="/user/notification" name="NOTIFICATION" size={30} />
             </Badge>
             <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
           </>

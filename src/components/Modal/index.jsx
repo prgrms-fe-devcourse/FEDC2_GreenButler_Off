@@ -5,6 +5,7 @@ import { useEffect, useMemo } from 'react';
 import useClickAway from '../../hooks/useClickAway';
 import ModalButton from './ModalButton';
 import ModalContent from './ModalContent';
+import ModalCustom from './ModalCustom';
 
 const BackgroundDim = styled.div`
   position: fixed;
@@ -27,10 +28,12 @@ const ModalContainer = styled.div`
   background-color: white;
   box-shadow: rgb(99 99 99 / 14%) 0px 2px 6px 2px;
   box-sizing: border-box;
-  max-width: 390px;
   width: 90%;
+  max-width: 390px;
   border-radius: 15px;
 `;
+
+const ContentContainer = styled.div``;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -52,19 +55,43 @@ const Modal = ({ children, visible = false, onClose, ...props }) => {
     };
   });
 
-  const content = React.Children.toArray(children).filter(
-    (element) => element.props.__TYPE === 'Modal.Content',
-  );
-  const buttons = React.Children.toArray(children).filter(
-    (element) => element.props.__TYPE === 'Modal.Button',
-  );
+  const childrenArray = React.Children.toArray(children);
+  let custom;
+  let content;
+  let buttons = [];
+
+  for (const element of childrenArray) {
+    if (element.props.__TYPE === 'Modal.Content') {
+      content = element;
+    }
+    if (element.props.__TYPE === 'Modal.Button') {
+      buttons = [...buttons, element];
+    }
+    if (element.props.__TYPE === 'Modal.Custom') {
+      custom = element;
+    }
+  }
+
+  // const content = React.Children.toArray(children).filter(
+  //   (element) => element.props.__TYPE === 'Modal.Content',
+  // );
+  // const buttons = React.Children.toArray(children).filter(
+  //   (element) => element.props.__TYPE === 'Modal.Button',
+  // );
+
+  const Container = content ? ModalContainer : 'div';
 
   return ReactDOM.createPortal(
     <BackgroundDim style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContainer {...props} ref={ref} style={{ ...props.style }}>
-        {content}
-        <ButtonContainer>{buttons}</ButtonContainer>
-      </ModalContainer>
+      <Container {...props} ref={ref} style={{ ...props.style }}>
+        {custom}
+        {content && (
+          <>
+            {content}
+            {buttons && <ButtonContainer>{buttons}</ButtonContainer>}
+          </>
+        )}
+      </Container>
     </BackgroundDim>,
     el,
   );
@@ -72,5 +99,6 @@ const Modal = ({ children, visible = false, onClose, ...props }) => {
 
 Modal.Content = ModalContent;
 Modal.Button = ModalButton;
+Modal.Custom = ModalCustom;
 
 export default Modal;

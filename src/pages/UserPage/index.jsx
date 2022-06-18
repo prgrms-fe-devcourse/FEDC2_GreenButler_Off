@@ -113,19 +113,19 @@ const UserPage = () => {
               >
                 게시물
               </Text>
-              <Text fontSize={18}> {currentUser.posts.length}</Text>
+              <Text fontSize={18}> {user.posts.length}</Text>
             </UserDetail>
             <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
               <Text fontSize={16} color={theme.color.fontNormal}>
                 팔로워
               </Text>
-              <Text fontSize={18}> {currentUser.followers.length}</Text>
+              <Text fontSize={18}> {user.followers.length}</Text>
             </UserDetail>
             <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
               <Text fontSize={16} color={theme.color.fontNormal}>
                 팔로잉
               </Text>
-              <Text fontSize={18}> {currentUser.following.length}</Text>
+              <Text fontSize={18}> {user.following.length}</Text>
             </UserDetail>
           </UserDetailWrapper>
           <Button

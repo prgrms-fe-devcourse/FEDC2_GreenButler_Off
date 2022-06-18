@@ -3,18 +3,7 @@ import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import { IMAGE_URLS } from 'utils/constants/images';
 import PropTypes from 'prop-types';
-
-const ProfileContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-`;
-const Profile = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px 20px;
-`;
+import { useEffect } from 'react';
 
 //TODO: follows 데이터 구조
 // const followData = [{ followId: '', userData: {}, followData: {}}]; // 팔로잉 기준 전부 isFollow true
@@ -45,3 +34,15 @@ FollowList.propTypes = {
 };
 
 export default FollowList;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+`;
+const Profile = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+`;

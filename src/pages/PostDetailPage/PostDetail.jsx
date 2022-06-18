@@ -5,14 +5,14 @@ import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState } from 'react';
 import { addComment } from 'utils/apis/postApi';
-
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyOWUyOWJkNmQxOGI0MWM1YjIzOGJhMiIsImVtYWlsIjoiYWRtaW5AcHJvZ3JhbW1lcnMuY28ua3IifSwiaWF0IjoxNjU0NjcxNjI5fQ.etL5BJpmU-w7nUg1JDa_1oEHqBKkTgTxPQ0tfOfj-As';
+import { IMAGE_URLS } from 'utils/constants/images';
+import useLocalToken from 'hooks/useLocalToken';
 
 const PostDetail = ({ initialPost }) => {
   const [post, setInitialPost] = useState(initialPost);
   const [inputHeight, setInputHeight] = useState('30px');
   const inputRef = useRef(null);
+  const [localToken] = useLocalToken();
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -20,11 +20,7 @@ const PostDetail = ({ initialPost }) => {
       if (post._id === undefined || inputRef.current.value === undefined) {
         return;
       }
-      const { data } = await addComment(
-        token,
-        post._id,
-        inputRef.current.value,
-      );
+      const { data } = await addComment(localToken, post._id, inputRef.current.value);
       setInitialPost({
         ...post,
         comments: [...post.comments, data],
@@ -32,7 +28,7 @@ const PostDetail = ({ initialPost }) => {
       setInputHeight('30px');
       inputRef.current.value = '';
     },
-    [post],
+    [post, localToken],
   );
 
   const handleResizeInputHeight = useCallback(() => {
@@ -48,21 +44,17 @@ const PostDetail = ({ initialPost }) => {
     <Container>
       <PostItem post={post} isDetailPage={true} />
       <CommentInputForm onSubmit={handleSubmit}>
-        <CommentInput
-          inputRef={inputRef}
-          height={inputHeight}
-          onChange={handleResizeInputHeight}
-        />
+        <CommentInput inputRef={inputRef} height={inputHeight} onChange={handleResizeInputHeight} />
         <SubmitButton />
       </CommentInputForm>
       <CommentList>
-        {post.comments.map(({ _id, author: { fullName }, comment }) => (
+        {post.comments.map(({ _id, author: { fullName }, comment, updatedAt }) => (
           <CommentItem key={_id}>
             <UserAvatar />
             <Content>
               <MetaInformation>
                 <UserNameText>{fullName}</UserNameText>
-                <DateText>1분 전</DateText>
+                <DateText>{updatedAt.slice(0, 10)}</DateText>
               </MetaInformation>
               <CommentText>{comment}</CommentText>
             </Content>
@@ -95,12 +87,7 @@ const CommentInput = ({ inputRef, height, onChange }) => {
   };
 
   return (
-    <textarea
-      ref={inputRef}
-      style={style}
-      placeholder="댓글을 입력해주세요."
-      onChange={onChange}
-    />
+    <textarea ref={inputRef} style={style} placeholder="댓글을 입력해주세요." onChange={onChange} />
   );
 };
 
@@ -135,20 +122,8 @@ const CommentItem = styled.li`
   position: relative;
 `;
 
-const UserAvatar = (props) => {
-  const style = {
-    flexShrink: '0',
-  };
-
-  return (
-    <Avatar
-      {...props}
-      {...style}
-      src="https://picsum.photos/300/300/?image=39"
-      alt="유저 프로필 사진"
-      size={60}
-    />
-  );
+const UserAvatar = ({ src = IMAGE_URLS.PROFILE_IMG, ...props }) => {
+  return <Avatar src={src} {...props} alt="유저 프로필 사진" size={60} />;
 };
 
 const Content = styled.div`

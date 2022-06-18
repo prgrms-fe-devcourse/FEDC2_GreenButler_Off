@@ -9,6 +9,7 @@ import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
 
 const FOLLOWING = 'following';
+const FOLLOWER = 'follower';
 const UNFOLLOW = 'unfollow';
 const FOLLOW = 'follow';
 
@@ -44,15 +45,19 @@ const followingButtonStyle = {
 
 const FollowList = ({ followList, tab }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
+  const [isFollow, setIsFollow] = useState(false);
 
   const hadleToggleFollow = useCallback((followId, type, userId = '') => {
     if (type === UNFOLLOW) {
       onUnfollow({ unfollowId: followId });
     } else {
-      onFollow({ userId, followId });
+      if (!currentUser.following.some((follow) => follow._id === followId)) {
+        console.log(currentUser.following);
+        onFollow({ userId, followId });
+      }
     }
-    console.log('following', currentUser.following);
-    console.log('followers', currentUser.followers);
+    console.log('current_following', currentUser.following);
+    console.log('current_followers', currentUser.followers);
   }, []);
 
   return (
@@ -68,7 +73,7 @@ const FollowList = ({ followList, tab }) => {
                   {userData.fullName}
                 </Text>
               </Profile>
-              {tab === FOLLOWING ? (
+              {tab === FOLLOWING && (
                 <Button
                   width={100}
                   height={30}
@@ -81,7 +86,8 @@ const FollowList = ({ followList, tab }) => {
                 >
                   팔로잉
                 </Button>
-              ) : (
+              )}
+              {tab === FOLLOWER && (
                 <Button
                   width={100}
                   height={30}

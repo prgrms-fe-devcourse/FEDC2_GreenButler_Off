@@ -53,7 +53,7 @@ export const Navigation = () => {
         </NavItem>
         <NavItem>
           <Icon.Link
-            to="/user/mypage"
+            to="/mypage"
             name={pathname === '/user/mypage' ? 'MY_PAGE_ACTIVE' : 'MY_PAGE'}
             size={27}
           />

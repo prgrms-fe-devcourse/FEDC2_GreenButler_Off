@@ -41,8 +41,6 @@ const FollowPage = () => {
     handleGetFollowers();
   }, [user]);
 
-  useEffect(() => {}, [currentUser]);
-
   const [currentTab, setCurrentTab] = useState(FOLLOWER);
   const onActive = (value) => {
     setCurrentTab(value);
@@ -63,6 +61,8 @@ const FollowPage = () => {
         }),
       );
       setFollowingData(data);
+    } else {
+      setFollowingData([]);
     }
   }, [user]);
 

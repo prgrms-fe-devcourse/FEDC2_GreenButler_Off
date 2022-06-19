@@ -25,10 +25,6 @@ const FollowList = ({ followList, tab }) => {
     setIsModal(false);
   };
 
-  useEffect(() => {
-    console.log('FOLLOWLIST', followList);
-  }, []);
-
   const hadleToggleFollow = useCallback(
     (followId, type, userId = '') => {
       if (type === UNFOLLOW) {

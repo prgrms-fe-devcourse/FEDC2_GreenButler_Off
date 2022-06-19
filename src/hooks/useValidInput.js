@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const useValidInput = (max = 0) => {
   const [error, setError] = useState('');
@@ -10,9 +10,9 @@ const useValidInput = (max = 0) => {
     // eslint-disable-next-line
     const reg = /[`~!@#$%^&*()_|+\-=?;:'",.<>\s\{\}\[\]\\\/]/gi;
 
-    if (max && value.length >= max) {
+    if (max && inputValue.length > 6) {
       setError(`* 1-${max}글자 사이로 입력해주세요!`);
-      setValue(inputValue.slice(0, max));
+      setValue(inputValue.slice(0, 6));
       return;
     }
     if (reg.test(inputValue)) {

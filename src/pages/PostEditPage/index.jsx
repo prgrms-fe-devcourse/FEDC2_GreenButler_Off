@@ -53,7 +53,15 @@ const PageFixed = styled(PageWrapper)`
 
 // 내 게시물이 아닌데 수정하려고 할 경우 내보내야 할 듯
 
-const PostEditPage = (props) => {
+const page = {
+  create: {
+    title: '게시물 등록',
+  },
+  edit: {
+    title: '게시물 수정',
+  },
+};
+const PostEditPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
   const [content, setContent] = useState('');
@@ -66,6 +74,7 @@ const PostEditPage = (props) => {
   const location = useLocation();
   const textRef = useRef();
 
+  console.log(location.state, 'location.state');
   const handleResizeHeight = useCallback(
     (e) => {
       textRef.current.style.height = 'auto';
@@ -79,14 +88,13 @@ const PostEditPage = (props) => {
   const currentPage = location.pathname.split('/')[2]; // 페이지 구분
 
   const { id } = useParams();
-  console.log(location.pathname.split('/')[2], 'location');
 
   const getCurrentPost = useCallback(async () => {
     const result = await getPostData(id).then((res) => res.data);
     const title = JSON.parse(result.title);
     console.log(result, 'result');
 
-    // setImgSrc(result.image);
+    // ImgSrc(result.image);
     setContent(title.content);
     setTags(title.tags);
     setCurrentPost(result);
@@ -114,9 +122,11 @@ const PostEditPage = (props) => {
   );
 
   const onClickAddBtn = async () => {
-    // Edit페이지일 경우는 imgSrc가 없어도 됨
+    if (!token) {
+      return;
+    }
 
-    if (token && currentPage === 'create') {
+    if (currentPage === 'create') {
       if (!imgSrc || !content) {
         setModalMessage(!imgSrc ? '이미지를 등록해주세요!' : '게시글을 작성해주세요!');
         setIsModal(true);
@@ -130,11 +140,11 @@ const PostEditPage = (props) => {
         channelId: '62a04aa2703fdd3a82b4e66e',
       });
       const result = await addPost(token, formData);
-      console.log(result);
+      console.log(result, '포스트 등록 결과');
       navigate('/');
     }
 
-    if (token && currentPage === 'edit') {
+    if (currentPage === 'edit') {
       if (!content) {
         setModalMessage('게시글을 작성해주세요!');
         setIsModal(true);
@@ -163,19 +173,16 @@ const PostEditPage = (props) => {
     setIsModal(false);
   };
 
-  //추가된 부분
   useEffect(() => {
     if (currentPage === 'edit') {
-      getCurrentPost();
-      console.log('현재 페이지는 Edit 페이지 입니다.');
+      location.state?.post ? setCurrentPost(location.state.post) : getCurrentPost();
     }
-  }, [getCurrentPost, currentPage]);
+  }, [getCurrentPost, currentPage, location.state.post]);
 
   return (
     <>
-      <PageFixed title="게시물 수정" header prev>
-        <UploadImage onChange={onFileChange} defaultImage={currentPost?.image} />{' '}
-        {/* default 이미지 받기 */}
+      <PageFixed title={page[currentPage].title} header prev>
+        <UploadImage onChange={onFileChange} defaultImage={currentPost?.image} />
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <TextArea
           ref={textRef}
@@ -185,11 +192,7 @@ const PostEditPage = (props) => {
           rows={10}
         ></TextArea>
         <FixedContainer bottom style={{ padding: 15 }}>
-          {currentPage === 'create' ? (
-            <Button onClick={onClickAddBtn}>게시물 등록</Button>
-          ) : (
-            <Button onClick={onClickAddBtn}>게시물 수정</Button>
-          )}
+          <Button onClick={onClickAddBtn}>{page[currentPage].title}</Button>
         </FixedContainer>
         <Modal visible={isModal} onClose={onCloseModal}>
           <Modal.Content title={modalMessage} />

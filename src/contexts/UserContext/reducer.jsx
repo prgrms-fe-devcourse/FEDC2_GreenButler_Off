@@ -26,6 +26,7 @@ export const initialUserData = {
     following: [],
     notifications: [],
   },
+
   isLoading: false,
 };
 

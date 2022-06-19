@@ -11,7 +11,6 @@ import PageWrapper from 'components/basic/pageWrapper';
 import { IMAGE_URLS } from 'utils/constants/images';
 import {
   fullNameStyle,
-  smallTextStyle,
   UserContainter,
   UserInfo,
   UserDetailWrapper,
@@ -38,7 +37,7 @@ const MyPage = () => {
       setUserPosts(data);
       setPosts(data);
     }
-  }, []);
+  }, []); //TODO:유저의 정보를 받아오기 여기에 POSTS도 있음
 
   const handleGetLikePosts = useCallback(async () => {
     const { likes } = currentUser;
@@ -51,39 +50,34 @@ const MyPage = () => {
   }, []);
 
   return (
-    <PageWrapper>
+    <PageWrapper header nav info prev>
       <UserContainter>
-        <UserInfo>
-          {/* 
-        //TODO:신영 프로필 기본 이미지를 변경할 예정
-      */}
+        <UserInfo style={{ cursor: 'pointer' }}>
           <Avatar
             size={136}
-            style={{
-              cursor: 'pointer',
-            }}
             src={currentUser.image || IMAGE_URLS.PROFILE_IMG}
+            onClick={() => navigate('/user/MyInfo')}
           />
           <Text style={{ ...fullNameStyle }}>{currentUser.fullName}</Text>
-          {/* //TODO:신영 추후 컴포넌트 분리 근데 Text 인라인 스타일이 갑자기 안먹히네?...*/}
           <UserDetailWrapper>
             <UserDetail>
               <Text
                 fontSize={16}
                 color={theme.color.fontNormal}
                 onClick={() => setPosts(userPosts)}
+                mm
               >
                 게시물
               </Text>
               <Text fontSize={18}> {currentUser.posts.length}</Text>
             </UserDetail>
-            <UserDetail onClick={() => navigate('/user/follow')}>
+            <UserDetail onClick={() => navigate(`/user/follow/${currentUser.id}`)}>
               <Text fontSize={16} color={theme.color.fontNormal}>
                 팔로워
               </Text>
               <Text fontSize={18}> {currentUser.followers.length}</Text>
             </UserDetail>
-            <UserDetail onClick={() => navigate('/user/follow')}>
+            <UserDetail onClick={() => navigate(`/user/follow/${currentUser.id}`)}>
               <Text fontSize={16} color={theme.color.fontNormal}>
                 {' '}
                 팔로잉

@@ -88,7 +88,6 @@ export const searchUsers = (fullName) => {
   TODO:신영 userId === 팔로우 당하는 사람 id
 */
 export const Follow = (token, userId) => {
-  //console.log('API_USERID', userId);
   return request({
     method: API_METHOD.POST,
     url: `/follow/create`,
@@ -107,7 +106,7 @@ export const Follow = (token, userId) => {
   TODO:신영 id === 팔로우객체 _id
 */
 export const unFollow = (token, id) => {
-  /*   return request({
+  return request({
     method: API_METHOD.DELETE,
     url: `/follow/delete`,
     headers: {
@@ -116,7 +115,7 @@ export const unFollow = (token, id) => {
     data: {
       id,
     },
-  }); */
+  });
 };
 
 /* 
@@ -124,17 +123,17 @@ export const unFollow = (token, id) => {
   Response: User
 */
 export const changeUserName = (token, fullName, username) => {
-  /*   return request({
+  return request({
     method: API_METHOD.PUT,
     url: `/settings/update-user`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      ...(fullName && { fullName }),
-      ...(username && { username }),
+      fullName,
+      username,
     },
-  }); */
+  });
 };
 
 /* 

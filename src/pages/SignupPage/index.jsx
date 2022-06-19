@@ -9,9 +9,10 @@ import SignupModal from 'components/SignupModal';
 import Text from 'components/basic/Text';
 import useLocalStorage from 'hooks/useLocalStrorage';
 import { useUserContext } from 'contexts/UserContext';
+import PageWrapper from 'components/basic/pageWrapper';
 
 const SignupWrapper = styled.div`
-  width: 500px;
+  width: 100%;
   height: 100vh;
   background-color: white;
   display: flex;
@@ -51,11 +52,13 @@ const SignupPage = () => {
     }
   };
   return (
-    <SignupWrapper>
-      <StyledText fontSize={30}>회원가입</StyledText>
-      <SignupForm onSubmit={handleSubmit}></SignupForm>
-      <SignupModal isShow={showModal} onClose={closeModal}></SignupModal>
-    </SignupWrapper>
+    <PageWrapper>
+      <SignupWrapper>
+        <StyledText fontSize={30}>회원가입</StyledText>
+        <SignupForm onSubmit={handleSubmit}></SignupForm>
+        <SignupModal isShow={showModal} onClose={closeModal}></SignupModal>
+      </SignupWrapper>
+    </PageWrapper>
   );
 };
 

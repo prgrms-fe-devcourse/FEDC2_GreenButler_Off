@@ -159,7 +159,7 @@ export const addComment = (token, postId, comment) => {
   특정 포스트에 작성한 나의 댓글을 삭제한다. 
   Response: Comment
 */
-export const deleteComment = (token, postId) => {
+export const deleteComment = (token, commentId) => {
   return request({
     method: API_METHOD.DELETE,
     url: `/comments/delete`,
@@ -167,7 +167,7 @@ export const deleteComment = (token, postId) => {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      id: postId,
+      id: commentId,
     },
   });
 };

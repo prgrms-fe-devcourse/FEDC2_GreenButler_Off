@@ -9,8 +9,9 @@ import { IMAGE_URLS } from 'utils/constants/images';
 import useLocalToken from 'hooks/useLocalToken';
 import { useLocation } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
-import { getPostData } from 'utils/apis/postApi';
+import { getPostData, deleteComment } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
+import Modal from 'components/Modal';
 
 const PostDetailPage = () => {
   const location = useLocation();
@@ -19,6 +20,8 @@ const PostDetailPage = () => {
   const inputRef = useRef(null);
   const [localToken] = useLocalToken();
   const { currentUser } = useUserContext();
+  const [isModal, setIsModal] = useState(false);
+  const commentIdToDelete = useRef('');
 
   useEffect(() => {
     const postId = location.pathname.split('/')[3];
@@ -55,8 +58,27 @@ const PostDetailPage = () => {
     setInputHeight(scrollHeight + 'px');
   }, [inputRef]);
 
-  const handleMoreClick = useCallback(() => {
-    console.log('more');
+  const handleMoreClick = useCallback((commentId) => {
+    setIsModal(true);
+    commentIdToDelete.current = commentId;
+  }, []);
+
+  const handleDeleteComment = useCallback(async () => {
+    setIsModal(false);
+    if (localToken && commentIdToDelete.current) {
+      await deleteComment(localToken, commentIdToDelete.current);
+      const nextComments = post.comments.filter(
+        (comment) => comment._id !== commentIdToDelete.current,
+      );
+      setPost({
+        ...post,
+        comments: nextComments,
+      });
+    }
+  }, [post, localToken]);
+
+  const onClose = useCallback(() => {
+    setIsModal(false);
   }, []);
 
   return (
@@ -85,12 +107,19 @@ const PostDetailPage = () => {
                       </MetaInformation>
                       <CommentText>{comment}</CommentText>
                     </Content>
-                    {_id === currentUser.id && <MoreButton onClick={handleMoreClick} />}
+                    {_id === currentUser.id && (
+                      <MoreButton onClick={() => handleMoreClick(commentId)} />
+                    )}
                   </CommentItem>
                 ),
               )}
             </CommentList>
           </Container>
+          <Modal visible={isModal} onClose={onClose}>
+            <Modal.Custom>
+              <DeleteCommentButton onClick={handleDeleteComment}>삭제</DeleteCommentButton>
+            </Modal.Custom>
+          </Modal>
         </PageWrapper>
       )}
     </>
@@ -206,5 +235,17 @@ const MoreButton = ({ onClick, ...props }) => {
     </button>
   );
 };
+
+const DeleteCommentButton = styled.button`
+  background-color: ${theme.color.mainWhite};
+  color: ${theme.color.mainRed};
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 24px;
+  line-height: 29px;
+  padding: 35px 0;
+  border-radius: 15px 15px 0 0;
+`;
 
 export default PostDetailPage;

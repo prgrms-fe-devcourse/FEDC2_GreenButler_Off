@@ -71,11 +71,6 @@ export const addPost = (token, data) => {
   FormData를 전송하는 것이 필요. 아래와 같이 FormData로 변환 후 전송한다. (테스트 필요)
 */
 export const updatePost = (token, data) => {
-  const submitData = { ...data, meta: JSON.stringify(data.meta) };
-  const formData = new FormData();
-  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
-  formData.append('channelId', channelId);
-
   return request({
     method: API_METHOD.PUT,
     url: `/posts/update`,
@@ -83,7 +78,7 @@ export const updatePost = (token, data) => {
       'Content-Type': `multipart/form-data`,
       Authorization: `Bearer ${token}`,
     },
-    data: formData,
+    data: data,
   });
 };
 

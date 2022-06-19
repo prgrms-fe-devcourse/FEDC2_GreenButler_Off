@@ -25,7 +25,7 @@ const Router = () => {
       <Route path="/" element={<MainPage />} />
       <Route path="/post/create" element={<PostAddPage />} />
       <Route path="/post/edit" element={<PostEditPage />} />
-      <Route path="/post/detail" element={<PostDetailPage />} />
+      <Route path="/post/detail/:id" element={<PostDetailPage />} />
       <Route path="/user/mypage" element={<MyPage />} />
       <Route path="/user/:id" element={<UserPage />} />
       <Route path="/user/follow" element={<FollowPage />} />
@@ -33,7 +33,7 @@ const Router = () => {
       <Route path="/user/myinfo/edit" element={<MyInfoEditPage />} />
       <Route path="/user/notification" element={<NotificationPage />} />
       <Route path="/search" element={<SearchPage />} />
-      <Route path="/search/tag" element={<SearchTagPage />} />
+      <Route path="/tag/:tag" element={<SearchTagPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

@@ -5,6 +5,7 @@ import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
+import NoResultMessage from 'components/Message/NoResultMessage';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -29,19 +30,22 @@ const UserSearchResult = ({ users }) => {
 
   return (
     <>
-      {users?.map((user) => {
-        return (
-          <ProfileContainer key={user._id}>
-            <Profile onClick={() => onClickProfile(user._id)}>
-              <Avatar size={60} src={IMAGE_URLS.PROFILE_IMG} />
-              <Text style={{ marginLeft: 20 }} fontSize={18} block>
-                {user.fullName}
-              </Text>
-            </Profile>
-          </ProfileContainer>
-        );
-      })}
-      {users?.length <= 0 && '검색 결과가 없습니다.'}
+      {users?.length > 0 ? (
+        users?.map((user) => {
+          return (
+            <ProfileContainer key={user._id}>
+              <Profile onClick={() => onClickProfile(user._id)}>
+                <Avatar size={60} src={IMAGE_URLS.PROFILE_IMG} />
+                <Text style={{ marginLeft: 20 }} fontSize={18} block>
+                  {user.fullName}
+                </Text>
+              </Profile>
+            </ProfileContainer>
+          );
+        })
+      ) : (
+        <NoResultMessage />
+      )}
     </>
   );
 };

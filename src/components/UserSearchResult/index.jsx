@@ -5,13 +5,16 @@ import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
+import NoResultMessage from 'components/Message/NoResultMessage';
 
 const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
+  cursor: pointer;
 `;
+
 const Profile = styled.div`
   display: flex;
   align-items: center;
@@ -27,8 +30,8 @@ const UserSearchResult = ({ users }) => {
 
   return (
     <>
-      {users &&
-        users.map((user) => {
+      {users?.length > 0 ? (
+        users?.map((user) => {
           return (
             <ProfileContainer key={user._id}>
               <Profile onClick={() => onClickProfile(user._id)}>
@@ -39,7 +42,10 @@ const UserSearchResult = ({ users }) => {
               </Profile>
             </ProfileContainer>
           );
-        })}
+        })
+      ) : (
+        <NoResultMessage />
+      )}
     </>
   );
 };

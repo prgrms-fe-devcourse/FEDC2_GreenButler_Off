@@ -10,14 +10,6 @@ import { searchTag } from 'utils/apis/postApi';
 const TAG = 'tag';
 const USER = 'user';
 
-/*
-  TODO:
-  1. 검색 후 빈 배열로 내려올 경우 검색결과 없음 메세지 출력하기
-  2. 현재 유저의 팔로우 목록과 비교하여 팔로우/팔로잉 버튼 변경하여 출력하기
-  3. 게시물에 이미지가 없다면 기본 이미지로 대체
-
-*/
-
 const SearchPage = () => {
   const [currentTab, setCurrentTab] = useState('tag');
   const [searchData, setSearchData] = useState({

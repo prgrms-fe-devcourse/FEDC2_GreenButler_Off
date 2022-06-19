@@ -1,6 +1,6 @@
 import Icon from 'components/basic/Icon';
 
-const IconButton = ({ children, name, size = 15 }) => {
+const IconButton = ({ children, name, onClick, size = 15 }) => {
   const style = {
     borderRadius: '0',
     backgroundColor: 'transparent',
@@ -10,7 +10,7 @@ const IconButton = ({ children, name, size = 15 }) => {
     justifyContent: 'center',
   };
   return (
-    <button style={style}>
+    <button style={style} onClick={onClick}>
       <Icon name={name} size={size} />
       {children}
     </button>

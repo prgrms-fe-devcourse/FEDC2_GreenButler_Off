@@ -18,6 +18,7 @@ const SearchPage = () => {
     [USER]: null,
   });
 
+  console.log(!!searchData[TAG]);
   const onSearch = useCallback(
     async (keyword) => {
       if (currentTab === TAG) {
@@ -64,10 +65,10 @@ const SearchPage = () => {
 
       <Tab onActive={onActive}>
         <Tab.Item title="태그" index={TAG}>
-          <TagSearchResult posts={searchData.tag} />
+          <TagSearchResult posts={searchData.tag} isSearch={!!searchData[TAG]} />
         </Tab.Item>
         <Tab.Item title="계정" index={USER}>
-          <UserSearchResult users={searchData.user} />
+          <UserSearchResult users={searchData.user} isSearch={!!searchData[USER]} />
         </Tab.Item>
       </Tab>
     </PageWrapper>

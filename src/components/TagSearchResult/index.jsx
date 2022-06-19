@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import NoResultMessage from 'components/Message/NoResultMessage';
 
 const TagSearchResult = ({ posts }) => {
-  console.log(posts, 'posts');
   return (
     <>
       {posts?.length > 0 ? (

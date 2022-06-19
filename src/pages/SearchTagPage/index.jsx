@@ -13,14 +13,6 @@ const Header = styled.h3`
   font-size: 30px;
 `;
 
-/*
-  TODO:
-  1. 태그 클릭 시 넘어온 keyword로 검색되게 교체
-  2. 테스트 코드들 정리하고 코드 간소화 필요
-  3. 정사각형의 이미지가 아니면 postList에서 짤려보이는데 이 부분 처리 필요
-  4. 태그 클릭하여 넘어올 때 클릭한 태그의 키워드를 url에 담아주면 좋을 듯
-*/
-
 const SearchTagPage = () => {
   const { tag } = useParams();
 

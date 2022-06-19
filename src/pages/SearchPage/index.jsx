@@ -1,24 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
 import Tab from 'components/basic/Tab';
-import InputForm from 'components/basic/Input/InputForm';
+import InputForm from 'components/InputForm';
+// import InputForm from 'components/basic/Input/InputForm';
 import PageWrapper from 'components/basic/pageWrapper';
 import TagSearchResult from 'components/TagSearchResult';
 import UserSearchResult from 'components/UserSearchResult';
 import { searchUsers } from 'utils/apis/userApi';
 import { searchTag } from 'utils/apis/postApi';
+import Icon from 'components/basic/Icon';
+import theme from 'styles/theme';
 
 const TAG = 'tag';
 const USER = 'user';
 
+const { backgroundLight } = theme.color;
 const SearchPage = () => {
   const [currentTab, setCurrentTab] = useState('tag');
+  const [inputValue, setInputValue] = useState('');
   const [searchData, setSearchData] = useState({
     keyword: '',
     [TAG]: null,
     [USER]: null,
   });
 
-  console.log(!!searchData[TAG]);
   const onSearch = useCallback(
     async (keyword) => {
       if (currentTab === TAG) {
@@ -40,13 +44,14 @@ const SearchPage = () => {
     setCurrentTab(value);
   }, []);
 
-  const onSubmit = useCallback(
-    (keyword) => {
-      setSearchData({ keyword: '', [TAG]: null, [USER]: null });
-      onSearch(keyword);
-    },
-    [onSearch],
-  );
+  const onSubmit = useCallback(() => {
+    if (inputValue === '') {
+      return;
+    }
+
+    setSearchData({ keyword: '', [TAG]: null, [USER]: null });
+    onSearch(inputValue);
+  }, [onSearch, inputValue]);
 
   useEffect(() => {
     if (searchData.keyword && searchData[currentTab] === null) {
@@ -57,11 +62,16 @@ const SearchPage = () => {
   return (
     <PageWrapper header nav info>
       <InputForm
-        name="search"
-        placeholder="검색어를 입력해주세요."
         onSubmit={onSubmit}
-        style={{ marginTop: '20px' }}
-      />
+        style={{ marginTop: '15px', backgroundColor: backgroundLight, border: 0 }}
+      >
+        <Icon name="SEARCH_GRAY" size={27} style={{ marginLeft: 10 }} />
+        <InputForm.Input
+          placeholder="검색어를 입력해주세요"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+      </InputForm>
 
       <Tab onActive={onActive}>
         <Tab.Item title="태그" index={TAG}>

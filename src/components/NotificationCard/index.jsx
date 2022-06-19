@@ -21,3 +21,5 @@ const NotificationCard = ({ notificationId, postId, message, fullName, userId, i
     </CardWrapper>
   );
 };
+
+export default NotificationCard;

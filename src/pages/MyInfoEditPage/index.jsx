@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Input from 'components/basic/Input';
 import theme from 'styles/theme';
 import useDebounce from 'hooks/useDebounce';
+import Modal from 'components/Modal';
 
 const MyInfoEditPage = () => {
   const { onChangePassword } = useUserContext();
@@ -17,6 +18,11 @@ const MyInfoEditPage = () => {
   const [passwordInvalid, setPasswordInvalid] = useState(false);
   const [confirmInvalid, setConfirmInvalid] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isModal, setIsModal] = useState(false);
+
+  const onClose = () => {
+    setIsModal(false);
+  };
 
   const regex = /\S{4,7}/;
 
@@ -47,7 +53,7 @@ const MyInfoEditPage = () => {
     e.preventDefault();
     if (!passwordInvalid && !confirmInvalid) {
       onChangePassword(password);
-      navigate(-1);
+      setIsModal(true);
     }
   };
   return (
@@ -60,8 +66,8 @@ const MyInfoEditPage = () => {
               marginLeft: 20,
               textAlign: 'left',
               fontWeight: 700,
+              fontSize: 26,
             }}
-            fontSize={26}
             block={true}
           >
             비밀번호를 설정해주세요
@@ -93,6 +99,23 @@ const MyInfoEditPage = () => {
             {errors.confirm && <ErrorText>{errors.confirm}</ErrorText>}
           </UserEditForm>
         </UserInfo>
+        {isModal && (
+          <Modal visible={isModal} onClose={onClose}>
+            <Modal.Content
+              title="비밀번호 변경!"
+              description="비밀번호가 성공적으로 변경됐습니다."
+              onClose={onClose}
+            />
+            <Modal.Button
+              onClick={() => {
+                onClose();
+                navigate(-1);
+              }}
+            >
+              확인
+            </Modal.Button>
+          </Modal>
+        )}
       </UserContainter>
     </PageWrapper>
   );

@@ -7,9 +7,8 @@ import theme from 'styles/theme';
 import Icon from 'components/basic/Icon';
 import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
-import Button from 'components/basic/Button';
 import ChangeNameForm from 'components/ChangeNameForm';
-import UploadImage from 'components/UploadImage';
+import ChangeProfileModal from 'components/ChangeProfileModal';
 import { EDIT, LOGOUT, KEY, TAG_DELETE } from 'utils/constants/icons/names';
 import { IMAGE_URLS } from 'utils/constants/images';
 
@@ -17,8 +16,12 @@ const MyInfoPage = () => {
   const { currentUser, onChangeFullName, onLogout, onChangeProfile } = useUserContext();
   const [imgSrc, setImgSrc] = useState('');
   const [isNameEditor, setIsNameEditor] = useState(false);
-  const [isImageEditor, setIsImageEditor] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const nameEditRef = useRef();
+
+  const onClose = () => {
+    setIsModal(false);
+  };
 
   const onFullNameChange = useCallback(
     (value) => {
@@ -33,7 +36,9 @@ const MyInfoPage = () => {
   }, []);
 
   const onProfileSubmit = useCallback(() => {
-    onChangeProfile({ image: imgSrc });
+    if (imgSrc) {
+      onChangeProfile({ image: imgSrc });
+    }
   }, [imgSrc, onChangeProfile]);
 
   const handleCloseEditor = (e) => {
@@ -67,7 +72,7 @@ const MyInfoPage = () => {
               }}
               src={currentUser.image || IMAGE_URLS.PROFILE_IMG}
               onClick={() => {
-                setIsImageEditor(true);
+                setIsModal(true);
               }}
             />
           </UserImage>
@@ -84,8 +89,8 @@ const MyInfoPage = () => {
                   fontWeight: 500,
                   lineHeight: '34.75px',
                   cursor: 'pointer',
+                  fontSize: 24,
                 }}
-                fontSize={24}
               >
                 {currentUser.fullName}
               </Text>
@@ -103,15 +108,13 @@ const MyInfoPage = () => {
          */}
         <UserDetailWrapper>
           <UserDetail>
-            <Text style={{ marginLeft: '30px' }} fontSize={20}>
-              Email
-            </Text>
+            <Text style={{ marginLeft: '30px', fontSize: 20 }}>Email</Text>
             <Text
               style={{
                 marginLeft: '10px',
+                fontSize: 20,
+                color: theme.color.fontNormal,
               }}
-              fontSize={20}
-              color={theme.color.fontNormal}
             >
               {currentUser.email}
             </Text>
@@ -145,28 +148,12 @@ const MyInfoPage = () => {
         </UserDetailWrapper>
         {/*   //TODO:신영 Modal 추후 refactor/MyPagesBasic 작업시 교체 및 분리
          */}
-        {isImageEditor && (
-          <Modal>
-            <Icon
-              name={TAG_DELETE}
-              onClick={() => {
-                setIsImageEditor(false);
-              }}
-            />
-            <Text>프로필을 변경하시겠습니까?</Text>
-            <UploadImage
-              onChange={onFileChange}
-              style={{ borderRadius: '50%', overflow: 'hidden', width: '140px' }}
-            />{' '}
-            <Button
-              onClick={() => {
-                setIsImageEditor(false);
-                imgSrc && onProfileSubmit();
-              }}
-            >
-              확인
-            </Button>
-          </Modal>
+        {isModal && (
+          <ChangeProfileModal
+            onFileChange={onFileChange}
+            onProfileSubmit={onProfileSubmit}
+            onClose={onClose}
+          />
         )}
       </UserContainter>
     </PageWrapper>
@@ -231,20 +218,4 @@ const UserDetail = styled.div`
   border-bottom: 1px solid ${theme.color.borderLight};
   display: flex;
   align-items: center;
-`;
-
-const Modal = styled.div`
-  background-color: ${theme.color.mainWhite};
-  width: 100%;
-  height: 500px;
-  position: absolute;
-  bottom: 70px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 20px;
-  border: 1px solid ${theme.color.borderLight};
-  box-sizing: border-box;
-  padding: 22px 80px;
-  align-items: center;
-  justify-content: space-around;
 `;

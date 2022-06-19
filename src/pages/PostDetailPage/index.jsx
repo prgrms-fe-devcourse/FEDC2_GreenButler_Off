@@ -7,13 +7,14 @@ import { useRef, useCallback, useState, useEffect } from 'react';
 import { addComment } from 'utils/apis/postApi';
 import { IMAGE_URLS } from 'utils/constants/images';
 import useLocalToken from 'hooks/useLocalToken';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
 import { getPostData, deleteComment } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
 import Modal from 'components/Modal';
 
 const PostDetailPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [post, setPost] = useState(null);
   const [inputHeight, setInputHeight] = useState('30px');
@@ -58,6 +59,14 @@ const PostDetailPage = () => {
     setInputHeight(scrollHeight + 'px');
   }, [inputRef]);
 
+  const handleAvatarClick = useCallback((userId) => {
+    // navigate(`/user/${userId}`, {
+    //   state: {
+    //     userId,
+    //   },
+    // });
+  }, []);
+
   const handleMoreClick = useCallback((commentId) => {
     setIsModal(true);
     commentIdToDelete.current = commentId;
@@ -99,7 +108,7 @@ const PostDetailPage = () => {
               {post.comments?.map(
                 ({ _id: commentId, author: { _id, image, fullName }, comment, updatedAt }) => (
                   <CommentItem key={commentId}>
-                    <UserAvatar src={image} />
+                    <UserAvatar src={image} onClick={() => handleAvatarClick(_id)} />
                     <Content>
                       <MetaInformation>
                         <UserNameText>{fullName}</UserNameText>
@@ -182,13 +191,17 @@ const CommentItem = styled.li`
   position: relative;
 `;
 
-const UserAvatar = ({ src = IMAGE_URLS.PROFILE_IMG, ...props }) => {
-  return <Avatar src={src} {...props} alt="유저 프로필 사진" size={60} />;
-};
-
 const Content = styled.div`
   margin: 0 10px;
 `;
+
+const UserAvatar = ({ src, onClick }) => {
+  return (
+    <div onClick={onClick}>
+      <Avatar src={src} size={60} />
+    </div>
+  );
+};
 
 const MetaInformation = styled.div`
   display: flex;

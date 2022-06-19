@@ -5,7 +5,7 @@ import IconBtn from './IconButton';
 import Profile from 'components/Profile';
 import { useUserContext } from 'contexts/UserContext';
 
-const PostHeader = ({ author: { _id, fullName }, isDetailPage }) => {
+const PostHeader = ({ author: { _id, image, fullName }, isDetailPage }) => {
   const { currentUser } = useUserContext();
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
@@ -22,7 +22,7 @@ const PostHeader = ({ author: { _id, fullName }, isDetailPage }) => {
 
   return (
     <Header>
-      <Profile userName={fullName} onClick={handleClick} />
+      <Profile src={image} userName={fullName} onClick={handleClick} />
       {isMyPost && <IconBtn className="more-button" name="MORE" size={20} />}
     </Header>
   );

@@ -6,37 +6,15 @@ import UploadImage from 'components/UploadImage';
 import TagAddForm from 'components/TagAddForm';
 import PageWrapper from 'components/basic/pageWrapper';
 import FixedContainer from 'components/FixedContainer';
+import Modal from 'components/Modal';
+import PostTextArea from 'components/PostTextArea';
+
 import useLocalToken from 'hooks/useLocalToken';
 import { addPost, getPostData, updatePost } from 'utils/apis/postApi';
 import theme from 'styles/theme';
-import Modal from 'components/Modal';
-import { IMAGE_URLS } from 'utils/constants/images';
-
 import { imageToFile, objectToForm } from 'utils/functions/converter';
-import { useRef } from 'react';
 
-const { fontNormal, borderNormal, mainBlack } = theme.color;
 const { headerHeight } = theme.value;
-const { POST_DEFAULT_IMG } = IMAGE_URLS;
-
-const TextArea = styled.textarea`
-  margin-top: 20px;
-  width: 100%;
-  border: 1px solid ${borderNormal};
-  border-radius: 15px;
-  padding: 23px 20px;
-  resize: none;
-  font-size: 20px;
-  color: ${mainBlack};
-  overflow: hidden;
-
-  ::placeholder {
-    color: ${fontNormal};
-  }
-  &:focus {
-    border: 1px solid ${borderNormal};
-  }
-`;
 
 const PageFixed = styled(PageWrapper)`
   position: fixed;
@@ -51,8 +29,6 @@ const PageFixed = styled(PageWrapper)`
   }
 `;
 
-// 내 게시물이 아닌데 수정하려고 할 경우 내보내야 할 듯
-
 const page = {
   create: {
     title: '게시물 등록',
@@ -61,6 +37,7 @@ const page = {
     title: '게시물 수정',
   },
 };
+
 const PostEditPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
@@ -72,20 +49,13 @@ const PostEditPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const textRef = useRef();
 
-  console.log(location.state, 'location.state');
-  const handleResizeHeight = useCallback(
-    (e) => {
-      textRef.current.style.height = 'auto';
-      textRef.current.style.height = textRef.current.scrollHeight + 'px';
-      setContent(e.target.value);
-    },
-    [textRef],
-  );
-
-  //추가된 부분
   const currentPage = location.pathname.split('/')[2]; // 페이지 구분
+  console.log(location.state, 'location.state');
+
+  const onChangeContent = useCallback((value) => {
+    setContent(value);
+  }, []);
 
   const { id } = useParams();
 
@@ -98,7 +68,6 @@ const PostEditPage = () => {
     setContent(title.content);
     setTags(title.tags);
     setCurrentPost(result);
-    console.log(result.image);
   }, [id]);
 
   // 추가된 부분
@@ -177,20 +146,19 @@ const PostEditPage = () => {
     if (currentPage === 'edit') {
       location.state?.post ? setCurrentPost(location.state.post) : getCurrentPost();
     }
-  }, [getCurrentPost, currentPage, location.state.post]);
+  }, [getCurrentPost, currentPage, location.state?.post]);
 
   return (
     <>
       <PageFixed title={page[currentPage].title} header prev>
         <UploadImage onChange={onFileChange} defaultImage={currentPost?.image} />
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
-        <TextArea
-          ref={textRef}
-          onChange={handleResizeHeight}
+        <PostTextArea
+          onChange={onChangeContent}
           placeholder="내 식물의 성장 글을 작성해주세요."
           value={content}
           rows={10}
-        ></TextArea>
+        ></PostTextArea>
         <FixedContainer bottom style={{ padding: 15 }}>
           <Button onClick={onClickAddBtn}>{page[currentPage].title}</Button>
         </FixedContainer>

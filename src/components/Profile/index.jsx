@@ -29,6 +29,7 @@ const Profile = ({
 const Container = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Div = styled.div`

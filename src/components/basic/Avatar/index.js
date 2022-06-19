@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import ImageComponent from '../Image';
 import PropTypes from 'prop-types';
+import { IMAGE_URLS } from 'utils/constants/images';
 
 const AvatarWrapper = styled.div`
   position: relative;
@@ -20,10 +21,10 @@ const AvatarWrapper = styled.div`
 const Avatar = ({
   lazy,
   threshold,
-  src,
+  src = IMAGE_URLS.PROFILE_IMG,
   size = 70,
   placeholder,
-  alt,
+  alt = '유저 프로필 이미지',
   ...props
 }) => {
   const [loaded, setLoaded] = useState(false);

@@ -13,7 +13,15 @@ const PostItem = ({ post, isDetailPage }) => {
 };
 
 const Article = styled.article`
-  border-bottom: 1px solid ${theme.color.borderLight};
+  &::before {
+    content: '';
+    display: block;
+    width: 100vw;
+    border-top: 1px solid ${theme.color.borderLight};
+    margin-left: -20px;
+    margin-right: -20px;
+    transform: translateY(-1px);
+  }
 `;
 
 export default PostItem;

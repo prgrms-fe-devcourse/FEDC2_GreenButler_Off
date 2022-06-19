@@ -54,7 +54,7 @@ const MainPage = () => {
   }, [targetRef, onIntersect]);
 
   return (
-    <PageWrapper header nav>
+    <PageWrapper header nav info>
       <PostList>
         {posts?.map((post, i) => {
           if (posts.length - 1 === i) {

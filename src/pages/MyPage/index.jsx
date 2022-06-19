@@ -65,7 +65,6 @@ const MyPage = () => {
                 fontSize={16}
                 color={theme.color.fontNormal}
                 onClick={() => setPosts(userPosts)}
-                mm
               >
                 게시물
               </Text>

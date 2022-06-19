@@ -7,14 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LoginModal from 'components/LoginModal';
 import { useUserContext } from 'contexts/UserContext';
+import PageWrapper from 'components/basic/pageWrapper';
 
 const LoginWrapper = styled.div`
-  width: 500px;
+  width: 100%;
   height: 100vh;
   background-color: white;
   display: flex;
   align-items: center;
   flex-direction: column;
+
   padding-top: 152px;
 `;
 
@@ -43,11 +45,13 @@ const LoginPage = () => {
     }
   };
   return (
-    <LoginWrapper>
-      <Logo name={IMAGE_NAMES.LOGO_IMAGE} width={254} height={97}></Logo>
-      <LoginForm onSubmit={handleSubmit}></LoginForm>
-      <LoginModal isShow={showModal} onClose={closeModal}></LoginModal>
-    </LoginWrapper>
+    <PageWrapper>
+      <LoginWrapper>
+        <Logo name={IMAGE_NAMES.LOGO_IMAGE} width={254} height={97}></Logo>
+        <LoginForm onSubmit={handleSubmit}></LoginForm>
+        <LoginModal isShow={showModal} onClose={closeModal}></LoginModal>
+      </LoginWrapper>
+    </PageWrapper>
   );
 };
 

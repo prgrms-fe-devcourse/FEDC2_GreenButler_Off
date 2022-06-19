@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import PageWrapper from 'components/basic/pageWrapper';
 import TagSearchResult from 'components/TagSearchResult';
 import { searchTag } from 'utils/apis/postApi';
+import { useParams } from 'react-router-dom';
 
 const Header = styled.h3`
   display: block;
@@ -21,18 +22,14 @@ const Header = styled.h3`
 */
 
 const SearchTagPage = () => {
-  const searchKeyword = '선인장'; // 임시 키워드
+  const { tag } = useParams();
+
   const [posts, setPosts] = useState();
 
-  const getTagPosts = async (keyword) => {
-    const result = await axios.get(`/search/all/%23${keyword}`);
-    return result.data;
-  };
-
   const loadPosts = useCallback(async () => {
-    // const test = await searchTag(searchKeyword); // 이렇게 요청하면 왜인지는 모르겠지만 안된다. 확인 필요
-    const updatePost = await getTagPosts(searchKeyword);
-    setPosts(updatePost);
+    const updatePost = await searchTag(tag);
+    console.log(updatePost, 'test');
+    setPosts(updatePost.data);
   }, []);
 
   useEffect(() => {
@@ -42,7 +39,7 @@ const SearchTagPage = () => {
 
   return (
     <PageWrapper header prev info>
-      <Header onClick={loadPosts}>#{searchKeyword}</Header>
+      <Header onClick={loadPosts}>#{tag}</Header>
       <TagSearchResult posts={posts} />
     </PageWrapper>
   );

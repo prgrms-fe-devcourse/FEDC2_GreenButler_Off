@@ -33,7 +33,7 @@ const Router = () => {
       <Route path="/user/myinfo/edit" element={<MyInfoEditPage />} />
       <Route path="/user/notification" element={<NotificationPage />} />
       <Route path="/search" element={<SearchPage />} />
-      <Route path="/search/tag" element={<SearchTagPage />} />
+      <Route path="/tag/:tag" element={<SearchTagPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

@@ -6,14 +6,16 @@ import PropTypes from 'prop-types';
 const TagSearchResult = ({ posts }) => {
   console.log(posts, 'posts');
   return (
-    <PostImageList>
-      {posts &&
-        posts.map((post) => (
+    <>
+      <PostImageList>
+        {posts?.map((post) => (
           <Link to={`/post/detail/${post._id}`} key={post._id}>
             <Image lazy width="100%" block threshold={0.5} src={post.image} />
           </Link>
         ))}
-    </PostImageList>
+      </PostImageList>
+      {posts?.length <= 0 && '검색 결과가 없습니다.'}
+    </>
   );
 };
 

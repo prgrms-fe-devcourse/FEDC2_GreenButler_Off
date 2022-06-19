@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const ImageContainer = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 30%);
+  grid-template-columns: repeat(3, 33%);
   gap: 10px;
   justify-content: center;
   margin-top: 10px;

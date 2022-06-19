@@ -84,8 +84,8 @@ const MyInfoPage = () => {
                   fontWeight: 500,
                   lineHeight: '34.75px',
                   cursor: 'pointer',
+                  fontSize: 24,
                 }}
-                fontSize={24}
               >
                 {currentUser.fullName}
               </Text>
@@ -103,15 +103,13 @@ const MyInfoPage = () => {
          */}
         <UserDetailWrapper>
           <UserDetail>
-            <Text style={{ marginLeft: '30px' }} fontSize={20}>
-              Email
-            </Text>
+            <Text style={{ marginLeft: '30px', fontSize: 20 }}>Email</Text>
             <Text
               style={{
                 marginLeft: '10px',
+                fontSize: 20,
+                color: theme.color.fontNormal,
               }}
-              fontSize={20}
-              color={theme.color.fontNormal}
             >
               {currentUser.email}
             </Text>

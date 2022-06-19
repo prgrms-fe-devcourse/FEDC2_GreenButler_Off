@@ -10,6 +10,7 @@ import Text from 'components/basic/Text';
 import useLocalStorage from 'hooks/useLocalStrorage';
 import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
+import Modal from 'components/Modal';
 
 const SignupWrapper = styled.div`
   width: 100%;
@@ -56,7 +57,14 @@ const SignupPage = () => {
       <SignupWrapper>
         <StyledText fontSize={30}>회원가입</StyledText>
         <SignupForm onSubmit={handleSubmit}></SignupForm>
-        <SignupModal isShow={showModal} onClose={closeModal}></SignupModal>
+        <Modal visible={showModal} onClose={closeModal}>
+          <Modal.Content
+            title="회원가입에 실패했어요!"
+            description="이메일 및 비밀번호를 다시 확인해주세요"
+            onClose={closeModal}
+          ></Modal.Content>
+          <Modal.Button onClick={closeModal}>확인</Modal.Button>
+        </Modal>
       </SignupWrapper>
     </PageWrapper>
   );

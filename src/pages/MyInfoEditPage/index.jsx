@@ -66,8 +66,8 @@ const MyInfoEditPage = () => {
               marginLeft: 20,
               textAlign: 'left',
               fontWeight: 700,
+              fontSize: 26,
             }}
-            fontSize={26}
             block={true}
           >
             비밀번호를 설정해주세요

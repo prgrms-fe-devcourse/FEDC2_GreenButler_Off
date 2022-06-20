@@ -5,8 +5,8 @@ import theme from 'styles/theme';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useEffect } from 'react';
 
-const { backgroundGreen } = theme.color;
-const { POST_DEFAULT_IMG } = IMAGE_URLS;
+const { backgroundGreen, mainWhite } = theme.color;
+const { POST_ADD_IMG } = IMAGE_URLS;
 
 const ImageWrapper = styled.div`
   margin-left: -20px;
@@ -59,7 +59,8 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
   }, [defaultImage]);
 
   const ImageStyle = {
-    backgroundImage: `url(${imageSrc ? imageSrc : POST_DEFAULT_IMG}`,
+    backgroundImage: `url(${imageSrc ? imageSrc : POST_ADD_IMG}`,
+    backgroundColor: imageSrc && mainWhite,
   };
 
   return (

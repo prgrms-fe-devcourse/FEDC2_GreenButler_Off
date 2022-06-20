@@ -17,7 +17,6 @@ const LoginWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-
   padding-top: 152px;
 `;
 
@@ -48,7 +47,7 @@ const LoginPage = () => {
   return (
     <PageWrapper>
       <LoginWrapper>
-        <Logo name={IMAGE_NAMES.LOGO_IMAGE} width={254} height={97}></Logo>
+        <Logo name={IMAGE_NAMES.LOGO_IMAGE} width={'100%'} height={97}></Logo>
         <LoginForm onSubmit={handleSubmit}></LoginForm>
         <Modal visible={showModal} onClose={closeModal}>
           <Modal.Content

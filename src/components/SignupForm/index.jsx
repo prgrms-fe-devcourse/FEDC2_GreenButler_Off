@@ -11,7 +11,7 @@ import useValidInputs from 'hooks/useValidInputs';
 
 const StyledForm = styled.form`
   margin-top: 54px;
-  width: '100%';
+  width: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -20,6 +20,8 @@ const StyledForm = styled.form`
 `;
 
 const InputWrapper = styled.div`
+  width: 100%;
+  padding: 0px 20px;
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
@@ -37,6 +39,8 @@ const StyledText = styled(Text)`
 `;
 
 const ButtonWrapper = styled.div`
+  width: 100%;
+  padding: 0px 20px;
   margin-top: 35px;
   margin-bottom: 33px;
 `;
@@ -50,8 +54,7 @@ const ErrorText = styled.span`
 `;
 
 const emailValid = (email) => {
-  const reg =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+  const reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   return reg.test(email);
 };
 const fullNameValid = (fullName) => {
@@ -118,7 +121,6 @@ const SignupForm = ({
       <InputWrapper>
         <Input
           name="email"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
@@ -131,7 +133,6 @@ const SignupForm = ({
       <InputWrapper>
         <Input
           name="fullName"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
@@ -149,7 +150,6 @@ const SignupForm = ({
         <Input
           name="password"
           type="password"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
@@ -168,7 +168,6 @@ const SignupForm = ({
         <Input
           name="passwordCheck"
           type="password"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
@@ -181,7 +180,6 @@ const SignupForm = ({
       <ButtonWrapper>
         <StyledButton
           type="submit"
-          width={420}
           height={70}
           backgroundColor={theme.color.mainGreen}
           borderColor={'none'}

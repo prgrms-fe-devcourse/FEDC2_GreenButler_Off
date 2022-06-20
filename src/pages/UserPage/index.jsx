@@ -7,7 +7,7 @@ import { getUser } from 'utils/apis/userApi';
 import { getUserPosts, getPostData } from 'utils/apis/postApi';
 import PostImageContainer from 'components/PostImageContainer';
 import PageWrapper from 'components/basic/pageWrapper';
-import { GRID, HEART } from 'utils/constants/icons/names';
+import { GRID, GRID_ACTIVE, HEART, HEART_ACTIVE } from 'utils/constants/icons/names';
 import { UserContainter } from './style';
 import UserData from './UserData';
 
@@ -69,7 +69,7 @@ const UserPage = () => {
         <Tab onActive={onActive}>
           <Tab.Item
             icon={{
-              active: <Icon name={GRID} size={18} />,
+              active: <Icon name={GRID_ACTIVE} size={18} />,
               inactive: <Icon name={GRID} size={18} />,
             }}
             index={USER_POSTS}
@@ -78,7 +78,7 @@ const UserPage = () => {
           </Tab.Item>
           <Tab.Item
             icon={{
-              active: <Icon name={HEART} size={18} />,
+              active: <Icon name={HEART_ACTIVE} size={18} />,
               inactive: <Icon name={HEART} size={18} />,
             }}
             index={LIKE_POSTS}

@@ -11,8 +11,6 @@ import theme from 'styles/theme';
 
 const FOLLOWING = 'following';
 const FOLLOWER = 'follower';
-const UNFOLLOW = 'unfollow';
-const FOLLOW = 'follow';
 
 //TODO: follows 데이터 구조
 // const followData = [{ followId: '', userData: {}, followData: {}}]; // 팔로잉 기준 전부 isFollow true
@@ -20,25 +18,30 @@ const FOLLOW = 'follow';
 const FollowList = ({ followList, tab }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
   const [isModal, setIsModal] = useState(false);
+  const [unfollowId, setUnfollowId] = useState('');
+  const [isFollowSuccess, setIsFollowSuccess] = useState(false);
 
   const onClose = () => {
     setIsModal(false);
   };
 
-  const hadleToggleFollow = useCallback(
-    (followId, type, userId = '') => {
-      if (type === UNFOLLOW) {
-        onUnfollow({ unfollowId: followId });
+  const hadleFollow = useCallback(
+    (followId, userId) => {
+      if (!currentUser.following.some((follow) => follow.user === userId)) {
+        onFollow({ userId, followId });
+        setIsFollowSuccess(true);
       } else {
-        if (!currentUser.following.some((follow) => follow._id === followId)) {
-          onFollow({ userId, followId });
-        } else {
-          setIsModal(true);
-        }
+        setIsFollowSuccess(false);
       }
+      setIsModal(true);
     },
     [currentUser],
   );
+
+  const hadleUnFollow = useCallback(() => {
+    onUnfollow({ unfollowId });
+    setIsModal(false);
+  }, [unfollowId, onUnfollow]);
 
   return (
     //TODO: user._id:
@@ -60,8 +63,9 @@ const FollowList = ({ followList, tab }) => {
                   borderRadius={10}
                   fontSize="16px"
                   style={{ ...followingButtonStyle }}
-                  onClick={(e) => {
-                    hadleToggleFollow(followId, UNFOLLOW);
+                  onClick={() => {
+                    setUnfollowId(followId);
+                    setIsModal(true);
                   }}
                 >
                   팔로잉
@@ -75,26 +79,58 @@ const FollowList = ({ followList, tab }) => {
                   fontSize="16px"
                   style={{ ...followButtonStyle }}
                   onClick={() => {
-                    hadleToggleFollow(followId, FOLLOW, followData.follower);
+                    hadleFollow(followId, followData.follower);
                   }}
                 >
                   팔로우
                 </Button>
               )}
-
-              {isModal && (
-                <Modal visible={isModal} onClose={onClose}>
-                  <Modal.Content
-                    title="팔로우 실패!"
-                    description="이미 팔로우하고 있는 사용자에요"
-                    onClose={onClose}
-                  />
-                  <Modal.Button onClick={onClose}>확인</Modal.Button>
-                </Modal>
-              )}
             </ProfileContainer>
           );
-        })}
+        })}{' '}
+      {tab === FOLLOWER && !isFollowSuccess && isModal && (
+        <Modal visible={isModal} onClose={onClose}>
+          <Modal.Content
+            title="팔로우 실패!"
+            description="이미 팔로우하고 있는 사용자에요"
+            onClose={onClose}
+          />
+          <Modal.Button onClick={onClose}>확인</Modal.Button>
+        </Modal>
+      )}
+      {tab === FOLLOWER && isFollowSuccess && isModal && (
+        <Modal visible={isModal} onClose={onClose}>
+          <Modal.Content
+            title="팔로우 성공!"
+            description="성공적으로 팔로잉 했어요"
+            onClose={onClose}
+          />
+          <Modal.Button onClick={onClose}>확인</Modal.Button>
+        </Modal>
+      )}
+      {tab === FOLLOWING && isModal && (
+        <Modal visible={isModal} onClose={onClose}>
+          <Modal.Content
+            title="언팔하시겠어요?"
+            description="언팔하시면 팔로잉 목록에서 사용자가 사라져요"
+            onClose={onClose}
+          />
+          <Modal.Button
+            onClick={() => {
+              hadleUnFollow();
+            }}
+          >
+            확인
+          </Modal.Button>
+          <Modal.Button
+            onClick={onClose}
+            backgroundColor={theme.color.backgroundNormal}
+            color="#000"
+          >
+            취소
+          </Modal.Button>
+        </Modal>
+      )}
     </>
   );
 };

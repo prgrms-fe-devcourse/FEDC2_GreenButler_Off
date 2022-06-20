@@ -127,7 +127,8 @@ const useHandles = () => {
   const handlefollow = useCallback(
     async (userId) => {
       if (localToken && userId) {
-        await Follow(localToken, userId);
+        const { data } = await Follow(localToken, userId);
+        return data;
       }
     },
     [localToken],

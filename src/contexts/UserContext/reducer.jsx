@@ -80,9 +80,9 @@ export const reducer = (state, { type, payload }) => {
           following: [
             ...state.currentUser.following,
             {
-              _id: payload.followId,
-              follower: state.currentUser.id,
-              user: payload.userId,
+              _id: payload._id,
+              follower: state.follower,
+              user: payload.user,
             },
           ],
         },

@@ -122,6 +122,15 @@ const PostAddPage = () => {
     <>
       <PageFixed title="게시물 등록" header prev>
         <UploadImage onChange={onFileChange} />
+        <button
+          onClick={() => {
+            navigate('/post/edit/62ae4c512ba3b3676bda2141', {
+              state: '/post/edit/62ae4c512ba3b3676bda2141',
+            });
+          }}
+        >
+          edit버튼 테스트
+        </button>
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <TextArea
           ref={textRef}

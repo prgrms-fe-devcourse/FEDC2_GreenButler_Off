@@ -28,8 +28,8 @@ const NotificationPage = () => {
           const { userId } = notification.user;
           const { fullName, image, _id } = notification.author;
           const message =
-            (notification.like && '회원님의 게시물에 하트를 눌렀어요') ||
-            (notification.comment && '회원님의 게시물에 댓글을 달았어요') ||
+            (notification.like && '회원님의 게시물에 하트를 눌렀어요.') ||
+            (notification.comment && '회원님의 게시물에 댓글을 달았어요.') ||
             (notification.follow && '회원님의 계정을 팔로우 했습니다.');
           return {
             notificationId: notification._id,

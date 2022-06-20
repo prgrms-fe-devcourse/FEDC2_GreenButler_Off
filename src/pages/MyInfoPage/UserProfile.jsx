@@ -132,7 +132,7 @@ const NickName = styled.div`
   justify-content: center;
   align-items: center;
   width: 300px;
-  margin: 5px 0 0 0;
+  margin: 15px 0 0 0;
   position: relative;
   cursor: pointer;
 `;

@@ -4,7 +4,6 @@ export { default as MainPage } from './MainPage/index';
 export { default as PostAddPage } from './PostAddPage/index';
 export { default as PostEditPage } from './PostEditPage/index';
 export { default as PostDetailPage } from './PostDetailPage/index';
-export { default as MyPage } from './MyPage/index';
 export { default as UserPage } from './UserPage/index';
 export { default as FollowPage } from './FollowPage/index';
 export { default as MyInfoPage } from './MyInfoPage/index';

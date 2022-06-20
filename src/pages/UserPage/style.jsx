@@ -28,7 +28,7 @@ export const followingButtonStyle = {
 
 export const fullNameStyle = {
   display: 'block',
-  marginTop: 5,
+  marginTop: 15,
   fontWeight: 500,
   fontSize: 24,
   lineHeight: '34.75px',
@@ -96,7 +96,7 @@ export const Tab = styled.div`
 
 export const UserInfo = styled.div`
   text-align: center;
-  margin: 50px auto 0 auto;
+  margin: 50px auto 30px auto;
   position: relative;
 `;
 

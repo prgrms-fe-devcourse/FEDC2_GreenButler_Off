@@ -96,7 +96,7 @@ export const Tab = styled.div`
 
 export const UserInfo = styled.div`
   text-align: center;
-  margin: 50px auto 0 auto;
+  margin: 50px auto 30px auto;
   position: relative;
 `;
 

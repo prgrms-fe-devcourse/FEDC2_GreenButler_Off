@@ -4,58 +4,98 @@ import Avatar from 'components/basic/Avatar';
 import Text from 'components/basic/Text';
 import Button from 'components/basic/Button';
 import Icon from 'components/basic/Icon';
+import Modal from 'components/Modal';
+import Tab from 'components/basic/Tab';
 import { useParams } from 'react-router-dom';
 import { useUserContext } from 'contexts/UserContext';
 import { initialUserData } from 'contexts/UserContext/reducer';
-import { getUser, Follow, unFollow } from 'utils/apis/userApi';
+import { getUser } from 'utils/apis/userApi';
 import { getUserPosts, getPostData } from 'utils/apis/postApi';
 import PostImageContainer from 'components/PostImageContainer';
 import { useNavigate } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
 import { IMAGE_URLS } from 'utils/constants/images';
+import { GRID, HEART } from 'utils/constants/icons/names';
 import {
   followButtonStyle,
   followingButtonStyle,
   fullNameStyle,
-  smallTextStyle,
   UserContainter,
   UserInfo,
   UserDetailWrapper,
   UserDetail,
-  Tab,
 } from './style';
+
+const USER_POSTS = 'userPosts';
+const LIKE_POSTS = 'likePosts';
 
 const UserPage = () => {
   const navigate = useNavigate();
   const { currentUser, onFollow, onUnfollow } = useUserContext();
   const { id } = useParams();
   const pageUserId = id;
+  const checkFollow = currentUser.following.some((follow) => follow.user === pageUserId);
   const [user, setUser] = useState(initialUserData.currentUser);
-  const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
-  const [uesrLikePosts, setUserLikePosts] = useState([]);
-  const isFollwing = currentUser.following.some((following) => following.user === pageUserId);
-  const followData = currentUser.following.filter((following) => following.user === pageUserId);
-  const [isFollow, setIsFollow] = useState(isFollwing);
+  const [userLikePosts, setUserLikePosts] = useState([]);
+  const [isFollow, setIsFollow] = useState(checkFollow);
+  const [isFollowModal, setIsFollowModal] = useState(false);
+  const [isUnFollowModal, setIsUnFollowModal] = useState(false);
+  const [isFollowFailModal, setIsFollowFailModal] = useState(false);
+
+  const onCloseFollow = () => {
+    setIsFollowModal(false);
+  };
+
+  const onCloseFollowFail = () => {
+    setIsFollowFailModal(false);
+  };
+
+  const onCloseUnFollow = () => {
+    setIsUnFollowModal(false);
+  };
+
+  const [currentTab, setCurrentTab] = useState(USER_POSTS);
+  const onActive = (value) => {
+    setCurrentTab(value);
+  };
+
+  const hadleFollow = useCallback(() => {
+    if (!isFollow) {
+      onFollow({ userId: pageUserId, followId: '' });
+      setIsFollowModal(true);
+      setIsFollow(true);
+    } else {
+      setIsFollowFailModal(true);
+    }
+    setIsFollow(true);
+  }, [pageUserId, currentUser]);
+
+  const hadleUnFollow = useCallback(() => {
+    const followData = currentUser.following.filter((follow) => follow.user === pageUserId);
+
+    if (followData.length !== 0) {
+      onUnfollow({ unfollowId: followData[0]._id });
+      setIsFollow(false);
+    }
+    setIsUnFollowModal(false);
+  }, [pageUserId, currentUser, onUnfollow]);
 
   useEffect(() => {
     handleGetUser();
-  }, []); //TODO: 이걸로 POSTS도 받아오기 실시간 정보 반영
+    console.log('현재 팔로잉', currentUser.following);
+  }, [currentUser, pageUserId]);
 
   useEffect(() => {
     handleGetLikePosts();
     handleGetUserPosts();
   }, [user]);
 
-  useEffect(() => {
-    handleGetLikePosts();
-    handleGetUserPosts();
-  }, [isFollow]);
-
   //TODO:신영 추후 핸들러 분리
   const handleGetUser = useCallback(async () => {
     if (pageUserId) {
       const { data } = await getUser(pageUserId);
+      console.log(data);
       setUser(data);
     }
   }, [pageUserId]);
@@ -64,7 +104,6 @@ const UserPage = () => {
     if (pageUserId) {
       const { data } = await getUserPosts(pageUserId);
       setUserPosts(data);
-      setPosts(data);
     }
   }, [pageUserId]);
 
@@ -79,17 +118,6 @@ const UserPage = () => {
     }
   }, [user]);
 
-  //TODO:신영 추후 팔로우, 팔로잉 페이지 만들 때 최종 완성
-  const handleFollowButton = useCallback(() => {
-    if (isFollow) {
-      setIsFollow(false);
-      onUnfollow({ unfollowId: followData.id });
-    } else {
-      setIsFollow(true);
-      onFollow({ userId: pageUserId, followId: followData.id });
-    }
-  }, [isFollow]);
-
   return (
     <PageWrapper header prev nav>
       <UserContainter>
@@ -100,17 +128,14 @@ const UserPage = () => {
               cursor: 'pointer',
             }}
             src={user.image || IMAGE_URLS.PROFILE_IMG}
+            onClick={() => currentUser.id === pageUserId && navigate('/user/MyInfo')}
           />
           <Text style={fullNameStyle}>{user.fullName}</Text>
           {/* //TODO:신영 추후 컴포넌트 분리 */}
 
           <UserDetailWrapper>
             <UserDetail>
-              <Text
-                fontSize={16}
-                color={theme.color.fontNormal}
-                onClick={() => setPosts(userPosts)}
-              >
+              <Text fontSize={16} color={theme.color.fontNormal}>
                 게시물
               </Text>
               <Text fontSize={18}> {user.posts.length}</Text>
@@ -128,25 +153,86 @@ const UserPage = () => {
               <Text fontSize={18}> {user.following.length}</Text>
             </UserDetail>
           </UserDetailWrapper>
-          <Button
-            width="100%"
-            style={isFollow ? { ...followingButtonStyle } : { ...followButtonStyle }}
-            onClick={handleFollowButton}
-          >
-            {isFollow ? '팔로잉' : '팔로우'}
-          </Button>
+
+          {currentUser.id !== pageUserId && isFollow && (
+            <Button
+              width={100}
+              height={30}
+              borderRadius={10}
+              fontSize="16px"
+              style={{ ...followingButtonStyle }}
+              onClick={() => setIsUnFollowModal(true)}
+              borderColor={theme.color.borderNormal}
+            >
+              팔로잉
+            </Button>
+          )}
+          {currentUser.id !== pageUserId && !isFollow && (
+            <Button
+              width={100}
+              height={30}
+              borderRadius={10}
+              fontSize="16px"
+              style={{ ...followButtonStyle }}
+              onClick={hadleFollow}
+            >
+              팔로우
+            </Button>
+          )}
         </UserInfo>
         {/* //TODO:신영 추후 Tab 아이콘 넣는 방식으로 교체 */}
-        <Tab>
-          <button onClick={() => setPosts(userPosts)}>
-            <Icon name="GRID" size={18} />
-          </button>
-          <button onClick={() => setPosts(uesrLikePosts)}>
-            <Icon name="HEART" size={18} />
-          </button>
+        <Tab onActive={onActive}>
+          <Tab.Item
+            icon={{
+              active: <Icon name={GRID} size={18} />,
+              inactive: <Icon name={GRID} size={18} />,
+            }}
+            index={USER_POSTS}
+          >
+            <PostImageContainer posts={userPosts} />
+          </Tab.Item>
+          <Tab.Item
+            icon={{
+              active: <Icon name={HEART} size={18} />,
+              inactive: <Icon name={HEART} size={18} />,
+            }}
+            index={LIKE_POSTS}
+          >
+            <PostImageContainer posts={userLikePosts} />
+          </Tab.Item>
         </Tab>
-        <PostImageContainer posts={posts} />
       </UserContainter>
+
+      <Modal visible={isFollowModal} onClose={onCloseFollow}>
+        <Modal.Content
+          title="팔로우 성공!"
+          description="성공적으로 팔로잉 했어요"
+          onClose={onCloseFollow}
+        />
+        <Modal.Button onClick={onCloseFollow}>확인</Modal.Button>
+      </Modal>
+
+      <Modal visible={isUnFollowModal} onClose={onCloseUnFollow}>
+        <Modal.Content
+          title="언팔하시겠어요?"
+          description="언팔하시면 팔로잉 목록에서 사용자가 사라져요"
+          onClose={onCloseUnFollow}
+        />
+        <Modal.Button
+          onClick={() => {
+            hadleUnFollow();
+          }}
+        >
+          확인
+        </Modal.Button>
+        <Modal.Button
+          onClick={onCloseUnFollow}
+          backgroundColor={theme.color.backgroundNormal}
+          color="#000"
+        >
+          취소
+        </Modal.Button>
+      </Modal>
     </PageWrapper>
   );
 };

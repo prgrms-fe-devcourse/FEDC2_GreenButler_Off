@@ -94,19 +94,22 @@ const UserProvider = ({ children }) => {
   // 특정 유저를 팔로우한 경우, currentUser의 정보 갱신
   //TODO:신영 userId: 팔로우 당한 사람 id, followId: FOLLOW 객체의 _id
   const onFollow = useCallback(async (payload = { userId: '', followId: '' }) => {
+    console.log(payload);
     const data = await handlefollow(payload.userId);
-    const notice = {
+    /*     const notice = {
       notificationType: 'FOLLOW',
       notificationTypeId: data._id,
       userId: data.user,
       postId: null,
     };
+    }; */ console.log('CONTEXT_DATA', data);
     dispatch({ type: FOLLOW, payload: data });
   }, []);
 
   // 특정 유저를 언팔로우한 경우, currentUser의 정보 갱신
   //TODO:신영 FOLLOW 객체의 _id
   const onUnfollow = useCallback((payload = { unfollowId: '' }) => {
+    console.log('컨텍스트', payload);
     handleUnFollow(payload.unfollowId);
     dispatch({ type: UNFOLLOW, payload });
   }, []);

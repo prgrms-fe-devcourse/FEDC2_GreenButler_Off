@@ -28,6 +28,7 @@ const UserSearchResult = ({ users, isSearch }) => {
     navigate(`/user/${userId}`);
   };
 
+  console.log(users);
   return (
     <>
       {users?.length > 0
@@ -35,7 +36,7 @@ const UserSearchResult = ({ users, isSearch }) => {
             return (
               <ProfileContainer key={user._id}>
                 <Profile onClick={() => onClickProfile(user._id)}>
-                  <Avatar size={60} src={IMAGE_URLS.PROFILE_IMG} />
+                  <Avatar size={60} src={user.image || IMAGE_URLS.PROFILE_IMG} />
                   <Text style={{ marginLeft: 20 }} fontSize={18} block>
                     {user.fullName}
                   </Text>

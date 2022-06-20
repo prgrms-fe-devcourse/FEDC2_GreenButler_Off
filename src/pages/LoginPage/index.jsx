@@ -20,6 +20,11 @@ const LoginWrapper = styled.div`
   padding-top: 152px;
 `;
 
+const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const LoginPage = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -47,7 +52,10 @@ const LoginPage = () => {
   return (
     <PageWrapper>
       <LoginWrapper>
-        <Logo name={IMAGE_NAMES.LOGO_IMAGE} width={'100%'} height={97}></Logo>
+        <LogoWrapper>
+          <Logo name={IMAGE_NAMES.LOGO_IMAGE} width={'60%'} height={97}></Logo>
+        </LogoWrapper>
+
         <LoginForm onSubmit={handleSubmit}></LoginForm>
         <Modal visible={showModal} onClose={closeModal}>
           <Modal.Content

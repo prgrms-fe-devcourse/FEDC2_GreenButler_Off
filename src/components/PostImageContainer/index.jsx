@@ -45,7 +45,7 @@ const PostImageList = styled.div`
 
 const ImageItem = styled.div`
   width: 100%;
-
+  
   &::after {
     content: '';
     display: block;

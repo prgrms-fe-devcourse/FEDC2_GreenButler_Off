@@ -25,8 +25,8 @@ const UserDetails = () => {
         <Text
           style={{
             marginLeft: '10px',
-            color: theme.color.fontNormal,
           }}
+          color={theme.color.fontNormal}
           fontSize={20}
         >
           {currentUser.email}
@@ -35,14 +35,14 @@ const UserDetails = () => {
       <UserDetail>
         <Icon.Link
           name={KEY}
-          size={18}
+          size={24}
           style={{
             marginTop: '2px',
             marginLeft: '28px',
           }}
           to="/user/myInfo/edit"
         >
-          <Text fontSize={18} style={{ marginLeft: '10px' }}>
+          <Text fontSize={20} style={{ marginLeft: '10px' }}>
             비밀번호 변경하기
           </Text>
         </Icon.Link>
@@ -50,7 +50,7 @@ const UserDetails = () => {
       <UserDetail>
         <Icon.Button
           name={LOGOUT}
-          size={18}
+          size={24}
           style={{
             marginTop: '2px',
             marginLeft: '28px',
@@ -59,7 +59,7 @@ const UserDetails = () => {
             setIsLogoutModal(true);
           }}
         >
-          <Text fontSize={18} style={{ marginLeft: '10px' }}>
+          <Text fontSize={20} style={{ marginLeft: '10px' }}>
             로그아웃
           </Text>
         </Icon.Button>

@@ -1,6 +1,6 @@
 import Icon from 'components/basic/Icon';
 import Text from 'components/basic/Text';
-import levels from 'utils/functions/userLevel/levels';
+import { levels } from 'utils/functions/userLevel/levels';
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 import { useEffect } from 'react';
@@ -211,45 +211,20 @@ const UserLevel = () => {
               다른 사람이 나를 팔로우 할 시 <Strong>+1점</Strong>
             </ScoreDescription>
             <LevelList>
-              <LevelItem>
-                <Avatar src={levels.one.image} size={50} alt="Level1" />
-                <LevelInfo>
-                  <LevelName>{levels.one.name}</LevelName>
-                  <LevelDescription>{levels.one.description}</LevelDescription>
-                </LevelInfo>
-              </LevelItem>
-
-              <LevelItem>
-                <Avatar src={levels.two.image} size={50} alt="Level1" />
-                <LevelInfo>
-                  <LevelName>{levels.two.name}</LevelName>
-                  <LevelDescription>{levels.two.description}</LevelDescription>
-                </LevelInfo>
-              </LevelItem>
-
-              <LevelItem>
-                <Avatar src={levels.three.image} size={50} alt="Level1" />
-                <LevelInfo>
-                  <LevelName>{levels.three.name}</LevelName>
-                  <LevelDescription>{levels.three.description}</LevelDescription>
-                </LevelInfo>
-              </LevelItem>
-
-              <LevelItem>
-                <Avatar src={levels.four.image} size={50} alt="Level1" />
-                <LevelInfo>
-                  <LevelName>{levels.four.name}</LevelName>
-                  <LevelDescription>{levels.four.description}</LevelDescription>
-                </LevelInfo>
-              </LevelItem>
-
-              <LevelItem>
-                <Avatar src={levels.five.image} size={50} alt="Level1" />
-                <LevelInfo>
-                  <LevelName>{levels.five.name}</LevelName>
-                  <LevelDescription>{levels.five.description}</LevelDescription>
-                </LevelInfo>
-              </LevelItem>
+              {levels.map((level, index) => (
+                <LevelItem key={index}>
+                  <Avatar
+                    src={level.image}
+                    size={50}
+                    alt={level.name}
+                    style={{ backgroundColor: level.color, border: 0 }}
+                  />
+                  <LevelInfo>
+                    <LevelName>{level.name}</LevelName>
+                    <LevelDescription>{level.description}</LevelDescription>
+                  </LevelInfo>
+                </LevelItem>
+              ))}
             </LevelList>
           </LevelModal>
         </Modal.Custom>

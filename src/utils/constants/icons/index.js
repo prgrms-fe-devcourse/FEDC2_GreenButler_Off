@@ -42,4 +42,6 @@ export const ICON_TYPES = {
   HEART_ACTIVE:
     'https://user-images.githubusercontent.com/81489300/174609980-c2ba0e09-6c31-4437-8e2d-c67bcb323e9e.svg',
   MORE: 'https://user-images.githubusercontent.com/81489300/173678702-f33d6b86-fc17-4d08-8d3f-fc11d7abd791.svg',
+  CLOSE:
+    'https://user-images.githubusercontent.com/81489300/174680711-d171d380-f02c-4afe-8d60-7f5ef2d9d821.svg',
 };

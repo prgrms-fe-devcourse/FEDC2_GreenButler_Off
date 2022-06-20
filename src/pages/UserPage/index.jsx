@@ -27,31 +27,21 @@ const UserPage = () => {
     setCurrentTab(value);
   };
 
-  useEffect(() => {
-    handleGetUser();
-  }, [pageUserId]);
-
-  useEffect(() => {
-    handleGetLikePosts();
-    handleGetUserPosts();
-  }, [user]);
-
-  //TODO:신영 추후 핸들러 분리
-  const handleGetUser = useCallback(async () => {
-    if (pageUserId) {
-      const { data } = await getUser(pageUserId);
-      setUser(data);
-    }
-  }, [pageUserId]);
-
   const handleGetUserPosts = useCallback(async () => {
     if (pageUserId) {
       const { data } = await getUserPosts(pageUserId);
       setUserPosts(data);
     }
-  }, [pageUserId, currentTab]);
+  }, [pageUserId]);
 
-  //TODO:신영 관리자 좋아요 post 두번된게 있네? 같은 post를 여러번 좋아요할 수 있구나 이거 나중에 더미 삭제
+  const handleGetUser = useCallback(async () => {
+    if (pageUserId) {
+      const { data } = await getUser(pageUserId);
+      setUser(data);
+      await handleGetUserPosts();
+    }
+  }, [pageUserId, handleGetUserPosts]);
+
   const handleGetLikePosts = useCallback(async () => {
     const { likes } = user;
     if (likes.length !== 0) {
@@ -61,6 +51,16 @@ const UserPage = () => {
       setUserLikePosts(data);
     }
   }, [user]);
+
+  useEffect(() => {
+    handleGetUser();
+  }, [pageUserId, handleGetUser]);
+
+  useEffect(() => {
+    if (currentTab === LIKE_POSTS) {
+      handleGetLikePosts();
+    }
+  }, [currentTab, handleGetLikePosts]);
 
   return (
     <PageWrapper header prev nav>

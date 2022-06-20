@@ -2,8 +2,8 @@ import NotificationCard from 'components/NotificationCard';
 import { getNotifications } from 'utils/apis/userApi';
 import useLocalToken from 'hooks/useLocalToken';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import Profile from 'components/Profile';
 import { useUserContext } from 'contexts/UserContext';
 import PageWrapper from 'components/basic/pageWrapper';
 import theme from 'styles/theme';
@@ -25,8 +25,8 @@ const NotificationPage = () => {
       const fetchedNotifications = await getNotifications(token);
       setNotifications(
         fetchedNotifications.data.map((notification) => {
-          const { _id } = notification.user;
-          const { fullName } = notification.author;
+          const { userId } = notification.user;
+          const { fullName, image, _id } = notification.author;
           const message =
             (notification.like && '회원님의 게시물에 하트를 눌렀어요') ||
             (notification.comment && '회원님의 게시물에 댓글을 달았어요') ||
@@ -35,28 +35,45 @@ const NotificationPage = () => {
             notificationId: notification._id,
             postId: notification.post,
             message: `님이 ${message}`,
-            userId: _id,
+            userId: userId,
+            authorId: _id,
             isSeen: notification.seen,
             fullName: fullName,
+            img: image,
           };
         }),
       );
     };
     initNotifications();
   }, []);
-
   return (
     <>
       <PageWrapper title="알림" header prev>
         <NotificationsWrapper>
-          {notifications.map(({ notificationId, postId, fullName, message, userId, isSeen }) => (
-            <NotificationCard
-              key={notificationId}
-              isSeen={isSeen}
-              fullName={fullName}
-              message={message}
-            ></NotificationCard>
-          ))}
+          {notifications.map(
+            ({ notificationId, postId, fullName, message, userId, authorId, isSeen, img }) =>
+              postId ? (
+                <Link to={`/post/detail/${postId}`}>
+                  <NotificationCard
+                    key={notificationId}
+                    isSeen={isSeen}
+                    fullName={fullName}
+                    message={message}
+                    img={img}
+                  ></NotificationCard>
+                </Link>
+              ) : (
+                <Link to={`/user/${authorId}`}>
+                  <NotificationCard
+                    key={notificationId}
+                    isSeen={isSeen}
+                    fullName={fullName}
+                    message={message}
+                    img={img}
+                  ></NotificationCard>
+                </Link>
+              ),
+          )}
         </NotificationsWrapper>
       </PageWrapper>
     </>

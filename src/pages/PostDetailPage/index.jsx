@@ -12,6 +12,8 @@ import PageWrapper from 'components/basic/pageWrapper';
 import { getPostData, deleteComment } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
 import Modal from 'components/Modal';
+import { setNotification } from 'utils/apis/userApi';
+import displayedAt from 'utils/functions/displayedAt';
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -35,19 +37,23 @@ const PostDetailPage = () => {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-      // Todo: 간소화
-      if (post._id === undefined || inputRef.current.value === undefined) {
+      if (!inputRef.current.value) {
         return;
       }
-      const { data } = await addComment(localToken, post._id, inputRef.current.value);
+      const newComment = await addComment(localToken, post._id, inputRef.current.value).then(
+        (res) => res.data,
+      );
       setPost({
         ...post,
-        comments: [...post.comments, data],
+        comments: [...post.comments, newComment],
       });
       setInputHeight('30px');
       inputRef.current.value = '';
+      if (currentUser.id !== post.author._id) {
+        await setNotification(localToken, 'COMMENT', newComment._id, post.author._id, post._id);
+      }
     },
-    [post, localToken],
+    [post, localToken, currentUser.id],
   );
 
   const handleResizeInputHeight = useCallback(() => {
@@ -59,13 +65,12 @@ const PostDetailPage = () => {
     setInputHeight(scrollHeight + 'px');
   }, [inputRef]);
 
-  const handleAvatarClick = useCallback((userId) => {
-    // navigate(`/user/${userId}`, {
-    //   state: {
-    //     userId,
-    //   },
-    // });
-  }, []);
+  const handleAvatarClick = useCallback(
+    (userId) => {
+      navigate(`/user/${userId}`);
+    },
+    [navigate],
+  );
 
   const handleMoreClick = useCallback((commentId) => {
     setIsModal(true);
@@ -105,14 +110,15 @@ const PostDetailPage = () => {
               <SubmitButton />
             </CommentInputForm>
             <CommentList>
-              {post.comments?.map(
-                ({ _id: commentId, author: { _id, image, fullName }, comment, updatedAt }) => (
+              {post.comments
+                .reverse()
+                .map(({ _id: commentId, author: { _id, image, fullName }, comment, createdAt }) => (
                   <CommentItem key={commentId}>
                     <UserAvatar src={image} onClick={() => handleAvatarClick(_id)} />
                     <Content>
                       <MetaInformation>
                         <UserNameText>{fullName}</UserNameText>
-                        <DateText>{updatedAt.slice(0, 10)}</DateText>
+                        <DateText>{displayedAt(createdAt)}</DateText>
                       </MetaInformation>
                       <CommentText>{comment}</CommentText>
                     </Content>
@@ -120,8 +126,7 @@ const PostDetailPage = () => {
                       <MoreButton onClick={() => handleMoreClick(commentId)} />
                     )}
                   </CommentItem>
-                ),
-              )}
+                ))}
             </CommentList>
           </Container>
           <Modal visible={isModal} onClose={onClose}>
@@ -196,8 +201,11 @@ const Content = styled.div`
 `;
 
 const UserAvatar = ({ src, onClick }) => {
+  const style = {
+    cursor: 'pointer',
+  };
   return (
-    <div onClick={onClick}>
+    <div onClick={onClick} style={style}>
       <Avatar src={src} size={60} />
     </div>
   );
@@ -259,6 +267,12 @@ const DeleteCommentButton = styled.button`
   line-height: 29px;
   padding: 35px 0;
   border-radius: 15px 15px 0 0;
+
+  @media screen and (max-width: 500px) {
+    width: 100vw;
+    padding: 22px 0;
+    font-size: 22px;
+  }
 `;
 
 export default PostDetailPage;

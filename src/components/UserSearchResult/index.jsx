@@ -21,7 +21,7 @@ const Profile = styled.div`
   padding: 15px 20px;
 `;
 
-const UserSearchResult = ({ users }) => {
+const UserSearchResult = ({ users, isSearch }) => {
   const navigate = useNavigate();
 
   const onClickProfile = (userId) => {
@@ -30,22 +30,20 @@ const UserSearchResult = ({ users }) => {
 
   return (
     <>
-      {users?.length > 0 ? (
-        users?.map((user) => {
-          return (
-            <ProfileContainer key={user._id}>
-              <Profile onClick={() => onClickProfile(user._id)}>
-                <Avatar size={60} src={IMAGE_URLS.PROFILE_IMG} />
-                <Text style={{ marginLeft: 20 }} fontSize={18} block>
-                  {user.fullName}
-                </Text>
-              </Profile>
-            </ProfileContainer>
-          );
-        })
-      ) : (
-        <NoResultMessage />
-      )}
+      {users?.length > 0
+        ? users?.map((user) => {
+            return (
+              <ProfileContainer key={user._id}>
+                <Profile onClick={() => onClickProfile(user._id)}>
+                  <Avatar size={60} src={IMAGE_URLS.PROFILE_IMG} />
+                  <Text style={{ marginLeft: 20 }} fontSize={18} block>
+                    {user.fullName}
+                  </Text>
+                </Profile>
+              </ProfileContainer>
+            );
+          })
+        : isSearch && <NoResultMessage />}
     </>
   );
 };

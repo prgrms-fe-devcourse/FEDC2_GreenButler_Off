@@ -4,7 +4,7 @@ import Image from 'components/basic/Image';
 import PropTypes from 'prop-types';
 import NoResultMessage from 'components/Message/NoResultMessage';
 
-const TagSearchResult = ({ posts }) => {
+const TagSearchResult = ({ posts, isSearch }) => {
   return (
     <>
       {posts?.length > 0 ? (
@@ -16,7 +16,7 @@ const TagSearchResult = ({ posts }) => {
           ))}
         </PostImageList>
       ) : (
-        <NoResultMessage />
+        isSearch && <NoResultMessage />
       )}
     </>
   );

@@ -28,7 +28,7 @@ export const followingButtonStyle = {
 
 export const fullNameStyle = {
   display: 'block',
-  marginTop: 5,
+  marginTop: 15,
   fontWeight: 500,
   fontSize: 24,
   lineHeight: '34.75px',

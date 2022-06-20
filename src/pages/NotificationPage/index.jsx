@@ -10,6 +10,7 @@ import theme from 'styles/theme';
 
 const NotificationsWrapper = styled.div`
   background-color: ${theme.color.backgroundLight};
+  min-height: 100vh;
   margin: 0px -20px;
   padding: 30px 20px;
 `;

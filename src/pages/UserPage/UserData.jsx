@@ -22,6 +22,8 @@ const UserData = ({ user, pageUserId }) => {
   const [isFollow, setIsFollow] = useState(checkFollow);
   const [isFollowModal, setIsFollowModal] = useState(false);
   const [isUnFollowModal, setIsUnFollowModal] = useState(false);
+  const [followers, setFollowers] = useState(user.followers.length);
+
   const navigate = useNavigate();
 
   const onCloseFollow = () => {
@@ -37,9 +39,10 @@ const UserData = ({ user, pageUserId }) => {
       onFollow({ userId: pageUserId, followId: '' });
       setIsFollowModal(true);
       setIsFollow(true);
+      setFollowers(followers + 1);
     }
     setIsFollow(true);
-  }, [pageUserId, isFollow, onFollow]);
+  }, [pageUserId, isFollow, onFollow, followers]);
 
   const hadleUnFollow = useCallback(() => {
     const followData = currentUser.following.filter((follow) => follow.user === pageUserId);
@@ -47,9 +50,10 @@ const UserData = ({ user, pageUserId }) => {
     if (followData.length !== 0) {
       onUnfollow({ unfollowId: followData[0]._id });
       setIsFollow(false);
+      setFollowers(followers - 1);
     }
     setIsUnFollowModal(false);
-  }, [pageUserId, currentUser, onUnfollow]);
+  }, [pageUserId, currentUser, onUnfollow, followers]);
 
   return (
     <UserInfo>
@@ -75,7 +79,7 @@ const UserData = ({ user, pageUserId }) => {
           <Text fontSize={16} color={theme.color.fontNormal}>
             팔로워
           </Text>
-          <Text fontSize={18}> {user.followers.length}</Text>
+          <Text fontSize={18}> {followers}</Text>
         </UserDetail>
         <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
           <Text fontSize={16} color={theme.color.fontNormal}>

@@ -16,7 +16,7 @@ const LIKE_POSTS = 'likePosts';
 
 const UserPage = () => {
   const { id } = useParams();
-  const [pageUserId, setPageUserId] = useState(id);
+  const pageUserId = id;
   const [user, setUser] = useState(initialUserData.currentUser);
   const [userPosts, setUserPosts] = useState([]);
   const [userLikePosts, setUserLikePosts] = useState([]);
@@ -57,10 +57,10 @@ const UserPage = () => {
   }, [pageUserId, handleGetUser]);
 
   useEffect(() => {
-    if (currentTab === LIKE_POSTS) {
+    if (currentTab === LIKE_POSTS && userLikePosts.length === 0) {
       handleGetLikePosts();
     }
-  }, [currentTab, handleGetLikePosts]);
+  }, [currentTab, handleGetLikePosts, userLikePosts]);
 
   return (
     <PageWrapper header prev nav>

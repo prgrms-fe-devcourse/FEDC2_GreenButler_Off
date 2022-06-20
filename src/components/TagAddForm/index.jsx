@@ -6,6 +6,7 @@ import Icon from 'components/basic/Icon';
 
 import theme from 'styles/theme';
 import { useState } from 'react';
+import { useCallback } from 'react';
 
 const { mainGreen, fontNormal, mainRed } = theme.color;
 
@@ -40,7 +41,7 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
     setError('');
   };
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     setError('');
 
     if (tags.length >= TAG_LIMIT) {
@@ -48,7 +49,7 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
     }
     onAddTag(value.slice(0, CHARACTER_LIMIT));
     resetValue();
-  };
+  }, [tags.length, onAddTag, resetValue, setError, value]);
 
   return (
     <>
@@ -78,7 +79,7 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
               {tag}
             </Text>
             <RemoveBtn onClick={() => handleRemoveTag(index)}>
-              <Icon name="TAG_DELETE" size={8}></Icon>
+              <Icon name="TAG_DELETE" size={8} />
             </RemoveBtn>
           </TagItem>
         ))}

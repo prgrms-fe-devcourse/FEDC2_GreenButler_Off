@@ -11,6 +11,7 @@ import {
   changePassword,
   Follow,
   unFollow,
+  setNotification,
 } from 'utils/apis/userApi';
 
 const useHandles = () => {
@@ -121,6 +122,7 @@ const useHandles = () => {
     async (userId) => {
       if (localToken && userId) {
         const { data } = await Follow(localToken, userId);
+        await setNotification(localToken, 'FOLLOW', data._id, data.user, null);
         return data;
       }
     },

@@ -33,7 +33,7 @@ const UserPage = () => {
   const navigate = useNavigate();
   const { currentUser, onFollow, onUnfollow } = useUserContext();
   const { id } = useParams();
-  const pageUserId = id;
+  const [pageUserId, setPageUserId] = useState(id);
   const checkFollow = currentUser.following.some((follow) => follow.user === pageUserId);
   const [user, setUser] = useState(initialUserData.currentUser);
   const [userPosts, setUserPosts] = useState([]);
@@ -45,10 +45,6 @@ const UserPage = () => {
 
   const onCloseFollow = () => {
     setIsFollowModal(false);
-  };
-
-  const onCloseFollowFail = () => {
-    setIsFollowFailModal(false);
   };
 
   const onCloseUnFollow = () => {
@@ -84,7 +80,7 @@ const UserPage = () => {
   useEffect(() => {
     handleGetUser();
     console.log('현재 팔로잉', currentUser.following);
-  }, [currentUser, pageUserId]);
+  }, [currentUser, pageUserId, isFollow]);
 
   useEffect(() => {
     handleGetLikePosts();
@@ -95,8 +91,8 @@ const UserPage = () => {
   const handleGetUser = useCallback(async () => {
     if (pageUserId) {
       const { data } = await getUser(pageUserId);
-      console.log(data);
       setUser(data);
+      console.log('USER_DATA', data);
     }
   }, [pageUserId]);
 

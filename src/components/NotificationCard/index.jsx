@@ -8,7 +8,7 @@ const NotificationCard = ({ notificationId, postId, message, fullName, userId, i
     width: 100%;
     height: 129px;
     border-radius: 15px;
-    padding: 35px 80px 35px 30px;
+    padding: 35px 65px 35px 30px;
     margin-bottom: 16px;
     display: flex;
     justify-content: center;

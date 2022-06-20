@@ -189,3 +189,16 @@ export const searchUser = (keyword) => {
     url: `/search/users/${keyword}`,
   });
 };
+
+/* 
+  나에게 온 알림을 읽음처리한다.
+*/
+export const setNotificationSeen = (token) => {
+  return request({
+    method: API_METHOD.PUT,
+    url: `/notifications/seen`,
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+};

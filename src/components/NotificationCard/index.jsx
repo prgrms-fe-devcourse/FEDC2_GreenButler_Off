@@ -2,7 +2,7 @@ import Profile from 'components/Profile';
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 import Card from 'components/Card';
-const NotificationCard = ({ notificationId, postId, message, fullName, userId, isSeen }) => {
+const NotificationCard = ({ notificationId, postId, message, fullName, userId, isSeen, img }) => {
   const CardWrapper = styled.div`
     background-color: ${theme.color.mainWhite};
     width: 100%;
@@ -15,7 +15,7 @@ const NotificationCard = ({ notificationId, postId, message, fullName, userId, i
   `;
   return (
     <CardWrapper>
-      <Card fullName={fullName} message={message}>
+      <Card src={img} fullName={fullName} message={message}>
         <span>1분 전</span>
       </Card>
     </CardWrapper>

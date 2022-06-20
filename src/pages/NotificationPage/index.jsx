@@ -40,6 +40,7 @@ const NotificationPage = () => {
             isSeen: notification.seen,
             fullName: fullName,
             img: image,
+            createdAt: notification.createdAt,
           };
         }),
       );
@@ -51,7 +52,17 @@ const NotificationPage = () => {
       <PageWrapper title="알림" header prev>
         <NotificationsWrapper>
           {notifications.map(
-            ({ notificationId, postId, fullName, message, userId, authorId, isSeen, img }) =>
+            ({
+              notificationId,
+              postId,
+              fullName,
+              message,
+              userId,
+              authorId,
+              isSeen,
+              img,
+              createdAt,
+            }) =>
               postId ? (
                 <Link to={`/post/detail/${postId}`}>
                   <NotificationCard
@@ -60,6 +71,7 @@ const NotificationPage = () => {
                     fullName={fullName}
                     message={message}
                     img={img}
+                    createdAt={createdAt}
                   ></NotificationCard>
                 </Link>
               ) : (
@@ -70,6 +82,7 @@ const NotificationPage = () => {
                     fullName={fullName}
                     message={message}
                     img={img}
+                    createdAt={createdAt}
                   ></NotificationCard>
                 </Link>
               ),

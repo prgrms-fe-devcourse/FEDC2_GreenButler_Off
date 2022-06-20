@@ -1,4 +1,4 @@
-import level from './levels';
+import levels from './levels';
 
 /* 
   사용자의 점수와 레벨을 계산한다.
@@ -14,21 +14,26 @@ import level from './levels';
 */
 export default function getUserLevel({ posts, comments }) {
   const score = 2 * posts.length + comments.length + getLikeCount(posts);
+  let level;
   if (score >= 0 && score < 30) {
-    return level.one;
+    level = levels.one;
   }
   if (score >= 30 && score < 100) {
-    return level.two;
+    level = levels.two;
   }
   if (score >= 100 && score < 250) {
-    return level.three;
+    level = levels.three;
   }
   if (score >= 250 && score < 500) {
-    return level.four;
+    level = levels.four;
   }
   if (score >= 500) {
-    return level.five;
+    level = levels.five;
   }
+  return {
+    score,
+    level,
+  };
 }
 
 /* 

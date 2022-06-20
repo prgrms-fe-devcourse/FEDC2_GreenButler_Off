@@ -138,15 +138,16 @@ const PostEditPage = () => {
     setContent(value);
   }, []);
 
-  const onCloseModal = () => {
+  const onCloseModal = useCallback(() => {
     setIsModal(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (currentPage === 'edit') {
-      location.state?.post ? injectState(location.state.post) : getCurrentPost();
+      location.state?.post ? injectState(location.state.post) : navigate('/');
+      // state로 받은 post가 없다면 홈으로 이동
     }
-  }, [getCurrentPost, currentPage, location.state?.post]);
+  }, [currentPage, location.state?.post]);
 
   return (
     <>

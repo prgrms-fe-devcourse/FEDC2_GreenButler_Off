@@ -67,7 +67,6 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
         color={isEmphasis ? mainRed : fontNormal}
         block
         style={{ marginTop: '15px', marginBottom: '15px' }}
-        isEmphasis={isEmphasis}
       >
         * 태그는 최대 5개까지 입력 가능합니다.
       </Text>

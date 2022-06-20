@@ -1,23 +1,11 @@
-import PostImageList from 'components/PostImageList';
-import { Link } from 'react-router-dom';
-import Image from 'components/basic/Image';
+import PostImageContainer from 'components/PostImageContainer';
 import PropTypes from 'prop-types';
 import NoResultMessage from 'components/Message/NoResultMessage';
 
 const TagSearchResult = ({ posts, isSearch }) => {
   return (
     <>
-      {posts?.length > 0 ? (
-        <PostImageList>
-          {posts?.map((post) => (
-            <Link to={`/post/detail/${post._id}`} key={post._id}>
-              <Image lazy width="100%" block threshold={0.5} src={post.image} />
-            </Link>
-          ))}
-        </PostImageList>
-      ) : (
-        isSearch && <NoResultMessage />
-      )}
+      {posts?.length > 0 ? <PostImageContainer posts={posts} /> : isSearch && <NoResultMessage />}
     </>
   );
 };

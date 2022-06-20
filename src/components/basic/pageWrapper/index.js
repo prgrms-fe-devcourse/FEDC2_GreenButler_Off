@@ -27,7 +27,10 @@ const PageWrapper = ({
       {header && (
         <Header prev={prev} title={title} info={info} complete={complete} onComplete={onComplete} />
       )}
-      <div style={{ ...wrapperStyle, ...props.style }}> {children}</div>
+      <div {...props} style={{ ...wrapperStyle, ...props.style }}>
+        {' '}
+        {children}
+      </div>
       {nav && <Navigation />}
     </div>
   );

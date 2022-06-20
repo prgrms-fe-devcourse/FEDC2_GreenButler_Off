@@ -12,8 +12,10 @@ import theme from 'styles/theme';
 import Modal from 'components/Modal';
 
 import { imageToFile, objectToForm } from 'utils/functions/converter';
+import { useRef } from 'react';
 
 const { fontNormal, borderNormal, mainBlack } = theme.color;
+const { headerHeight } = theme.value;
 
 const TextArea = styled.textarea`
   margin-top: 20px;
@@ -24,9 +26,26 @@ const TextArea = styled.textarea`
   resize: none;
   font-size: 20px;
   color: ${mainBlack};
+  overflow: hidden;
 
   ::placeholder {
     color: ${fontNormal};
+  }
+  &:focus {
+    border: 1px solid ${borderNormal};
+  }
+`;
+
+const PageFixed = styled(PageWrapper)`
+  position: fixed;
+  overflow: auto;
+  height: calc(100% - ${headerHeight});
+  width: 100%;
+  max-width: 500px;
+  bottom: 100px;
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -34,9 +53,20 @@ const PostAddPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
   const [content, setContent] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
+
+  const textRef = useRef();
+
+  const handleResizeHeight = useCallback(
+    (e) => {
+      textRef.current.style.height = 'auto';
+      textRef.current.style.height = textRef.current.scrollHeight + 'px';
+      setContent(e.target.value);
+    },
+    [textRef],
+  );
 
   const [token, setValue] = useLocalToken();
 
@@ -61,7 +91,7 @@ const PostAddPage = () => {
   const onClickAddBtn = async () => {
     if (!imgSrc || !content) {
       setModalMessage(!imgSrc ? '이미지를 등록해주세요!' : '게시글을 작성해주세요!');
-      setShowModal(true);
+      setIsModal(true);
       return;
     }
 
@@ -85,30 +115,29 @@ const PostAddPage = () => {
   }, []);
 
   const onCloseModal = () => {
-    setShowModal(false);
+    setIsModal(false);
   };
 
   return (
     <>
-      <PageWrapper title="게시물 등록" header prev style={{ paddingBottom: 100 }}>
+      <PageFixed title="게시물 등록" header prev>
         <UploadImage onChange={onFileChange} />
-
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <TextArea
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
+          ref={textRef}
+          onChange={handleResizeHeight}
           placeholder="내 식물의 성장 글을 작성해주세요."
           rows={10}
         ></TextArea>
+
         <FixedContainer bottom style={{ padding: 15 }}>
           <Button onClick={onClickAddBtn}>게시물 등록</Button>
         </FixedContainer>
-        <Modal visible={showModal} onClose={onCloseModal}>
+        <Modal visible={isModal} onClose={onCloseModal}>
           <Modal.Content title={modalMessage} />
           <Modal.Button onClick={onCloseModal}>확인</Modal.Button>
         </Modal>
-      </PageWrapper>
+      </PageFixed>
     </>
   );
 };

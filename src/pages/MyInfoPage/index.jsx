@@ -146,8 +146,7 @@ const MyInfoPage = () => {
             <Text fontSize={18}>로그아웃</Text>
           </UserDetail>{' '}
         </UserDetailWrapper>
-        {/*   //TODO:신영 Modal 추후 refactor/MyPagesBasic 작업시 교체 및 분리
-         */}
+
         {isModal && (
           <ChangeProfileModal
             onFileChange={onFileChange}

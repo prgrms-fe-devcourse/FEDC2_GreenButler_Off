@@ -6,14 +6,21 @@ import Profile from 'components/Profile';
 import { useUserContext } from 'contexts/UserContext';
 import Modal from 'components/Modal';
 import theme from 'styles/theme';
+import { deletePost } from 'utils/apis/postApi';
+import useLocalToken from 'hooks/useLocalToken';
 
-const PostHeader = ({ author: { _id, image, fullName }, isDetailPage }) => {
+const PostHeader = ({ post, isDetailPage }) => {
+  const {
+    _id: postId,
+    author: { _id, image, fullName },
+  } = post;
   const { currentUser } = useUserContext();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
+  const [localToken] = useLocalToken();
 
   const handleProfileClick = useCallback(() => {
-    navigate('/user/mypage', {
+    navigate(`/user/${_id}`, {
       state: {
         userId: _id,
       },
@@ -23,6 +30,23 @@ const PostHeader = ({ author: { _id, image, fullName }, isDetailPage }) => {
   const handleMoreClick = useCallback(() => {
     setIsModal(true);
   }, []);
+
+  const handleUpdateClick = useCallback(() => {
+    setIsModal(false);
+    navigate(`/post/edit/${postId}`, {
+      state: {
+        post,
+      },
+    });
+  }, [postId, post, navigate]);
+
+  const handleDeleteClick = useCallback(async () => {
+    setIsModal(false);
+    if (localToken && postId) {
+      await deletePost(localToken, postId);
+      navigate('/');
+    }
+  }, [localToken, postId, navigate]);
 
   const onClose = useCallback(() => {
     setIsModal(false);
@@ -42,8 +66,8 @@ const PostHeader = ({ author: { _id, image, fullName }, isDetailPage }) => {
             <Modal visible={isModal} onClose={onClose}>
               <Modal.Custom>
                 <Buttons>
-                  <UpdatePostButton>수정</UpdatePostButton>
-                  <DeletePostButton>삭제</DeletePostButton>
+                  <UpdatePostButton onClick={handleUpdateClick}>수정</UpdatePostButton>
+                  <DeletePostButton onClick={handleDeleteClick}>삭제</DeletePostButton>
                 </Buttons>
               </Modal.Custom>
             </Modal>
@@ -73,17 +97,29 @@ const Buttons = styled.div`
     font-size: 24px;
     line-height: 29px;
   }
+
+  @media screen and (max-width: 500px) {
+    width: 100vw;
+  }
 `;
 
 const UpdatePostButton = styled.button`
   padding-top: 44px;
   padding-bottom: 9.5px;
+
+  @media screen and (max-width: 500px) {
+    padding-top: 24px;
+  }
 `;
 
 const DeletePostButton = styled.button`
   padding-top: 9.5px;
   padding-bottom: 35px;
   color: ${theme.color.mainRed};
+
+  @media screen and (max-width: 500px) {
+    padding-bottom: 20px;
+  }
 `;
 
 export default PostHeader;

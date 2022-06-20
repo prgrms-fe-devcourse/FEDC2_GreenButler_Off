@@ -11,19 +11,18 @@ import { setLike, setDisLike } from 'utils/apis/postApi';
 import { setNotification } from 'utils/apis/userApi';
 import useLocalToken from 'hooks/useLocalToken';
 import { useUserContext } from 'contexts/UserContext';
-
-// const currentUserId = '629e29bd6d18b41c5b238ba2';
+import { IMAGE_URLS } from 'utils/constants/images';
+import displayedAt from 'utils/functions/displayedAt';
 
 const PostBody = ({ post, isDetailPage = false }) => {
-  const { _id: postId, image, likes, comments, updatedAt, author } = post || {};
+  const { _id: postId, image, likes, comments, createdAt, author } = post || {};
   const { content, contents, tags } = JSON.parse(post?.title);
   const [onHeart, setOnHeart] = useState(false);
   const [heartCount, setHeartCount] = useState(likes.length);
   const [likeId, setLikeId] = useState('');
-  const { onLike, onDisLike } = useUserContext();
   const [isShown, setIsShown] = useState(false);
   const [localToken] = useLocalToken();
-  const { currentUser } = useUserContext();
+  const { currentUser, onLike, onDisLike } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -40,7 +39,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
 
   const handleTagClick = useCallback(
     (tag) => {
-      navigate(`/tag/${tag}`, {
+      navigate(`/tag/${tag.slice(1)}`, {
         state: {
           tag,
         },
@@ -57,7 +56,9 @@ const PostBody = ({ post, isDetailPage = false }) => {
         const like = await setLike(localToken, postId).then((res) => res.data);
         onLike(like);
         setLikeId(like._id);
-        // await setNotification(token, 'LIKE', like._id, author._id, postId);
+        if (currentUser.id !== author._id) {
+          await setNotification(localToken, 'LIKE', like._id, author._id, postId);
+        }
       }
     } else {
       setHeartCount(heartCount - 1);
@@ -67,7 +68,17 @@ const PostBody = ({ post, isDetailPage = false }) => {
         setLikeId('');
       }
     }
-  }, [onHeart, heartCount, postId, likeId, onLike, onDisLike, localToken]);
+  }, [
+    onHeart,
+    heartCount,
+    postId,
+    likeId,
+    author._id,
+    currentUser.id,
+    localToken,
+    onLike,
+    onDisLike,
+  ]);
 
   useEffect(() => {
     let likeId;
@@ -91,11 +102,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
   return (
     <Container>
       <ImageWrapper onClick={handleTodetailpage} isDetailPage={isDetailPage}>
-        <Image
-          src={image ? image : 'https://picsum.photos/300/300/?image=30'} // Todo: 디폴트 이미지 제거
-          width="100%"
-          height="100%"
-        />
+        <Image src={image ? image : IMAGE_URLS.POST_DEFAULT_IMG} width="100%" height="100%" />
       </ImageWrapper>
       <Contents>
         <IconButtons>
@@ -125,7 +132,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
             </Tag>
           ))}
         </Tags>
-        <DateText>{updatedAt.slice(0, 10)}</DateText>
+        <DateText>{displayedAt(createdAt)}</DateText>
       </Contents>
     </Container>
   );
@@ -166,6 +173,7 @@ const IconButton = ({ name, className, children, onClick }) => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
+    color: theme.color.fontBlack,
   };
   return (
     <button className={className} style={style} onClick={onClick}>
@@ -178,8 +186,10 @@ const IconButton = ({ name, className, children, onClick }) => {
 const IconButtonText = ({ children, ...props }) => {
   const style = {
     color: theme.color.fontBlack,
-    marginLeft: '5px',
+    marginLeft: '8px',
     PointerEvent: 'none',
+    lineHeight: '19px',
+    transform: 'translateY(-1px)',
   };
   return (
     <Text fontSize={16} style={style} {...props}>
@@ -191,7 +201,8 @@ const IconButtonText = ({ children, ...props }) => {
 const TextContainer = styled.div`
   display: flex;
   align-items: flex-end;
-  margin: 18px 0;
+  margin-top: 15px;
+  margin-bottom: 18px;
 `;
 
 const Paragraph = styled.span`

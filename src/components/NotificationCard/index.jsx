@@ -5,7 +5,7 @@ import Card from 'components/Card';
 const NotificationCard = ({ notificationId, postId, message, fullName, userId, isSeen }) => {
   const CardWrapper = styled.div`
     background-color: ${theme.color.mainWhite};
-    width: 460px;
+    width: 100%;
     height: 129px;
     border-radius: 15px;
     padding: 35px 80px 35px 30px;

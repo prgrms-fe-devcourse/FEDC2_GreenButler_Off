@@ -10,13 +10,7 @@ import theme from 'styles/theme';
 
 const NotificationsWrapper = styled.div`
   background-color: ${theme.color.backgroundLight};
-  width: 500px;
-  height: 100vh;
-  margin-left: -20px;
-  margin-right: -20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 0px -20px;
   padding: 30px 20px;
 `;
 

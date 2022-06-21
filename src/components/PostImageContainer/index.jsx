@@ -41,11 +41,12 @@ const PostImageList = styled.div`
   gap: 10px;
   justify-content: center;
   margin-top: 10px;
+  padding: 0 8px;
 `;
 
 const ImageItem = styled.div`
   width: 100%;
-  
+
   &::after {
     content: '';
     display: block;

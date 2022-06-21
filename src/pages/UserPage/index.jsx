@@ -10,6 +10,7 @@ import PageWrapper from 'components/basic/pageWrapper';
 import { GRID, GRID_ACTIVE, HEART, HEART_ACTIVE } from 'utils/constants/icons/names';
 import { UserContainter } from './style';
 import UserData from './UserData';
+import getUserLevel from 'utils/functions/userLevel/getUserLevel';
 
 const USER_POSTS = 'userPosts';
 const LIKE_POSTS = 'likePosts';
@@ -18,6 +19,7 @@ const UserPage = () => {
   const { id } = useParams();
   const pageUserId = id;
   const [user, setUser] = useState(initialUserData.currentUser);
+  const [userLevel, setUserLevel] = useState({});
   const [userPosts, setUserPosts] = useState([]);
   const [userLikePosts, setUserLikePosts] = useState([]);
 
@@ -38,6 +40,9 @@ const UserPage = () => {
     if (pageUserId) {
       const { data } = await getUser(pageUserId);
       setUser(data);
+      const { posts, comments, followers } = data;
+      const { level } = getUserLevel({ posts, comments, followers });
+      setUserLevel(level);
       await handleGetUserPosts();
     }
   }, [pageUserId, handleGetUserPosts]);
@@ -65,7 +70,8 @@ const UserPage = () => {
   return (
     <PageWrapper header prev nav>
       <UserContainter>
-        <UserData user={user} pageUserId={pageUserId} />
+        <UserData user={user} pageUserId={pageUserId} userLevel={userLevel} />
+
         <Tab onActive={onActive}>
           <Tab.Item
             icon={{

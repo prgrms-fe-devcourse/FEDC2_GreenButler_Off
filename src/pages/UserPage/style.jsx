@@ -28,7 +28,6 @@ export const followingButtonStyle = {
 
 export const fullNameStyle = {
   display: 'block',
-  marginTop: 15,
   fontWeight: 500,
   fontSize: 24,
   lineHeight: '34.75px',
@@ -44,6 +43,13 @@ export const UserContainter = styled.div`
   width: 100%;
   position: relative;
   background-color: white;
+`;
+export const NickName = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 `;
 
 export const Header = styled.div`

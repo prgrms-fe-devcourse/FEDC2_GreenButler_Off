@@ -4,6 +4,7 @@ import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
 import Avatar from 'components/basic/Avatar';
 import Button from 'components/basic/Button';
+import Image from 'components/basic/Image';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'components/Modal';
@@ -16,9 +17,10 @@ import {
   UserInfo,
   UserDetailWrapper,
   UserDetail,
+  NickName,
 } from './style';
 
-const UserData = ({ user, pageUserId }) => {
+const UserData = ({ user, pageUserId, userLevel }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
   const checkFollow = currentUser.following.some((follow) => follow.user === pageUserId);
   const [isFollow, setIsFollow] = useState(checkFollow);
@@ -67,7 +69,10 @@ const UserData = ({ user, pageUserId }) => {
         src={user.image || IMAGE_URLS.PROFILE_IMG}
         onClick={() => currentUser.id === pageUserId && navigate('/user/MyInfo')}
       />
-      <Text style={fullNameStyle}>{user.fullName}</Text>
+      <NickName>
+        <Image src={userLevel.image} width={24} block={true} />
+        <Text style={fullNameStyle}>{user.fullName}</Text>
+      </NickName>
       <UserDetailWrapper>
         <UserDetail>
           <Text fontSize={16} color={theme.color.fontNormal}>

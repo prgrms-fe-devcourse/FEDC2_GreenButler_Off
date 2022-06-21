@@ -1,6 +1,7 @@
 import request from './common';
 import { API_METHOD } from 'utils/constants/apiMethods';
-const channelId = '62a04aa2703fdd3a82b4e66e';
+
+export const channelId = '62b20b485baf8c52bfe6d453';
 
 /* 
   특정 채널의 포스트 목록을 모두 불러온다.

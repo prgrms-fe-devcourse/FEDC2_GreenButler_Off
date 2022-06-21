@@ -5,7 +5,6 @@ import SignupForm from 'components/SignupForm';
 import { signup, login } from 'utils/apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import SignupModal from 'components/SignupModal';
 import Text from 'components/basic/Text';
 import useLocalStorage from 'hooks/useLocalStrorage';
 import { useUserContext } from 'contexts/UserContext';

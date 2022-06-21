@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Text from 'components/basic/Text';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
@@ -26,7 +26,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
   const [isFollow, setIsFollow] = useState(checkFollow);
   const [isFollowModal, setIsFollowModal] = useState(false);
   const [isUnFollowModal, setIsUnFollowModal] = useState(false);
-  const [followers, setFollowers] = useState(user.followers.length);
+  const [followers, setFollowers] = useState();
 
   const navigate = useNavigate();
 
@@ -61,6 +61,10 @@ const UserData = ({ user, pageUserId, userLevel }) => {
     setIsUnFollowModal(false);
   }, [pageUserId, currentUser, onUnfollow, followers]);
 
+  useEffect(() => {
+    setFollowers(user.followers.length);
+  }, [user]);
+
   return (
     <UserInfo>
       <Avatar
@@ -86,7 +90,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           <Text fontSize={16} color={theme.color.fontNormal}>
             팔로워
           </Text>
-          <Text fontSize={18}> {followers}</Text>
+          <Text fontSize={18}> {followers && followers}</Text>
         </UserDetail>
         <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
           <Text fontSize={16} color={theme.color.fontNormal}>

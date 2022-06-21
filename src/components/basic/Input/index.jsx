@@ -27,6 +27,11 @@ const StyledInput = styled.input`
     color: #a3a3a3;
   }
 
+  :-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+  }
+
   &:focus {
     border: 1px solid ${theme.color.fontBlack};
   }

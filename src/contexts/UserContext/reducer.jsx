@@ -1,8 +1,8 @@
 import {
   LOGIN,
   SIGNUP,
+  KEEP_LOGIN,
   LOGOUT,
-  GET_CURRENT_USER,
   FOLLOW,
   UNFOLLOW,
   LOADING_ON,
@@ -26,13 +26,13 @@ export const initialUserData = {
     following: [],
     notifications: [],
   },
-
   isLoading: false,
 };
 
 export const reducer = (state, { type, payload }) => {
   switch (type) {
     case LOGIN:
+    case KEEP_LOGIN:
     case SIGNUP: {
       return {
         ...state,
@@ -56,24 +56,7 @@ export const reducer = (state, { type, payload }) => {
         currentUser: { ...initialUserData },
       };
     }
-    case GET_CURRENT_USER: {
-      return {
-        ...state,
-        currentUser: {
-          id: payload._id,
-          email: payload.email,
-          fullName: payload.fullName,
-          image: payload.image,
-          posts: payload.posts,
-          followers: payload.followers,
-          following: payload.following,
-          notifications: payload.notifications,
-          likes: payload.likes,
-        },
-      };
-    }
     case FOLLOW: {
-      console.log('리듀서', payload);
       return {
         ...state,
         currentUser: {
@@ -90,12 +73,13 @@ export const reducer = (state, { type, payload }) => {
       };
     }
     case UNFOLLOW: {
-      console.log(payload.unfollowId);
       return {
         ...state,
         currentUser: {
           ...state.currentUser,
-          following: state.currentUser.following.filter(({ _id }) => _id !== payload.unfollowId),
+          following: [
+            ...state.currentUser.following.filter(({ _id }) => _id !== payload.unfollowId),
+          ],
         },
       };
     }

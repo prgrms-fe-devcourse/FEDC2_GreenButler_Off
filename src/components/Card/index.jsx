@@ -18,7 +18,7 @@ const Card = ({
     <Container {...props}>
       <Avatar src={src} alt="유저 프로필 이미지" size={size} />
       <Div gap={gap}>
-        <NotificationText color={color} lineHeight={'24.52px'}>
+        <NotificationText style={{ wordBreak: 'keep-all' }} color={color} lineHeight={'24.52px'}>
           <Text fontWeight={600} fontSize={fontSize}>
             {fullName}
           </Text>

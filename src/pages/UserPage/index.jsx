@@ -3,6 +3,7 @@ import Icon from 'components/basic/Icon';
 import Tab from 'components/basic/Tab';
 import { useParams } from 'react-router-dom';
 import { initialUserData } from 'contexts/UserContext/reducer';
+import { useUserContext } from 'contexts/UserContext';
 import { getUser } from 'utils/apis/userApi';
 import { getUserPosts, getPostData } from 'utils/apis/postApi';
 import PostImageContainer from 'components/PostImageContainer';
@@ -18,6 +19,7 @@ const LIKE_POSTS = 'likePosts';
 const UserPage = () => {
   const { id } = useParams();
   const pageUserId = id;
+  const { currentUser } = useUserContext();
   const [user, setUser] = useState(initialUserData.currentUser);
   const [userLevel, setUserLevel] = useState({});
   const [userPosts, setUserPosts] = useState([]);
@@ -68,7 +70,7 @@ const UserPage = () => {
   }, [currentTab, handleGetLikePosts, userLikePosts]);
 
   return (
-    <PageWrapper header prev nav>
+    <PageWrapper header prev nav info={currentUser.id === pageUserId}>
       <UserContainter>
         <UserData user={user} pageUserId={pageUserId} userLevel={userLevel} />
         <Tab onActive={onActive}>

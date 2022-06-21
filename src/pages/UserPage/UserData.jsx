@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import Text from 'components/basic/Text';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
@@ -7,6 +7,8 @@ import Button from 'components/basic/Button';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'components/Modal';
+import PropTypes from 'prop-types';
+
 import {
   followButtonStyle,
   followingButtonStyle,
@@ -66,8 +68,6 @@ const UserData = ({ user, pageUserId }) => {
         onClick={() => currentUser.id === pageUserId && navigate('/user/MyInfo')}
       />
       <Text style={fullNameStyle}>{user.fullName}</Text>
-      {/* //TODO:신영 추후 컴포넌트 분리 */}
-
       <UserDetailWrapper>
         <UserDetail>
           <Text fontSize={16} color={theme.color.fontNormal}>
@@ -114,6 +114,7 @@ const UserData = ({ user, pageUserId }) => {
           팔로우
         </Button>
       )}
+
       <Modal visible={isFollowModal} onClose={onCloseFollow}>
         <Modal.Content
           title="팔로우 성공!"
@@ -149,3 +150,8 @@ const UserData = ({ user, pageUserId }) => {
 };
 
 export default UserData;
+
+UserData.propTypes = {
+  user: PropTypes.object,
+  pageUserId: PropTypes.string,
+};

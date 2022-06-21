@@ -99,8 +99,8 @@ const FollowList = ({ followList, tab, handleFollowSuccess }) => {
       {tab === FOLLOWER && !isFollowSuccess && isModal && (
         <Modal visible={isModal} onClose={onClose}>
           <Modal.Content
-            title="팔로우 실패!"
-            description="이미 팔로우하고 있는 사용자에요"
+            title="팔로우 실패했어요!"
+            description="이미 팔로우하고 있는 사용자입니다."
             onClose={onClose}
           />
           <Modal.Button onClick={onClose}>확인</Modal.Button>
@@ -108,11 +108,7 @@ const FollowList = ({ followList, tab, handleFollowSuccess }) => {
       )}
       {tab === FOLLOWER && isFollowSuccess && isModal && (
         <Modal visible={isModal} onClose={onClose}>
-          <Modal.Content
-            title="팔로우 성공!"
-            description="성공적으로 팔로잉 했어요"
-            onClose={onClose}
-          />
+          <Modal.Content title="팔로우에 성공했어요!" onClose={onClose} />
           <Modal.Button onClick={onClose}>확인</Modal.Button>
         </Modal>
       )}
@@ -120,7 +116,7 @@ const FollowList = ({ followList, tab, handleFollowSuccess }) => {
         <Modal visible={isModal} onClose={onClose}>
           <Modal.Content
             title="언팔하시겠어요?"
-            description="언팔하시면 팔로잉 목록에서 사용자가 사라져요"
+            description="언팔하시면 팔로잉 목록에서 사용자가 사라집니다."
             onClose={onClose}
           />
           <Modal.Button

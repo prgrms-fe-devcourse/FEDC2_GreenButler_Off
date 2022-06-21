@@ -111,11 +111,7 @@ const MyInfoEditPage = () => {
         </UserInfo>
         {isModal && (
           <Modal visible={isModal} onClose={onClose}>
-            <Modal.Content
-              title="비밀번호 변경!"
-              description="비밀번호가 성공적으로 변경됐습니다."
-              onClose={onClose}
-            />
+            <Modal.Content title="비밀번호가 변경됐어요!" onClose={onClose} />
             <Modal.Button
               onClick={() => {
                 onClose();

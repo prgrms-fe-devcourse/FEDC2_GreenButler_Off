@@ -66,7 +66,7 @@ const UserDetails = () => {
         <Modal visible={isLogoutModal} onClose={onCloseLogout}>
           <Modal.Content
             title="로그아웃 하시겠어요?"
-            description="로그아웃 시 로그인 화면으로 이동합니다."
+            description="로그아웃 시 로그인 화면으로 이동됩니다."
             onClose={onCloseLogout}
           />
           <Modal.Button

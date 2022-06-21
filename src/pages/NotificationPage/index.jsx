@@ -19,7 +19,6 @@ const NotificationPage = () => {
   const [token] = useLocalToken();
   const [notifications, setNotifications] = useState([]);
   const { currentUser } = useUserContext();
-
   useEffect(() => {
     const initNotifications = async () => {
       const fetchedNotifications = await getNotifications(token);
@@ -34,7 +33,7 @@ const NotificationPage = () => {
           return {
             notificationId: notification._id,
             postId: notification.post,
-            message: `님이 ${message}`,
+            message: message ? `님이 ${message}` : undefined,
             userId: userId,
             authorId: _id,
             isSeen: notification.seen,
@@ -63,8 +62,9 @@ const NotificationPage = () => {
               img,
               createdAt,
             }) =>
-              postId ? (
-                <Link to={`/post/detail/${postId}`}>
+              message &&
+              (postId ? (
+                <Link to={`/post/detail/${postId}`} key={notificationId}>
                   <NotificationCard
                     key={notificationId}
                     isSeen={isSeen}
@@ -75,7 +75,7 @@ const NotificationPage = () => {
                   ></NotificationCard>
                 </Link>
               ) : (
-                <Link to={`/user/${authorId}`}>
+                <Link to={`/user/${authorId}`} key={notificationId}>
                   <NotificationCard
                     key={notificationId}
                     isSeen={isSeen}
@@ -85,7 +85,7 @@ const NotificationPage = () => {
                     createdAt={createdAt}
                   ></NotificationCard>
                 </Link>
-              ),
+              )),
           )}
         </NotificationsWrapper>
       </PageWrapper>

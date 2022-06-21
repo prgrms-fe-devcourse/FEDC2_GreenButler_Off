@@ -54,7 +54,9 @@ const UserData = ({ user, pageUserId, userLevel }) => {
     if (followData.length !== 0) {
       onUnfollow({ unfollowId: followData[0]._id });
       setIsFollow(false);
-      setFollowers(followers - 1);
+      if (followers > 0) {
+        setFollowers(followers - 1);
+      }
     }
     setIsUnFollowModal(false);
   }, [pageUserId, currentUser, onUnfollow, followers]);

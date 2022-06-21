@@ -71,7 +71,6 @@ const UserPage = () => {
     <PageWrapper header prev nav>
       <UserContainter>
         <UserData user={user} pageUserId={pageUserId} userLevel={userLevel} />
-
         <Tab onActive={onActive}>
           <Tab.Item
             icon={{

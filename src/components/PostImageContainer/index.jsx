@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import Image from 'components/basic/Image';
+import { IMAGE_URLS } from 'utils/constants/images';
 
 const PostImageContainer = React.memo(function ImageContainer({ posts }) {
-  const defaultPostImg =
-    'https://user-images.githubusercontent.com/79133602/173282447-b5cdf98e-4372-4284-9795-b824acf2283d.png';
   const navigate = useNavigate();
 
   return (
@@ -17,10 +17,14 @@ const PostImageContainer = React.memo(function ImageContainer({ posts }) {
             navigate(`/post/detail/${post._id}`);
           }}
         >
-          <ImageInner
-            style={{
-              backgroundImage: `url(${post.image ? post.image : defaultPostImg}`,
-            }}
+          <Image
+            src={post.image ? post.image : IMAGE_URLS.POST_DEFAULT_GRID_IMG}
+            height="100%"
+            width="100%"
+            mode="cover"
+            lazy={true}
+            threshold={0.2}
+            style={{ position: 'absolute', left: 0, top: 0 }}
           />
         </ImageItem>
       ))}
@@ -46,19 +50,8 @@ const PostImageList = styled.div`
 
 const ImageItem = styled.div`
   width: 100%;
-
-  &::after {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
-  }
-`;
-
-const ImageInner = styled.div`
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  overflow: hidden;
   cursor: pointer;
+  padding-bottom: 100%;
+  position: relative;
 `;

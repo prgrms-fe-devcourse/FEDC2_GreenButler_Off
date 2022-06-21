@@ -18,7 +18,7 @@ const PostImageContainer = React.memo(function ImageContainer({ posts }) {
           }}
         >
           <Image
-            src={post.image ? post.image : IMAGE_URLS.POST_DEFAULT_GRID_IMG}
+            src={post.image ? post.image : IMAGE_URLS.POST_DEFAULT_IMG}
             height="100%"
             width="100%"
             mode="cover"

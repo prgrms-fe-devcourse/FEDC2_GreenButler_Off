@@ -139,7 +139,7 @@ const SignupForm = ({
           inValid={currentFullNameInvalid || errorfullName ? true : false}
           placeholder={'닉네임을 입력해주세요.'}
           onChange={handleChange}
-          value={values.fullName}
+          value={values.fullName || ''}
         ></Input>
         {errorfullName ? (
           <ErrorText>{errorfullName}</ErrorText>

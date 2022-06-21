@@ -6,7 +6,7 @@ import {
   LOGIN,
   SIGNUP,
   LOGOUT,
-  GET_CURRENT_USER,
+  KEEP_LOGIN,
   FOLLOW,
   UNFOLLOW,
   LOADING_ON,
@@ -46,18 +46,6 @@ const UserProvider = ({ children }) => {
     handlefollow,
     handleUnFollow,
   } = useHandles();
-
-  // 현재 유저의 정보를 서버로부터 가져온다.
-  const onGetCurrentUser = useCallback(async () => {
-    dispatch({ type: LOADING_ON });
-    if (localToken) {
-      const user = await handleGetCurrentUser();
-      if (user?._id) {
-        dispatch({ type: GET_CURRENT_USER, payload: user }); // 서버에서 받아 온 데이터로 currentUser의 정보 갱신
-      }
-    }
-    dispatch({ type: LOADING_OFF });
-  }, [handleGetCurrentUser, localToken]);
 
   const onLogin = useCallback(
     async (data) => {
@@ -148,6 +136,11 @@ const UserProvider = ({ children }) => {
     dispatch({ type: DISLIKE, payload: like });
   }, []);
 
+  const onKeepLoggedIn = useCallback(async () => {
+    const user = await handleGetCurrentUser();
+    dispatch({ type: KEEP_LOGIN, payload: user });
+  }, [handleGetCurrentUser]);
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -155,7 +148,6 @@ const UserProvider = ({ children }) => {
       onLogin,
       onSignup,
       onLogout,
-      onGetCurrentUser,
       onFollow,
       onUnfollow,
       onChangeFullName,
@@ -163,6 +155,7 @@ const UserProvider = ({ children }) => {
       onChangePassword,
       onLike,
       onDisLike,
+      onKeepLoggedIn,
     };
   }, [
     currentUser,
@@ -170,7 +163,6 @@ const UserProvider = ({ children }) => {
     onLogin,
     onSignup,
     onLogout,
-    onGetCurrentUser,
     onFollow,
     onUnfollow,
     onChangeFullName,
@@ -178,6 +170,7 @@ const UserProvider = ({ children }) => {
     onChangePassword,
     onLike,
     onDisLike,
+    onKeepLoggedIn,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

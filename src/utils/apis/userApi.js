@@ -122,7 +122,7 @@ export const unFollow = (token, id) => {
   나의 fullName 또는 username을 변경한다.
   Response: User
 */
-export const changeUserName = (token, fullName) => {
+export const changeUserName = (token, fullName, username) => {
   return request({
     method: API_METHOD.PUT,
     url: `/settings/update-user`,
@@ -131,6 +131,7 @@ export const changeUserName = (token, fullName) => {
     },
     data: {
       fullName,
+      username: 'user',
     },
   });
 };

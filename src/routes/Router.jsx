@@ -1,12 +1,13 @@
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import useLocalToken from 'hooks/useLocalToken';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useUserContext } from 'contexts/UserContext';
 import {
   LoginPage,
   SignupPage,
   MainPage,
-  PostAddPage,
   PostEditPage,
   PostDetailPage,
-  MyPage,
   UserPage,
   FollowPage,
   MyInfoPage,
@@ -18,6 +19,18 @@ import {
 } from '../pages/index';
 
 const Router = () => {
+  const navigate = useNavigate();
+  const [token] = useLocalToken();
+  const { onKeepLoggedIn } = useUserContext();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login', { replace: true });
+      return;
+    }
+    onKeepLoggedIn();
+  }, []);
+
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />

@@ -17,17 +17,16 @@ const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
   const navigate = useNavigate();
 
-  // 인증된 사용자인 경우, 사용자 정보를 반환받을 수 있다.
   const handleGetCurrentUser = useCallback(async () => {
-    const { data } = await getCurrentUser(localToken);
-    if (!data?._id) {
-      // JWT 토큰 및 로컬 스토리지 초기화
-      alert('인증 실패');
+    const user = await getCurrentUser(localToken).then((res) => res.data);
+    if (!user?._id) {
+      alert('인증에 실패했습니다. 로그인 화면으로 이동합니다.');
       setLocalToken('');
       localStorage.clear();
-      navigate('/login', { replace: true }); // 로그인 화면으로 이동
+      navigate('/login', { replace: true });
+      return;
     }
-    return data;
+    return user;
   }, [navigate, localToken, setLocalToken]);
 
   const handleLogin = useCallback(

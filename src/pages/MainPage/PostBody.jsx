@@ -74,7 +74,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
     postId,
     likeId,
     author._id,
-    currentUser.id,
+    currentUser,
     localToken,
     onLike,
     onDisLike,
@@ -93,7 +93,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
       setOnHeart(true);
       setLikeId(likeId);
     }
-  }, []);
+  }, [currentUser, likes]);
 
   const handleMoreClick = () => {
     setIsShown(true);

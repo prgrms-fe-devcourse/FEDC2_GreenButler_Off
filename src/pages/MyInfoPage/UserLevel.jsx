@@ -33,6 +33,7 @@ const MyLevel = styled.div`
   color: ${mainWhite};
   border-radius: 30px;
   background-color: ${mainGreen};
+  font-weight: 500;
 `;
 
 const MyHistory = styled.ul`

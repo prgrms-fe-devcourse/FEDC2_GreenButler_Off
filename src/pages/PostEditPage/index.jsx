@@ -10,7 +10,7 @@ import Modal from 'components/Modal';
 import PostTextArea from 'components/PostTextArea';
 
 import useLocalToken from 'hooks/useLocalToken';
-import { addPost, getPostData, updatePost } from 'utils/apis/postApi';
+import { addPost, updatePost } from 'utils/apis/postApi';
 import theme from 'styles/theme';
 import { imageToFile, objectToForm } from 'utils/functions/converter';
 
@@ -54,15 +54,9 @@ const PostEditPage = () => {
 
   const { id } = useParams();
 
-  const getCurrentPost = useCallback(async () => {
-    const result = await getPostData(id).then((res) => res.data);
-    injectState(result);
-  }, [id]);
-
   const injectState = (post) => {
     const title = JSON.parse(post.title);
 
-    // ImgSrc(post.image);
     setContent(title.content);
     setTags(title.tags);
     setDefaultImg(post.image);
@@ -104,8 +98,7 @@ const PostEditPage = () => {
         image: ImageBlob,
         channelId: '62a04aa2703fdd3a82b4e66e',
       });
-      const result = await addPost(token, formData);
-      console.log(result, '포스트 등록 결과');
+      await addPost(token, formData);
       navigate('/');
     }
 
@@ -124,8 +117,7 @@ const PostEditPage = () => {
         image: ImageBlob,
         channelId: '62a04aa2703fdd3a82b4e66e',
       });
-      const result = await updatePost(token, formData);
-      console.log(result, '포스트 수정 결과');
+      await updatePost(token, formData);
       navigate('/');
     }
   };

@@ -51,19 +51,23 @@ const LevelInfo = styled.div`
   flex-direction: column;
   margin-left: 18px;
 `;
+
 const LevelName = styled.span`
   font-size: 16px;
   font-weight: bold;
 `;
+
 const LevelDescription = styled.span`
   font-size: 14px;
   margin-top: 8px;
   color: ${fontNormal};
 `;
+
 const Strong = styled.span`
   font-weight: bold;
   color: ${fontBlack};
 `;
+
 const LevelModal = ({ onClose }) => {
   return (
     <ModalContainer>

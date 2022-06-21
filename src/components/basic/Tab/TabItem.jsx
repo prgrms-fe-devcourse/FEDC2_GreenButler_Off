@@ -12,6 +12,7 @@ const TabItemWrapper = styled.div`
   padding: 16px 0;
   color: ${({ active }) => (active ? fontBlack : fontNormal)};
   border-bottom: 2px solid ${({ active }) => (active ? mainGreen : borderLight)};
+  font-weight: ${({ active }) => (active ? 500 : 400)};
   flex: 1;
   cursor: pointer;
 `;

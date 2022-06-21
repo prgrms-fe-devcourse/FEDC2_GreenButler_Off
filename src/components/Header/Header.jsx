@@ -25,7 +25,8 @@ const Title = memo(styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 20px;
-  font-weight: 500;
+  font-weight: bold;
+  white-space: nowrap;
 `);
 
 const InnerRight = styled.div`

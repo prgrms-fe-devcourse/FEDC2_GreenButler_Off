@@ -1,9 +1,8 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import theme from 'styles/theme';
 import { IMAGE_URLS } from 'utils/constants/images';
-import { useEffect } from 'react';
 
 const { backgroundGreen, mainWhite } = theme.color;
 const { POST_ADD_IMG } = IMAGE_URLS;
@@ -37,7 +36,6 @@ const ImageInner = styled.div`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  /* background-color: white; */
 `;
 
 const UploadImage = ({ onChange, defaultImage, ...props }) => {

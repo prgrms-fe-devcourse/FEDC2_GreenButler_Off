@@ -16,7 +16,7 @@ const USER = 'user';
 const { backgroundLight } = theme.color;
 
 const SearchPage = () => {
-  const [currentTab, setCurrentTab] = useState('tag');
+  const [currentTab, setCurrentTab] = useState(TAG);
   const [inputValue, setInputValue] = useState('');
   const [searchData, setSearchData] = useState({
     keyword: '',
@@ -32,13 +32,11 @@ const SearchPage = () => {
       if (currentTab === TAG) {
         const { data } = await searchTag(keyword);
         setSearchData((state) => ({ ...state, tag: data, keyword }));
-        console.log(data);
       }
 
       if (currentTab === USER) {
         const { data } = await searchUsers(keyword);
         setSearchData((state) => ({ ...state, user: data, keyword }));
-        console.log(data);
       }
     },
     [currentTab],

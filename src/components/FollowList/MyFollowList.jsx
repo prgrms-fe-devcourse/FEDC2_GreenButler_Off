@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Avatar from 'components/basic/Avatar';
 import Button from 'components/basic/Button';
@@ -35,7 +36,7 @@ const FollowList = ({ followList, tab }) => {
       }
       setIsModal(true);
     },
-    [currentUser],
+    [currentUser, onFollow],
   );
 
   const hadleUnFollow = useCallback(() => {
@@ -50,18 +51,23 @@ const FollowList = ({ followList, tab }) => {
         followList.map(({ followId, userData, followData }) => {
           return (
             <ProfileContainer key={followId}>
-              <Profile>
-                <Avatar size={60} src={userData.image || IMAGE_URLS.PROFILE_IMG} />
-                <Text style={{ marginLeft: 20 }} fontSize={18} block>
-                  {userData.fullName}
-                </Text>
-              </Profile>
+              <Link to={`/user/${userData._id}`}>
+                <Profile>
+                  <Avatar size={60} src={userData.image || IMAGE_URLS.PROFILE_IMG} />
+                  <Text style={{ marginLeft: 20 }} fontWeight={500} fontSize={18} block>
+                    {userData.fullName}
+                  </Text>
+                </Profile>
+              </Link>
               {tab === FOLLOWING && (
                 <Button
                   width={100}
                   height={30}
                   borderRadius={10}
                   fontSize="16px"
+                  borderColor={theme.color.borderNormal}
+                  backgroundColor={theme.color.mainWhite}
+                  color={theme.color.fontNormal}
                   style={{ ...followingButtonStyle }}
                   onClick={() => {
                     setUnfollowId(followId);

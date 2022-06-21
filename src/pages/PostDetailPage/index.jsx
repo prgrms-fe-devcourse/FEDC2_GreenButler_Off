@@ -103,9 +103,10 @@ const PostDetailPage = () => {
             <PostItem post={post} isDetailPage={true} />
             <CommentInputForm onSubmit={handleSubmit}>
               <CommentInput
-                inputRef={inputRef}
+                ref={inputRef}
                 height={inputHeight}
                 onChange={handleResizeInputHeight}
+                placeholder="댓글을 입력해주세요."
               />
               <SubmitButton />
             </CommentInputForm>
@@ -147,35 +148,35 @@ const CommentInputForm = styled.form`
   align-items: center;
   margin: 13px 0;
   padding: 12px;
+  padding-left: 22px;
   border-radius: 15px;
   border: 1px solid ${theme.color.borderNormal};
 `;
 
-const CommentInput = ({ inputRef, height, onChange }) => {
-  const style = {
-    width: '100%',
-    height,
-    color: theme.color.fontBlack,
-    fontSize: '18px',
-    resize: 'none',
-    overflow: 'hidden',
-  };
-  return (
-    <textarea ref={inputRef} style={style} placeholder="댓글을 입력해주세요." onChange={onChange} />
-  );
-};
+const CommentInput = styled.textarea`
+  width: 100%;
+  height: ${({ height }) => height};
+  color: ${theme.color.fontBlack};
+  font-size: 18px;
+  resize: none;
+  overflow: hidden;
+
+  &::placeholder {
+    color: ${theme.color.fontNormal};
+  }
+`;
 
 const SubmitButton = ({ ...props }) => {
   const style = {
-    width: '64px',
     color: theme.color.mainWhite,
     backgroundColor: theme.color.mainGreen,
     fontSize: '18px',
     fontWeight: 500,
-    padding: '10px',
-    borderRadius: '8px',
+    padding: '10px 16px',
+    borderRadius: '12px',
     marginLeft: '10px',
     alignSelf: 'flex-end',
+    whiteSpace: 'nowrap',
   };
   return (
     <button style={style} {...props}>
@@ -193,11 +194,6 @@ const CommentItem = styled.li`
   align-items: flex-start;
   padding: 20px 25px 20px 0;
   position: relative;
-  border-bottom: 1px solid ${theme.color.borderLight};
-
-  &:last-of-type {
-    border-bottom: 0;
-  }
 `;
 
 const Content = styled.div`
@@ -224,7 +220,7 @@ const MetaInformation = styled.div`
 
 const UserNameText = styled.span`
   font-size: 18px;
-  font-weight: 500;
+  font-weight: bold;
   line-height: 19px;
 `;
 
@@ -251,7 +247,7 @@ const MoreButton = ({ onClick, ...props }) => {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    top: '12px',
+    top: '23px',
     right: '0',
   };
 

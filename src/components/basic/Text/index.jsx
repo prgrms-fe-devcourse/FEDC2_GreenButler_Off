@@ -43,7 +43,7 @@ const Text = ({
 };
 
 Text.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   fontSize: PropTypes.number,
   block: PropTypes.bool,
   paragraph: PropTypes.bool,

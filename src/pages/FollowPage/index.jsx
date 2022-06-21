@@ -18,29 +18,6 @@ const FollowPage = () => {
   const [followerData, setFollowerData] = useState([]); // 얘는 해당 follower(id) 유저 정보들의 배열 vs followers는 id가 담긴 배열
   const { currentUser } = useUserContext();
 
-  useEffect(() => {
-    if (currentUser.id !== id) {
-      handleGetUser();
-      setIsMyFollow(false);
-    } else {
-      setUser(currentUser);
-      setIsMyFollow(true);
-    }
-  }, [currentUser]);
-
-  //TODO:신영 현재 페이지 유저의 정보 => 전역데이터가 아닌 경우 context를 사용할 수 없어서 직접 api 호출
-  const handleGetUser = useCallback(async () => {
-    if (id) {
-      const { data } = await getUser(id);
-      setUser(data);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    handleGetFollowing();
-    handleGetFollowers();
-  }, [user]);
-
   const [currentTab, setCurrentTab] = useState(FOLLOWER);
   const onActive = (value) => {
     setCurrentTab(value);
@@ -83,6 +60,33 @@ const FollowPage = () => {
       setFollowerData(data);
     }
   }, [user]);
+
+  const handleGetUser = useCallback(async () => {
+    if (id) {
+      const { data } = await getUser(id);
+      setUser(data);
+
+      handleGetFollowers();
+    }
+  }, [id, handleGetFollowers]);
+
+  useEffect(() => {
+    if (currentUser.id !== id) {
+      handleGetUser();
+      setIsMyFollow(false);
+    } else {
+      setUser(currentUser);
+      setIsMyFollow(true);
+
+      handleGetFollowers();
+    }
+  }, [currentUser, handleGetFollowers, handleGetUser, id]);
+
+  useEffect(() => {
+    if (followingData.length === 0 && currentTab === FOLLOWING) {
+      handleGetFollowing();
+    }
+  }, [user, handleGetFollowing, handleGetFollowers, currentTab, followingData]);
 
   return (
     <PageWrapper header nav prev title={user.fullName}>

@@ -19,27 +19,32 @@ const MyInfoEditPage = () => {
   const [confirmInvalid, setConfirmInvalid] = useState(false);
   const [errors, setErrors] = useState({});
   const [isModal, setIsModal] = useState(false);
+  const [value, setValue] = useState('');
 
   const onClose = () => {
     setIsModal(false);
   };
 
-  const regex = /\S{4,7}/;
+  const regex = /\S{8,10}/;
 
   const validate = useDebounce(
     () => {
       const newErrors = {};
       if (password && !regex.test(password)) {
-        newErrors.password = '! 4-10자 사이로 공백없이 입력해주세요';
+        newErrors.password = '! 8-10자 사이로 공백없이 입력해주세요';
         setPasswordInvalid(true);
       }
       if (password.length > 10) {
-        newErrors.password = '! 4-10자 사이로 공백없이 입력해주세요';
+        newErrors.password = '! 8-10자 사이로 공백없이 입력해주세요';
+        setPassword(password.slice(0, 10));
         setPasswordInvalid(true);
       }
       if (confirm && password !== confirm) {
         newErrors.confirm = '! 비밀번호와 일치하지 않습니다.';
         setConfirmInvalid(true);
+      }
+      if (confirm.length > 10) {
+        setConfirm(confirm.slice(0, 10));
       }
       setErrors(newErrors);
       !newErrors.password && setPasswordInvalid(false);
@@ -65,8 +70,8 @@ const MyInfoEditPage = () => {
               marginTop: 5,
               marginLeft: 20,
               textAlign: 'left',
-              fontWeight: 700,
             }}
+            fontWeight={500}
             fontSize={26}
             block={true}
           >
@@ -79,18 +84,26 @@ const MyInfoEditPage = () => {
               type="password"
               name="password"
               inValid={passwordInvalid}
+              value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
                 validate();
               }}
             ></Input>
-            {errors.password && <ErrorText>{errors.password}</ErrorText>}
+            {errors.password ? (
+              <ErrorText>{errors.password}</ErrorText>
+            ) : (
+              <ErrorText style={{ color: theme.color.fontNormal }}>
+                * 8-10자 사이로 공백없이 입력해주세요
+              </ErrorText>
+            )}
             <Input
               label="비밀번호 확인"
               style={{ marginTop: 20 }}
               type="password"
               name="confirm"
               inValid={confirmInvalid}
+              value={confirm}
               onChange={(e) => {
                 setConfirm(e.target.value);
                 validate();

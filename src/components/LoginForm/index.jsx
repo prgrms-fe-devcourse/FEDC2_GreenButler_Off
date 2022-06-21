@@ -84,7 +84,6 @@ const LoginForm = ({ onSubmit, inValidEmail = false, inValidPassword = false }) 
       <InputWrapper>
         <Input
           name="email"
-          type="email"
           height={'70'}
           label={''}
           fontSize={18}

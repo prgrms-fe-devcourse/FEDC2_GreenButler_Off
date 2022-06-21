@@ -45,32 +45,28 @@ const PostEditPage = () => {
   const [isModal, setIsModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [token, setValue] = useLocalToken();
-  const [currentPost, setCurrentPost] = useState();
+  const [defaultImg, setDefaultImg] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const currentPage = location.pathname.split('/')[2]; // 페이지 구분
-  console.log(location.state, 'location.state');
-
-  const onChangeContent = useCallback((value) => {
-    setContent(value);
-  }, []);
 
   const { id } = useParams();
 
   const getCurrentPost = useCallback(async () => {
     const result = await getPostData(id).then((res) => res.data);
-    const title = JSON.parse(result.title);
-    console.log(result, 'result');
-
-    // ImgSrc(result.image);
-    setContent(title.content);
-    setTags(title.tags);
-    setCurrentPost(result);
+    injectState(result);
   }, [id]);
 
-  // 추가된 부분
+  const injectState = (post) => {
+    const title = JSON.parse(post.title);
+
+    // ImgSrc(post.image);
+    setContent(title.content);
+    setTags(title.tags);
+    setDefaultImg(post.image);
+  };
 
   const onAddTag = useCallback(
     (value) => {
@@ -134,24 +130,29 @@ const PostEditPage = () => {
     }
   };
 
-  const onFileChange = useCallback((src) => {
+  const onChangeFile = useCallback((src) => {
     setImgSrc(src);
   }, []);
 
-  const onCloseModal = () => {
+  const onChangeContent = useCallback((value) => {
+    setContent(value);
+  }, []);
+
+  const onCloseModal = useCallback(() => {
     setIsModal(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (currentPage === 'edit') {
-      location.state?.post ? setCurrentPost(location.state.post) : getCurrentPost();
+      location.state?.post ? injectState(location.state.post) : navigate('/');
+      // state로 받은 post가 없다면 홈으로 이동
     }
-  }, [getCurrentPost, currentPage, location.state?.post]);
+  }, [currentPage, location.state?.post]);
 
   return (
     <>
       <PageFixed title={page[currentPage].title} header prev>
-        <UploadImage onChange={onFileChange} defaultImage={currentPost?.image} />
+        <UploadImage onChange={onChangeFile} defaultImage={defaultImg} />
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <PostTextArea
           onChange={onChangeContent}

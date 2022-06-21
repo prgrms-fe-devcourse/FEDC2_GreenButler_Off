@@ -14,7 +14,7 @@ const useValidInputs = ({ initialValues, onSubmit, validate, max = 0 }) => {
 
     if (name === 'password') {
       if (max && value.length > max) {
-        setErrorPassword('! 비밀번호를 8-10자 사이로 입력해주세요.');
+        setErrorPassword('* 8-10자 사이로 입력해 주세요.');
         setValues({ ...values, [name]: value.slice(0, max) });
         return;
       }
@@ -23,10 +23,16 @@ const useValidInputs = ({ initialValues, onSubmit, validate, max = 0 }) => {
       setValues({ ...values, [name]: value });
     }
     if (name === 'fullName') {
-      if (reg.test(value)) {
-        setErrorfullName('! 특수문자를 제외한 닉네임을 입력해주세요.');
+      if (value.length > 6) {
+        setErrorfullName('* 특수문자를 제외하고 6자 이내로 입력해 주세요.');
+        setValues({ ...values, [name]: value.slice(0, 6) });
+        return;
+      } else if (reg.test(value)) {
+        setErrorfullName('* 특수문자를 제외하고 6자 이내로 입력해 주세요.');
+        setValues({ ...values, [name]: value.replace(reg, '') });
         return;
       }
+
       setErrorfullName('');
       setValues({ ...values, [name]: value });
     }

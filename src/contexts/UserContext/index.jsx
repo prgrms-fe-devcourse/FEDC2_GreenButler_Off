@@ -94,8 +94,8 @@ const UserProvider = ({ children }) => {
   //현재 유저의 닉네임을 수정
   const onChangeFullName = useCallback(
     (payload = { fullName: '', userName: '' }) => {
-      const { fullName, userName } = payload;
-      handlechangeUserName(fullName, userName);
+      const { fullName } = payload;
+      handlechangeUserName(fullName);
       dispatch({ type: CHANGE_FULLNAME, payload });
     },
     [handlechangeUserName],

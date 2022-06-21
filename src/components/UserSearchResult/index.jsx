@@ -28,7 +28,6 @@ const UserSearchResult = ({ users, isSearch }) => {
     navigate(`/user/${userId}`);
   };
 
-  console.log(users);
   return (
     <>
       {users?.length > 0

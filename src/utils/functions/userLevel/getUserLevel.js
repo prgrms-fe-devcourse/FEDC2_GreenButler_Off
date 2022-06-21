@@ -3,7 +3,7 @@ import levels from './levels';
 /* 
   사용자의 점수와 레벨을 계산한다.
   1. 점수
-    포스트 개수(2점) + 댓글 개수(1점) + 좋아요 받은 개수(1점)
+    포스트 개수(2점) + 댓글 개수(1점) + 팔로워 수(1점)
 
   2. 레벨 
     1) 초린이: 점수 0 이상 30 미만
@@ -34,12 +34,4 @@ export default function getUserLevel({ posts, comments, followers }) {
     score,
     level,
   };
-}
-
-/* 
-  주의: 비용이 많이 드는 연산이 될 수도 있다. 
-  시간복잡도 O(n)
-*/
-function getLikeCount(posts) {
-  return posts.reduce((acc, post) => acc + post.likes.length, 0);
 }

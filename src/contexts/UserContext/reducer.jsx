@@ -57,7 +57,6 @@ export const reducer = (state, { type, payload }) => {
       };
     }
     case FOLLOW: {
-      console.log('리듀서', payload);
       return {
         ...state,
         currentUser: {
@@ -74,12 +73,13 @@ export const reducer = (state, { type, payload }) => {
       };
     }
     case UNFOLLOW: {
-      console.log(payload.unfollowId);
       return {
         ...state,
         currentUser: {
           ...state.currentUser,
-          following: state.currentUser.following.filter(({ _id }) => _id !== payload.unfollowId),
+          following: [
+            ...state.currentUser.following.filter(({ _id }) => _id !== payload.unfollowId),
+          ],
         },
       };
     }

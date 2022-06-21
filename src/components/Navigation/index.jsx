@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
-import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import FixedContainer from 'components/FixedContainer';
 import { useUserContext } from 'contexts/UserContext';

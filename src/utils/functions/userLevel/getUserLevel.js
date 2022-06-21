@@ -12,23 +12,23 @@ import levels from './levels';
     4) 식물마스터: 점수 250 이상 500 미만
     5) 태양신: 점수 500 이상
 */
-export default function getUserLevel({ posts, comments }) {
-  const score = 2 * posts.length + comments.length + getLikeCount(posts);
+export default function getUserLevel({ posts, comments, followers }) {
+  const score = 2 * posts.length + comments.length + followers.length;
   let level;
   if (score >= 0 && score < 30) {
-    level = levels.one;
+    level = levels[0];
   }
   if (score >= 30 && score < 100) {
-    level = levels.two;
+    level = levels[1];
   }
   if (score >= 100 && score < 250) {
-    level = levels.three;
+    level = levels[2];
   }
   if (score >= 250 && score < 500) {
-    level = levels.four;
+    level = levels[3];
   }
   if (score >= 500) {
-    level = levels.five;
+    level = levels[4];
   }
   return {
     score,

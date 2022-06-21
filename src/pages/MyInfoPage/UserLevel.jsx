@@ -1,6 +1,6 @@
 import Icon from 'components/basic/Icon';
 import Text from 'components/basic/Text';
-import { levels } from 'utils/functions/userLevel/levels';
+import levels from 'utils/functions/userLevel/levels';
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 import { useEffect } from 'react';
@@ -11,6 +11,7 @@ import Image from 'components/basic/Image';
 import Modal from 'components/Modal';
 import Profile from 'components/Profile';
 import Avatar from 'components/basic/Avatar';
+import getUserLevel from 'utils/functions/userLevel/getUserLevel';
 
 const { mainGreen, mainWhite, fontNormal, fontBlack, backgroundLight, fontDark } = theme.color;
 
@@ -75,7 +76,7 @@ const LevelIcon = styled.div`
   height: 25px;
   margin-right: 5px;
   background-color: white;
-  background-image: url(https://user-images.githubusercontent.com/81489300/174669864-832f9df6-7ae6-41c1-93df-1e9d4b6e50bb.svg);
+  background-image: ${({ src }) => src && `URL(${src})`};
   background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
@@ -143,17 +144,31 @@ const LevelDescription = styled.span`
 
 const UserLevel = () => {
   const { currentUser } = useUserContext();
-  const [userData, setUserData] = useState({ post: 0, comment: 0, follower: 0 });
+  const [userData, setUserData] = useState({
+    post: 0,
+    comment: 0,
+    follower: 0,
+    currentLevel: null,
+    currentScore: 0,
+  });
+
   const [isModal, setIsModal] = useState(false);
 
   const getUserInfo = async (userId) => {
     const result = await getUser(userId).then((res) => res.data);
+    const { score, level } = getUserLevel({
+      posts: result.posts,
+      comments: result.comments,
+      followers: result.followers,
+    });
+
     setUserData({
       post: result.posts.length,
       comment: result.comments.length,
       follower: result.followers.length,
+      currentLevel: level,
+      currentScore: score,
     });
-    console.log(result);
   };
 
   const closeModal = () => {
@@ -168,10 +183,12 @@ const UserLevel = () => {
 
   return (
     <LevelContainer>
-      <MyLevel>
-        <LevelIcon />
-        초록집사
-      </MyLevel>
+      {userData.currentLevel && (
+        <MyLevel>
+          userData.currentLevel && <LevelIcon src={userData.currentLevel.image} />
+          {userData.currentLevel?.name}
+        </MyLevel>
+      )}
       <MyHistory>
         <HistoryItem>
           <HistoryTitle>게시글</HistoryTitle>
@@ -193,7 +210,7 @@ const UserLevel = () => {
         </Text>
         :
         <Text fontSize={16} strong style={{ marginLeft: 5 }}>
-          999
+          {userData.currentScore}
         </Text>
       </CurrentScore>
       <Modal visible={isModal} onClose={closeModal}>

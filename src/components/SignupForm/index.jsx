@@ -94,8 +94,8 @@ const SignupForm = ({
         } else {
           setFullNameInvalid(false);
         }
-        if (!password) {
-          newErrors.password = '* 비밀번호를 입력해 주세요.';
+        if (!password || password.length < 8) {
+          newErrors.password = '* 비밀번호를 8-10자 사이로 입력해 주세요.';
           setPasswordInvalid(true);
         } else {
           setPasswordInvalid(false);

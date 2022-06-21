@@ -155,8 +155,8 @@ const UserEditForm = styled.form`
 
 const ErrorText = styled.span`
   text-align: left;
-  margin-top: 5px;
-  margin-left: 5px;
-  font-size: 12px;
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 14px;
   color: ${theme.color.mainRed};
 `;

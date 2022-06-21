@@ -78,11 +78,11 @@ const UserProfile = () => {
           <Text
             style={{
               display: 'block',
-              fontWeight: 500,
               lineHeight: '34.75px',
               cursor: 'pointer',
             }}
             fontSize={24}
+            fontWeight={700}
           >
             {currentUser.fullName}
           </Text>

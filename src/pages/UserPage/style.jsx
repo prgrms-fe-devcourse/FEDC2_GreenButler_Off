@@ -30,6 +30,7 @@ export const fullNameStyle = {
   fontSize: 24,
   lineHeight: '34.75px',
   cursor: 'pointer',
+  marginRight: '12px',
 };
 
 export const smallTextStyle = {

@@ -47,9 +47,9 @@ const ButtonWrapper = styled.div`
 
 const ErrorText = styled.span`
   text-align: left;
-  margin-top: 5px;
-  margin-left: 5px;
-  font-size: 12px;
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 14px;
   color: ${theme.color.mainRed};
 `;
 
@@ -127,7 +127,7 @@ const SignupForm = ({
         {errors.email ? (
           <ErrorText>{errors.email}</ErrorText>
         ) : (
-          <div style={{ height: '17px' }}></div>
+          <div style={{ height: '23px' }}></div>
         )}
       </InputWrapper>
       <InputWrapper>
@@ -187,7 +187,7 @@ const SignupForm = ({
         {errors.passwordCheck ? (
           <ErrorText>{errors.passwordCheck}</ErrorText>
         ) : (
-          <div style={{ height: '17px' }}></div>
+          <div style={{ height: '23px' }}></div>
         )}
       </InputWrapper>
       <ButtonWrapper>

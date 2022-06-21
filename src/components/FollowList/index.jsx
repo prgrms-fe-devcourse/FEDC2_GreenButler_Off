@@ -18,7 +18,7 @@ const FollowList = ({ followList }) => {
             <ProfileContainer key={followId}>
               <Profile>
                 <Avatar size={60} src={userData.image || IMAGE_URLS.PROFILE_IMG} />
-                <Text style={{ marginLeft: 20 }} fontSize={18} block>
+                <Text style={{ marginLeft: 20 }} fontWeight={500} fontSize={18} block>
                   {userData.fullName}
                 </Text>
               </Profile>

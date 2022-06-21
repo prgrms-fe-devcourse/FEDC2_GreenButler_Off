@@ -16,7 +16,7 @@ const FOLLOWER = 'follower';
 //TODO: follows 데이터 구조
 // const followData = [{ followId: '', userData: {}, followData: {}}]; // 팔로잉 기준 전부 isFollow true
 
-const FollowList = ({ followList, tab }) => {
+const FollowList = ({ followList, tab, handleFollowSuccess }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
   const [isModal, setIsModal] = useState(false);
   const [unfollowId, setUnfollowId] = useState('');
@@ -35,14 +35,16 @@ const FollowList = ({ followList, tab }) => {
         setIsFollowSuccess(false);
       }
       setIsModal(true);
+      handleFollowSuccess(isFollowSuccess);
     },
-    [currentUser, onFollow],
+    [currentUser, onFollow, handleFollowSuccess, isFollowSuccess],
   );
 
   const hadleUnFollow = useCallback(() => {
     onUnfollow({ unfollowId });
     setIsModal(false);
-  }, [unfollowId, onUnfollow]);
+    handleFollowSuccess(true);
+  }, [unfollowId, onUnfollow, handleFollowSuccess]);
 
   return (
     //TODO: user._id:

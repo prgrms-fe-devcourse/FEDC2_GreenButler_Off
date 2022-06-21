@@ -103,6 +103,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           style={{ ...followingButtonStyle }}
           onClick={() => setIsUnFollowModal(true)}
           borderColor={theme.color.borderNormal}
+          borderWidth={1}
         >
           팔로잉
         </Button>

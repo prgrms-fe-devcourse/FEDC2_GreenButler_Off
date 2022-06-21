@@ -16,8 +16,6 @@ export const followingButtonStyle = {
   width: 125,
   height: 38,
   color: theme.color.borderNormal,
-  borderWidth: '1px',
-  borderColor: theme.color.mainWhite,
   fontWeight: 400,
   backgroundColor: theme.color.backgroundLight,
   borderRadius: 10,

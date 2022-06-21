@@ -44,7 +44,7 @@ const PostHeader = ({ post, isDetailPage }) => {
     setIsModal(false);
     if (localToken && postId) {
       await deletePost(localToken, postId);
-      navigate('/');
+      navigate(-1);
     }
   }, [localToken, postId, navigate]);
 

@@ -23,7 +23,8 @@ const PostImageContainer = React.memo(function ImageContainer({ posts }) {
             width="100%"
             mode="cover"
             lazy={true}
-            threshold={0.2}
+            threshold={0.4}
+            placeholder={IMAGE_URLS.POST_PLACEHOLDER}
             style={{ position: 'absolute', left: 0, top: 0 }}
           />
         </ImageItem>

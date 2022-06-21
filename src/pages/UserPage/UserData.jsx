@@ -70,7 +70,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
         onClick={() => currentUser.id === pageUserId && navigate('/user/MyInfo')}
       />
       <NickName>
-        <Image src={userLevel.image} width={24} block={true} />
+        {userLevel.image && <Image src={userLevel.image} width={24} block={true} />}
         <Text style={fullNameStyle}>{user.fullName}</Text>
       </NickName>
       <UserDetailWrapper>

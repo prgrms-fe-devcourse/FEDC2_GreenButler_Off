@@ -10,9 +10,12 @@ export const IMAGE_URLS = {
     'https://user-images.githubusercontent.com/81489300/173825583-b9b565f0-487c-4d35-ae17-51bd9d429198.png',
   FLOWERPOT:
     'https://user-images.githubusercontent.com/81489300/174393084-1cb47850-52b9-489f-b533-a8cbeddf19ea.png',
+  POST_DEFAULT_GRID_IMG:
+    'https://user-images.githubusercontent.com/79133602/173282447-b5cdf98e-4372-4284-9795-b824acf2283d.png',
 };
 
 export const IMAGE_NAMES = {
   LOGO_IMAGE: 'logo',
   SMALL_LOGO_IMAGE: 'smallLogo',
+  POST_DEFAULT_GRID_IMG: 'POST_DEFAULT_GRID_IMG',
 };

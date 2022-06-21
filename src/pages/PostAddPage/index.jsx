@@ -1,17 +1,21 @@
+import styled from '@emotion/styled';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from '@emotion/styled';
-import axios from 'axios';
 import Button from 'components/basic/Button';
 import UploadImage from 'components/UploadImage';
 import TagAddForm from 'components/TagAddForm';
-import theme from 'styles/theme';
 import PageWrapper from 'components/basic/pageWrapper';
 import FixedContainer from 'components/FixedContainer';
 import useLocalToken from 'hooks/useLocalToken';
 import { addPost } from 'utils/apis/postApi';
+import theme from 'styles/theme';
+import Modal from 'components/Modal';
+
+import { imageToFile, objectToForm } from 'utils/functions/converter';
+import { useRef } from 'react';
 
 const { fontNormal, borderNormal, mainBlack } = theme.color;
+const { headerHeight } = theme.value;
 
 const TextArea = styled.textarea`
   margin-top: 20px;
@@ -22,41 +26,47 @@ const TextArea = styled.textarea`
   resize: none;
   font-size: 20px;
   color: ${mainBlack};
+  overflow: hidden;
 
   ::placeholder {
     color: ${fontNormal};
   }
+  &:focus {
+    border: 1px solid ${borderNormal};
+  }
 `;
 
-const srcToBlob = (imgSrc) => {
-  const byteString = atob(imgSrc.split(',')[1]);
+const PageFixed = styled(PageWrapper)`
+  position: fixed;
+  overflow: auto;
+  height: calc(100% - ${headerHeight});
+  width: 100%;
+  max-width: 500px;
+  bottom: 100px;
 
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
-
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
+  ::-webkit-scrollbar {
+    display: none;
   }
-  const blob = new Blob([ia], {
-    type: 'image/jpeg',
-  });
-
-  return blob;
-};
-
-const handleDataForm = async (data) => {
-  const formData = new FormData();
-  Object.keys(data).forEach((key) => formData.append(key, data[key]));
-
-  return formData;
-};
+`;
 
 const PostAddPage = () => {
   const [tags, setTags] = useState([]);
   const [imgSrc, setImgSrc] = useState('');
   const [content, setContent] = useState('');
-
+  const [isModal, setIsModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
+
+  const textRef = useRef();
+
+  const handleResizeHeight = useCallback(
+    (e) => {
+      textRef.current.style.height = 'auto';
+      textRef.current.style.height = textRef.current.scrollHeight + 'px';
+      setContent(e.target.value);
+    },
+    [textRef],
+  );
 
   const [token, setValue] = useLocalToken();
 
@@ -79,9 +89,15 @@ const PostAddPage = () => {
   );
 
   const onClickAddBtn = async () => {
-    const ImageBlob = srcToBlob(imgSrc);
+    if (!imgSrc || !content) {
+      setModalMessage(!imgSrc ? '이미지를 등록해주세요!' : '게시글을 작성해주세요!');
+      setIsModal(true);
+      return;
+    }
+
+    const ImageBlob = imageToFile(imgSrc);
     const title = JSON.stringify({ content, tags });
-    const formData = await handleDataForm({
+    const formData = await objectToForm({
       title,
       image: ImageBlob,
       channelId: '62a04aa2703fdd3a82b4e66e',
@@ -98,25 +114,39 @@ const PostAddPage = () => {
     setImgSrc(src);
   }, []);
 
+  const onCloseModal = () => {
+    setIsModal(false);
+  };
+
   return (
     <>
-      <PageWrapper title="게시물 등록" header prev style={{ paddingBottom: 100 }}>
+      <PageFixed title="게시물 등록" header prev>
         <UploadImage onChange={onFileChange} />
-
+        <button
+          onClick={() => {
+            navigate('/post/edit/62ae4c512ba3b3676bda2141', {
+              state: '/post/edit/62ae4c512ba3b3676bda2141',
+            });
+          }}
+        >
+          edit버튼 테스트
+        </button>
         <TagAddForm onAddTag={onAddTag} onRemoveTag={onRemoveTag} tags={tags} />
         <TextArea
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
+          ref={textRef}
+          onChange={handleResizeHeight}
           placeholder="내 식물의 성장 글을 작성해주세요."
           rows={10}
         ></TextArea>
-        <FixedContainer bottom>
-          <Button style={{ marginTop: '15px', marginBottom: '15px' }} onClick={onClickAddBtn}>
-            게시물 등록
-          </Button>
+
+        <FixedContainer bottom style={{ padding: 15 }}>
+          <Button onClick={onClickAddBtn}>게시물 등록</Button>
         </FixedContainer>
-      </PageWrapper>
+        <Modal visible={isModal} onClose={onCloseModal}>
+          <Modal.Content title={modalMessage} />
+          <Modal.Button onClick={onCloseModal}>확인</Modal.Button>
+        </Modal>
+      </PageFixed>
     </>
   );
 };

@@ -11,7 +11,7 @@ import useValidInputs from 'hooks/useValidInputs';
 
 const StyledForm = styled.form`
   margin-top: 54px;
-  width: '100%';
+  width: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -20,9 +20,11 @@ const StyledForm = styled.form`
 `;
 
 const InputWrapper = styled.div`
+  width: 100%;
+  padding: 0px 20px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const StyledButton = styled(Button)`
@@ -37,7 +39,9 @@ const StyledText = styled(Text)`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 35px;
+  width: 100%;
+  padding: 0px 20px;
+  margin-top: 25px;
   margin-bottom: 33px;
 `;
 
@@ -50,13 +54,8 @@ const ErrorText = styled.span`
 `;
 
 const emailValid = (email) => {
-  const reg =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+  const reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   return reg.test(email);
-};
-const fullNameValid = (fullName) => {
-  const reg = /[^\w\sㄱ-힣]|[_]/g;
-  return reg.test(fullName);
 };
 
 const SignupForm = ({
@@ -81,28 +80,28 @@ const SignupForm = ({
         const newErrors = {};
 
         if (!email) {
-          newErrors.email = '! 이메일을 입력해주세요.';
+          newErrors.email = '* 이메일을 입력해 주세요.';
           setEmailInvalid(true);
         } else if (!emailValid(email)) {
-          newErrors.email = '! 이메일 형식이 아닙니다.';
+          newErrors.email = '* 이메일 형식이 아닙니다.';
           setEmailInvalid(true);
         } else {
           setEmailInvalid(false);
         }
         if (!fullName) {
-          newErrors.fullName = '! 닉네임을 입력해주세요.';
+          newErrors.fullName = '* 닉네임을 입력해 주세요.';
           setFullNameInvalid(true);
         } else {
           setFullNameInvalid(false);
         }
-        if (!password) {
-          newErrors.password = '! 비밀번호를 입력해주세요.';
+        if (!password || password.length < 8) {
+          newErrors.password = '* 비밀번호를 8-10자 사이로 입력해 주세요.';
           setPasswordInvalid(true);
         } else {
           setPasswordInvalid(false);
         }
         if (password !== passwordCheck) {
-          newErrors.passwordCheck = '! 비밀번호가 일치하지 않습니다.';
+          newErrors.passwordCheck = '* 비밀번호가 일치하지 않습니다.';
           setPasswordCheckInvalid(true);
         } else {
           setPasswordCheckInvalid(false);
@@ -112,76 +111,88 @@ const SignupForm = ({
       },
       max: 10,
     });
-
+  values.email;
   return (
     <StyledForm onSubmit={handleSubmit}>
       <InputWrapper>
         <Input
           name="email"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
           inValid={currentEmailInvalid}
-          placeholder={'이메일을 입력해주세요'}
+          placeholder={'이메일을 입력해 주세요.'}
           onChange={handleChange}
         ></Input>
-        {errors.email && <ErrorText>{errors.email}</ErrorText>}
+        {errors.email ? (
+          <ErrorText>{errors.email}</ErrorText>
+        ) : (
+          <div style={{ height: '17px' }}></div>
+        )}
       </InputWrapper>
       <InputWrapper>
         <Input
           name="fullName"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
           inValid={currentFullNameInvalid || errorfullName ? true : false}
           placeholder={'닉네임을 입력해주세요.'}
           onChange={handleChange}
+          value={values.fullName || ''}
         ></Input>
         {errorfullName ? (
           <ErrorText>{errorfullName}</ErrorText>
+        ) : errors.fullName ? (
+          <ErrorText>{errors.fullName}</ErrorText>
         ) : (
-          errors.fullName && <ErrorText>{errors.fullName}</ErrorText>
+          <ErrorText style={{ color: theme.color.fontNormal }}>
+            * 특수문자를 제외하고 6자 이내로 입력해 주세요.
+          </ErrorText>
         )}
       </InputWrapper>
       <InputWrapper>
         <Input
           name="password"
           type="password"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
           inValid={currentPasswordInvalid || errorPassword ? true : false}
-          placeholder={'비밀번호를 입력해주세요.'}
+          placeholder={'비밀번호를 입력해 주세요.'}
           onChange={handleChange}
           value={values.password}
         ></Input>
         {errorPassword ? (
           <ErrorText>{errorPassword}</ErrorText>
+        ) : errors.password ? (
+          <ErrorText>{errors.password}</ErrorText>
         ) : (
-          errors.password && <ErrorText>{errors.password}</ErrorText>
+          <ErrorText style={{ color: theme.color.fontNormal }}>
+            * 8-10자 사이로 입력해 주세요.
+          </ErrorText>
         )}
       </InputWrapper>
       <InputWrapper>
         <Input
           name="passwordCheck"
           type="password"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
           inValid={currentPasswordCheckInvalid}
-          placeholder={'비밀번호를 한번 더 입력해주세요.'}
+          placeholder={'비밀번호를 한번 더 입력해 주세요.'}
           onChange={handleChange}
         ></Input>
-        {errors.passwordCheck && <ErrorText>{errors.passwordCheck}</ErrorText>}
+        {errors.passwordCheck ? (
+          <ErrorText>{errors.passwordCheck}</ErrorText>
+        ) : (
+          <div style={{ height: '17px' }}></div>
+        )}
       </InputWrapper>
       <ButtonWrapper>
         <StyledButton
           type="submit"
-          width={420}
           height={70}
           backgroundColor={theme.color.mainGreen}
           borderColor={'none'}

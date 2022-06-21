@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
-import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import FixedContainer from 'components/FixedContainer';
+import { useUserContext } from 'contexts/UserContext';
 
 const { navHeight } = theme.value;
 const { mainWhite, borderLight } = theme.color;
@@ -34,6 +34,7 @@ const NavItem = styled.li`
 
 export const Navigation = () => {
   const { pathname } = useLocation();
+  const { currentUser } = useUserContext();
 
   return (
     <NavContainer bottom height={navHeight}>
@@ -53,8 +54,8 @@ export const Navigation = () => {
         </NavItem>
         <NavItem>
           <Icon.Link
-            to="/user/mypage"
-            name={pathname === '/user/mypage' ? 'MY_PAGE_ACTIVE' : 'MY_PAGE'}
+            to={`/user/${currentUser.id}`}
+            name={pathname === `/user/${currentUser.id}` ? 'MY_PAGE_ACTIVE' : 'MY_PAGE'}
             size={27}
           />
         </NavItem>

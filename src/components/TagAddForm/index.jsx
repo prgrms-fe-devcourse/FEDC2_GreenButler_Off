@@ -5,8 +5,10 @@ import Text from 'components/basic/Text';
 import Icon from 'components/basic/Icon';
 
 import theme from 'styles/theme';
+import { useState } from 'react';
+import { useCallback } from 'react';
 
-const { mainGreen, fontNormal } = theme.color;
+const { mainGreen, fontNormal, mainRed } = theme.color;
 
 const TagList = styled.ul`
   display: flex;
@@ -24,42 +26,46 @@ const TagItem = styled.li`
   align-items: center;
 `;
 
-const RemoveBtn = styled.button``;
+const RemoveBtn = styled.button`
+  margin-left: 4px;
+`;
 
 const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
-  const MAX = 6;
-  const { value, resetValue, error, setError, handleChange } =
-    useValidInput(MAX);
+  const CHARACTER_LIMIT = 6;
+  const TAG_LIMIT = 5;
+  const { value, resetValue, error, setError, handleChange } = useValidInput(CHARACTER_LIMIT);
+  const [isEmphasis, setIsEmphasis] = useState(false);
 
   const handleRemoveTag = (index) => {
     onRemoveTag(index);
     setError('');
   };
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     setError('');
-    onAddTag(value.slice(0, MAX));
+
+    if (tags.length >= TAG_LIMIT) {
+      setIsEmphasis(true);
+    }
+    onAddTag(value.slice(0, CHARACTER_LIMIT));
     resetValue();
-  };
+  }, [tags.length, onAddTag, resetValue, setError, value]);
 
   return (
     <>
-      <InputForm
-        onSubmit={onSubmit}
-        error={error}
-        style={{ marginTop: '15px' }}
-      >
+      <InputForm onSubmit={onSubmit} error={error} style={{ marginTop: '15px' }}>
         <InputForm.Input
           placeholder="태그를 입력해주세요"
           onChange={handleChange}
           value={value}
+          onBlur={() => isEmphasis && setIsEmphasis(false)}
         />
         <InputForm.Button disabled={value < 1}>등록</InputForm.Button>
       </InputForm>
 
       <Text
         fontSize={16}
-        color={fontNormal}
+        color={isEmphasis ? mainRed : fontNormal}
         block
         style={{ marginTop: '15px', marginBottom: '15px' }}
       >
@@ -73,7 +79,7 @@ const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
               {tag}
             </Text>
             <RemoveBtn onClick={() => handleRemoveTag(index)}>
-              <Icon name="TAG_DELETE" size={8}></Icon>
+              <Icon name="TAG_DELETE" size={8} />
             </RemoveBtn>
           </TagItem>
         ))}

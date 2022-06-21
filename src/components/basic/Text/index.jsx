@@ -35,7 +35,11 @@ const Text = ({
     children = <del>{children}</del>;
   }
 
-  return <Tag style={{ ...props.style, ...fontStyle }}>{children}</Tag>;
+  return (
+    <Tag {...props} style={{ ...props.style, ...fontStyle }}>
+      {children}
+    </Tag>
+  );
 };
 
 Text.propTypes = {

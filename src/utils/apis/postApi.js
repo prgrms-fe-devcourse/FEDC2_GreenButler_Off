@@ -55,11 +55,6 @@ export const getPostData = (postId) => {
   : FormData를 전송하는 것이 필요. 아래와 같이 FormData로 변환 후 전송한다. (테스트 필요)
 */
 export const addPost = (token, data) => {
-  const submitData = { ...data, meta: JSON.stringify(data.meta) };
-  const formData = new FormData();
-  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
-  formData.append('channelId', channelId);
-
   return request({
     method: API_METHOD.POST,
     url: `/posts/create`,
@@ -67,7 +62,7 @@ export const addPost = (token, data) => {
       'Content-Type': `multipart/form-data`, // 이미지 전송을 위함
       Authorization: `Bearer ${token}`,
     },
-    data: formData,
+    data: data,
   });
 };
 
@@ -76,11 +71,6 @@ export const addPost = (token, data) => {
   FormData를 전송하는 것이 필요. 아래와 같이 FormData로 변환 후 전송한다. (테스트 필요)
 */
 export const updatePost = (token, data) => {
-  const submitData = { ...data, meta: JSON.stringify(data.meta) };
-  const formData = new FormData();
-  Object.keys(submitData).forEach((key) => formData.append(key, submitData[key]));
-  formData.append('channelId', channelId);
-
   return request({
     method: API_METHOD.PUT,
     url: `/posts/update`,
@@ -88,7 +78,7 @@ export const updatePost = (token, data) => {
       'Content-Type': `multipart/form-data`,
       Authorization: `Bearer ${token}`,
     },
-    data: formData,
+    data: data,
   });
 };
 
@@ -164,7 +154,7 @@ export const addComment = (token, postId, comment) => {
   특정 포스트에 작성한 나의 댓글을 삭제한다. 
   Response: Comment
 */
-export const deleteComment = (token, postId) => {
+export const deleteComment = (token, commentId) => {
   return request({
     method: API_METHOD.DELETE,
     url: `/comments/delete`,
@@ -172,7 +162,7 @@ export const deleteComment = (token, postId) => {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      id: postId,
+      id: commentId,
     },
   });
 };
@@ -192,5 +182,18 @@ export const searchUser = (keyword) => {
   return request({
     method: API_METHOD.GET,
     url: `/search/users/${keyword}`,
+  });
+};
+
+/* 
+  나에게 온 알림을 읽음처리한다.
+*/
+export const setNotificationSeen = (token) => {
+  return request({
+    method: API_METHOD.PUT,
+    url: `/notifications/seen`,
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   });
 };

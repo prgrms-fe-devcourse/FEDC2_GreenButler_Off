@@ -11,23 +11,23 @@ import {
   changePassword,
   Follow,
   unFollow,
+  setNotification,
 } from 'utils/apis/userApi';
 
 const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
   const navigate = useNavigate();
 
-  // 인증된 사용자인 경우, 사용자 정보를 반환받을 수 있다.
   const handleGetCurrentUser = useCallback(async () => {
-    const { data } = await getCurrentUser(localToken);
-    if (!data?._id) {
-      // JWT 토큰 및 로컬 스토리지 초기화
-      alert('인증 실패');
+    const user = await getCurrentUser(localToken).then((res) => res.data);
+    if (!user?._id) {
+      alert('인증에 실패했습니다. 로그인 화면으로 이동합니다.');
       setLocalToken('');
       localStorage.clear();
-      navigate('/login', { replace: true }); // 로그인 화면으로 이동
+      navigate('/login', { replace: true });
+      return;
     }
-    return data;
+    return user;
   }, [navigate, localToken, setLocalToken]);
 
   const handleLogin = useCallback(
@@ -39,9 +39,6 @@ const useHandles = () => {
       if (res.data.token) {
         setLocalToken(res.data.token); // 로그인 성공 시, JWT 토큰 갱신
         navigate('/', { replace: true }); // 메인페이지로 이동
-        alert('로그인 성공');
-      } else {
-        alert('로그인 실패');
       }
       return { user: res.data.user, token: res.data.token };
     },
@@ -56,11 +53,8 @@ const useHandles = () => {
       const { data, error } = await signup(inputData);
       if (data.token) {
         setLocalToken(data.token); // 회원가입 성공 시, JWT 토큰 갱신
-        navigate('/', { replace: true }); // 메인 페이지로 이동 (로그인을 건너뛴다)
-        alert('회원가입 성공');
+        //navigate('/', { replace: true }); // 메인 페이지로 이동 (로그인을 건너뛴다)
         await login(inputData);
-      } else if (error.code === 400) {
-        alert('회원가입 실패');
       }
       return data;
     },
@@ -127,7 +121,9 @@ const useHandles = () => {
   const handlefollow = useCallback(
     async (userId) => {
       if (localToken && userId) {
-        await Follow(localToken, userId);
+        const { data } = await Follow(localToken, userId);
+        await setNotification(localToken, 'FOLLOW', data._id, data.user, null);
+        return data;
       }
     },
     [localToken],

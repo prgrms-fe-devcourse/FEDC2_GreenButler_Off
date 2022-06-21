@@ -33,9 +33,15 @@ export const ICON_TYPES = {
     'https://user-images.githubusercontent.com/81489300/173429408-ec26bec0-0105-4b45-b426-3e9bd85cef11.svg',
   KEY: 'https://user-images.githubusercontent.com/81489300/173429409-184607e1-7e98-455b-ba3f-6fe3230652b4.svg',
   GRID: 'https://user-images.githubusercontent.com/81489300/173429411-3f8f12aa-596f-494d-92bc-7aba68e78c27.svg',
+  GRID_ACTIVE:
+    'https://user-images.githubusercontent.com/81489300/174609982-4f6aa306-9b19-4528-abe1-0130c931f985.svg',
   HEART:
     'https://user-images.githubusercontent.com/81489300/173429417-c333f19d-eace-4675-973d-bd4307fd5938.svg',
   HEART_RED:
     'https://user-images.githubusercontent.com/81489300/173429412-1517ad44-2524-40e4-aca9-f8ff330e785c.svg',
+  HEART_ACTIVE:
+    'https://user-images.githubusercontent.com/81489300/174609980-c2ba0e09-6c31-4437-8e2d-c67bcb323e9e.svg',
   MORE: 'https://user-images.githubusercontent.com/81489300/173678702-f33d6b86-fc17-4d08-8d3f-fc11d7abd791.svg',
+  CLOSE:
+    'https://user-images.githubusercontent.com/81489300/174680711-d171d380-f02c-4afe-8d60-7f5ef2d9d821.svg',
 };

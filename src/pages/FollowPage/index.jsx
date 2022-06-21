@@ -3,22 +3,30 @@ import Tab from 'components/basic/Tab';
 import { useParams } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
 import FollowList from 'components/FollowList';
+import MyFollowList from 'components/FollowList/MyFollowList';
+import { useUserContext } from 'contexts/UserContext';
 import { getUser } from 'utils/apis/userApi';
 
 const FOLLOWING = 'following';
 const FOLLOWER = 'follower';
 
 const FollowPage = () => {
-  //TODO:currentUser 말고 UserPage의 user정보도 필요함 => userId를 param으로 받아서 처리할 필요가 있음// 일단 currentUser가 아니라고 생각하고 로직 짜기
-  //const { id } = useParams(); //현재 페이지 user의 _id
-  const id = '629e29bd6d18b41c5b238ba2'; // 관리자 id
+  const { id } = useParams();
   const [user, setUser] = useState({});
+  const [isMyFollow, setIsMyFollow] = useState(true);
   const [followingData, setFollowingData] = useState([]); // 얘는 해당 user(id) 유저 정보들의 배열 vs following은 id가 담긴 배열
   const [followerData, setFollowerData] = useState([]); // 얘는 해당 follower(id) 유저 정보들의 배열 vs followers는 id가 담긴 배열
+  const { currentUser } = useUserContext();
 
   useEffect(() => {
-    handleGetUser();
-  }, []);
+    if (currentUser.id !== id) {
+      handleGetUser();
+      setIsMyFollow(false);
+    } else {
+      setUser(currentUser);
+      setIsMyFollow(true);
+    }
+  }, [currentUser]);
 
   //TODO:신영 현재 페이지 유저의 정보 => 전역데이터가 아닌 경우 context를 사용할 수 없어서 직접 api 호출
   const handleGetUser = useCallback(async () => {
@@ -53,6 +61,8 @@ const FollowPage = () => {
         }),
       );
       setFollowingData(data);
+    } else {
+      setFollowingData([]);
     }
   }, [user]);
 
@@ -75,13 +85,21 @@ const FollowPage = () => {
   }, [user]);
 
   return (
-    <PageWrapper header nav>
+    <PageWrapper header nav prev title={user.fullName}>
       <Tab onActive={onActive}>
         <Tab.Item title="팔로워" index={FOLLOWER}>
-          <FollowList followList={followerData} tab={FOLLOWER} />
+          {isMyFollow ? (
+            <MyFollowList followList={followerData} tab={FOLLOWER} />
+          ) : (
+            <FollowList followList={followerData} />
+          )}
         </Tab.Item>
         <Tab.Item title="팔로잉" index={FOLLOWING}>
-          <FollowList followList={followingData} tab={FOLLOWING} />
+          {isMyFollow ? (
+            <MyFollowList followList={followingData} tab={FOLLOWING} />
+          ) : (
+            <FollowList followList={followingData} />
+          )}
         </Tab.Item>
       </Tab>
     </PageWrapper>

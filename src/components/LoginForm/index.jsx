@@ -9,7 +9,7 @@ import Text from 'components/basic/Text';
 
 const StyledForm = styled.form`
   margin-top: 54px;
-  width: '100%';
+  width: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -18,9 +18,9 @@ const StyledForm = styled.form`
 `;
 
 const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   margin-bottom: 20px;
+  padding: 0px 20px;
 `;
 
 const StyledButton = styled(Button)`
@@ -31,6 +31,8 @@ const StyledButton = styled(Button)`
 `;
 
 const ButtonWrapper = styled.div`
+  padding: 0px 20px;
+  width: 100%;
   margin-top: 35px;
   margin-bottom: 33px;
   font-weight: 700;
@@ -48,14 +50,9 @@ const ErrorText = styled.span`
   color: ${theme.color.mainRed};
 `;
 
-const LoginForm = ({
-  onSubmit,
-  inValidEmail = false,
-  inValidPassword = false,
-}) => {
+const LoginForm = ({ onSubmit, inValidEmail = false, inValidPassword = false }) => {
   const [currentEmailInvalid, setEmailInvalid] = useState(inValidEmail);
-  const [currentPasswordInvalid, setPasswordInvalid] =
-    useState(inValidPassword);
+  const [currentPasswordInvalid, setPasswordInvalid] = useState(inValidPassword);
   const { isLoading, values, errors, handleChange, handleSubmit } = useForm({
     initialValues: {
       email: '',
@@ -87,8 +84,6 @@ const LoginForm = ({
       <InputWrapper>
         <Input
           name="email"
-          type="email"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
@@ -98,11 +93,11 @@ const LoginForm = ({
         ></Input>
         {errors.email && <ErrorText>{errors.email}</ErrorText>}
       </InputWrapper>
+
       <InputWrapper>
         <Input
           name="password"
           type="password"
-          width={'420'}
           height={'70'}
           label={''}
           fontSize={18}
@@ -112,10 +107,10 @@ const LoginForm = ({
         ></Input>
         {errors.password && <ErrorText>{errors.password}</ErrorText>}
       </InputWrapper>
+
       <ButtonWrapper>
         <StyledButton
           type="submit"
-          width={'420px'}
           height={'70px'}
           backgroundColor={theme.color.mainGreen}
           borderColor={'none'}

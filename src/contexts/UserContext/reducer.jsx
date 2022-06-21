@@ -1,8 +1,8 @@
 import {
   LOGIN,
   SIGNUP,
+  KEEP_LOGIN,
   LOGOUT,
-  GET_CURRENT_USER,
   FOLLOW,
   UNFOLLOW,
   LOADING_ON,
@@ -32,6 +32,7 @@ export const initialUserData = {
 export const reducer = (state, { type, payload }) => {
   switch (type) {
     case LOGIN:
+    case KEEP_LOGIN:
     case SIGNUP: {
       return {
         ...state,
@@ -55,22 +56,6 @@ export const reducer = (state, { type, payload }) => {
         currentUser: { ...initialUserData },
       };
     }
-    case GET_CURRENT_USER: {
-      return {
-        ...state,
-        currentUser: {
-          id: payload._id,
-          email: payload.email,
-          fullName: payload.fullName,
-          image: payload.image,
-          posts: payload.posts,
-          followers: payload.followers,
-          following: payload.following,
-          notifications: payload.notifications,
-          likes: payload.likes,
-        },
-      };
-    }
     case FOLLOW: {
       return {
         ...state,
@@ -79,9 +64,9 @@ export const reducer = (state, { type, payload }) => {
           following: [
             ...state.currentUser.following,
             {
-              _id: payload.followId,
-              follower: state.currentUser.id,
-              user: payload.userId,
+              _id: payload._id,
+              follower: payload.follower,
+              user: payload.user,
             },
           ],
         },
@@ -92,7 +77,9 @@ export const reducer = (state, { type, payload }) => {
         ...state,
         currentUser: {
           ...state.currentUser,
-          following: state.currentUser.following.filter(({ _id }) => _id !== payload.unfollowId),
+          following: [
+            ...state.currentUser.following.filter(({ _id }) => _id !== payload.unfollowId),
+          ],
         },
       };
     }

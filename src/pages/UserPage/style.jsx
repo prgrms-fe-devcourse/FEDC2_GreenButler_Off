@@ -16,8 +16,6 @@ export const followingButtonStyle = {
   width: 125,
   height: 38,
   color: theme.color.borderNormal,
-  borderWidth: '1px',
-  borderColor: theme.color.mainWhite,
   fontWeight: 400,
   backgroundColor: theme.color.backgroundLight,
   borderRadius: 10,
@@ -28,7 +26,6 @@ export const followingButtonStyle = {
 
 export const fullNameStyle = {
   display: 'block',
-  marginTop: 5,
   fontWeight: 500,
   fontSize: 24,
   lineHeight: '34.75px',
@@ -44,6 +41,13 @@ export const UserContainter = styled.div`
   width: 100%;
   position: relative;
   background-color: white;
+`;
+export const NickName = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 `;
 
 export const Header = styled.div`
@@ -96,7 +100,7 @@ export const Tab = styled.div`
 
 export const UserInfo = styled.div`
   text-align: center;
-  margin: 120px auto 0 auto;
+  margin: 50px auto 30px auto;
   position: relative;
 `;
 

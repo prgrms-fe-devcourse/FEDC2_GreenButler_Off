@@ -21,11 +21,15 @@ const StyledInput = styled.input`
   padding: 22px 22px;
   border-radius: 15px;
   box-sizing: border-box;
-      inValid ? theme.color.mainRed : theme.color.borderNormal};
   border: 1px solid ${({ inValid }) => (inValid ? theme.color.mainRed : theme.color.borderNormal)};
 
   ::placeholder {
     color: #a3a3a3;
+  }
+
+  :-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
   }
 
   &:focus {

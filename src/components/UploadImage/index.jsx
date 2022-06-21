@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import theme from 'styles/theme';
 import { IMAGE_URLS } from 'utils/constants/images';
+import { useEffect } from 'react';
 
-const { backgroundGreen } = theme.color;
-const { POST_DEFAULT_IMG } = IMAGE_URLS;
+const { backgroundGreen, mainWhite } = theme.color;
+const { POST_ADD_IMG } = IMAGE_URLS;
 
 const ImageWrapper = styled.div`
   margin-left: -20px;
@@ -39,7 +40,7 @@ const ImageInner = styled.div`
   /* background-color: white; */
 `;
 
-const UploadImage = ({ onChange, defaultImage = null, ...props }) => {
+const UploadImage = ({ onChange, defaultImage, ...props }) => {
   const [imageSrc, setImageSrc] = useState(defaultImage);
   const fileInputRef = useRef(null);
 
@@ -53,24 +54,21 @@ const UploadImage = ({ onChange, defaultImage = null, ...props }) => {
     };
   };
 
+  useEffect(() => {
+    setImageSrc(defaultImage);
+  }, [defaultImage]);
+
   const ImageStyle = {
-    backgroundImage: `url(${imageSrc ? imageSrc : POST_DEFAULT_IMG}`,
+    backgroundImage: `url(${imageSrc ? imageSrc : POST_ADD_IMG}`,
+    backgroundColor: imageSrc && mainWhite,
   };
 
   return (
     <ImageWrapper>
-      <ImageLoad
-        onClick={() => fileInputRef.current.click()}
-        style={{ ...props.style }}
-      >
+      <ImageLoad onClick={() => fileInputRef.current.click()} style={{ ...props.style }}>
         <ImageInner style={{ ...ImageStyle }} />
       </ImageLoad>
-      <FileInput
-        ref={fileInputRef}
-        type="file"
-        id="file"
-        onChange={handleFileChange}
-      />
+      <FileInput ref={fileInputRef} type="file" id="file" onChange={handleFileChange} />
     </ImageWrapper>
   );
 };

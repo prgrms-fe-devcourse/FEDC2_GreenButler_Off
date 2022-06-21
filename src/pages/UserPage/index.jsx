@@ -1,69 +1,54 @@
 import { useEffect, useState, useCallback } from 'react';
-import theme from 'styles/theme';
-import Avatar from 'components/basic/Avatar';
-import Text from 'components/basic/Text';
-import Button from 'components/basic/Button';
 import Icon from 'components/basic/Icon';
+import Tab from 'components/basic/Tab';
 import { useParams } from 'react-router-dom';
-import { useUserContext } from 'contexts/UserContext';
 import { initialUserData } from 'contexts/UserContext/reducer';
-import { getUser, Follow, unFollow } from 'utils/apis/userApi';
+import { useUserContext } from 'contexts/UserContext';
+import { getUser } from 'utils/apis/userApi';
 import { getUserPosts, getPostData } from 'utils/apis/postApi';
 import PostImageContainer from 'components/PostImageContainer';
-import { useNavigate } from 'react-router-dom';
 import PageWrapper from 'components/basic/pageWrapper';
-import { IMAGE_URLS } from 'utils/constants/images';
-import {
-  followButtonStyle,
-  followingButtonStyle,
-  fullNameStyle,
-  smallTextStyle,
-  UserContainter,
-  UserInfo,
-  UserDetailWrapper,
-  UserDetail,
-  Tab,
-} from './style';
+import { GRID, GRID_ACTIVE, HEART, HEART_ACTIVE } from 'utils/constants/icons/names';
+import { UserContainter } from './style';
+import UserData from './UserData';
+import getUserLevel from 'utils/functions/userLevel/getUserLevel';
+
+const USER_POSTS = 'userPosts';
+const LIKE_POSTS = 'likePosts';
 
 const UserPage = () => {
-  const navigate = useNavigate();
-  const { currentUser, onFollow, onUnfollow } = useUserContext();
   const { id } = useParams();
   const pageUserId = id;
+  const { currentUser } = useUserContext();
   const [user, setUser] = useState(initialUserData.currentUser);
-  const [posts, setPosts] = useState([]);
+  const [userLevel, setUserLevel] = useState({});
   const [userPosts, setUserPosts] = useState([]);
-  const [uesrLikePosts, setUserLikePosts] = useState([]);
-  const isFollwing = currentUser.following.some((following) => following.user === pageUserId);
-  const followData = currentUser.following.filter((following) => following.user === pageUserId);
-  const [isFollow, setIsFollow] = useState(isFollwing);
+  const [userLikePosts, setUserLikePosts] = useState([]);
 
-  useEffect(() => {
-    handleGetUser();
-  }, []);
+  const [currentTab, setCurrentTab] = useState(USER_POSTS);
 
-  useEffect(() => {
-    handleGetLikePosts();
-    handleGetUserPosts();
-  }, [user]);
-
-  //TODO:신영 추후 핸들러 분리
-  const handleGetUser = useCallback(async () => {
-    if (pageUserId) {
-      const { data } = await getUser(pageUserId);
-      setUser(data);
-    }
-  }, [pageUserId]);
+  const onActive = (value) => {
+    setCurrentTab(value);
+  };
 
   const handleGetUserPosts = useCallback(async () => {
     if (pageUserId) {
       const { data } = await getUserPosts(pageUserId);
       setUserPosts(data);
-      setPosts(data);
     }
   }, [pageUserId]);
 
-  //TODO:신영 관리자 좋아요 post 두번된게 있네? 같은 post를 여러번 좋아요할 수 있구나 이거 나중에 더미 삭제
+  const handleGetUser = useCallback(async () => {
+    if (pageUserId) {
+      const { data } = await getUser(pageUserId);
+      setUser(data);
+      const { posts, comments, followers } = data;
+      const { level } = getUserLevel({ posts, comments, followers });
+      setUserLevel(level);
+      await handleGetUserPosts();
+    }
+  }, [pageUserId, handleGetUserPosts]);
+
   const handleGetLikePosts = useCallback(async () => {
     const { likes } = user;
     if (likes.length !== 0) {
@@ -74,72 +59,40 @@ const UserPage = () => {
     }
   }, [user]);
 
-  //TODO:신영 추후 팔로우, 팔로잉 페이지 만들 때 최종 완성
-  const handleFollowButton = useCallback(() => {
-    setIsFollow((isFollow) => !isFollow);
-    if (isFollow) {
-      onFollow({ userId: pageUserId, followId: followData.id });
-    } else {
-      onUnfollow({ unfollowId: pageUserId });
+  useEffect(() => {
+    handleGetUser();
+  }, [pageUserId, handleGetUser]);
+
+  useEffect(() => {
+    if (currentTab === LIKE_POSTS && userLikePosts.length === 0) {
+      handleGetLikePosts();
     }
-  }, []);
+  }, [currentTab, handleGetLikePosts, userLikePosts]);
 
   return (
-    <PageWrapper>
+    <PageWrapper header prev nav info={currentUser.id === pageUserId}>
       <UserContainter>
-        <UserInfo>
-          <Avatar
-            size={136}
-            style={{
-              cursor: 'pointer',
+        <UserData user={user} pageUserId={pageUserId} userLevel={userLevel} />
+        <Tab onActive={onActive}>
+          <Tab.Item
+            icon={{
+              active: <Icon name={GRID_ACTIVE} size={18} />,
+              inactive: <Icon name={GRID} size={18} />,
             }}
-            src={user.image || IMAGE_URLS.PROFILE_IMG}
-          />
-          <Text style={fullNameStyle}>{user.fullName}</Text>
-          {/* //TODO:신영 추후 컴포넌트 분리 */}
-
-          <UserDetailWrapper>
-            <UserDetail>
-              <Text
-                fontSize={16}
-                color={theme.color.fontNormal}
-                onClick={() => setPosts(userPosts)}
-              >
-                게시물
-              </Text>
-              <Text fontSize={18}> {currentUser.posts.length}</Text>
-            </UserDetail>
-            <UserDetail onClick={() => navigate('/user/follow')}>
-              <Text fontSize={16} color={theme.color.fontNormal}>
-                팔로워
-              </Text>
-              <Text fontSize={18}> {currentUser.followers.length}</Text>
-            </UserDetail>
-            <UserDetail onClick={() => navigate('/user/follow')}>
-              <Text fontSize={16} color={theme.color.fontNormal}>
-                팔로잉
-              </Text>
-              <Text fontSize={18}> {currentUser.following.length}</Text>
-            </UserDetail>
-          </UserDetailWrapper>
-          <Button
-            width="100%"
-            style={isFollow ? { ...followingButtonStyle } : { ...followButtonStyle }}
-            onClick={handleFollowButton}
+            index={USER_POSTS}
           >
-            {isFollow ? '팔로잉' : '팔로우'}
-          </Button>
-        </UserInfo>
-        {/* //TODO:신영 추후 Tab 아이콘 넣는 방식으로 교체 */}
-        <Tab>
-          <button onClick={() => setPosts(userPosts)}>
-            <Icon name="GRID" size={18} />
-          </button>
-          <button onClick={() => setPosts(uesrLikePosts)}>
-            <Icon name="HEART" size={18} />
-          </button>
+            <PostImageContainer posts={userPosts} />
+          </Tab.Item>
+          <Tab.Item
+            icon={{
+              active: <Icon name={HEART_ACTIVE} size={18} />,
+              inactive: <Icon name={HEART} size={18} />,
+            }}
+            index={LIKE_POSTS}
+          >
+            <PostImageContainer posts={userLikePosts} />
+          </Tab.Item>
         </Tab>
-        <PostImageContainer posts={posts} />
       </UserContainter>
     </PageWrapper>
   );

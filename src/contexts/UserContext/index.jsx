@@ -6,7 +6,7 @@ import {
   LOGIN,
   SIGNUP,
   LOGOUT,
-  GET_CURRENT_USER,
+  KEEP_LOGIN,
   FOLLOW,
   UNFOLLOW,
   LOADING_ON,
@@ -47,18 +47,6 @@ const UserProvider = ({ children }) => {
     handleUnFollow,
   } = useHandles();
 
-  // 현재 유저의 정보를 서버로부터 가져온다.
-  const onGetCurrentUser = useCallback(async () => {
-    dispatch({ type: LOADING_ON });
-    if (localToken) {
-      const user = await handleGetCurrentUser();
-      if (user?._id) {
-        dispatch({ type: GET_CURRENT_USER, payload: user }); // 서버에서 받아 온 데이터로 currentUser의 정보 갱신
-      }
-    }
-    dispatch({ type: LOADING_OFF });
-  }, [handleGetCurrentUser, localToken]);
-
   const onLogin = useCallback(
     async (data) => {
       dispatch({ type: LOADING_ON });
@@ -92,18 +80,13 @@ const UserProvider = ({ children }) => {
   }, [handleLogout]);
 
   // 특정 유저를 팔로우한 경우, currentUser의 정보 갱신
-  //TODO:신영 userId: 팔로우 당한 사람 id, followId: FOLLOW 객체의 _id
-  const onFollow = useCallback((payload = { userId: '', followId: '' }) => {
-    console.log('CONTEXT_FOLLOW_USERID', payload.userId);
-    console.log('CONTEXT_FOLLOW_FOLLOWID', payload.followId);
-    handlefollow(payload.followId);
-    dispatch({ type: FOLLOW, payload });
+  const onFollow = useCallback(async (payload = { userId: '', followId: '' }) => {
+    const data = await handlefollow(payload.userId);
+    dispatch({ type: FOLLOW, payload: data });
   }, []);
 
   // 특정 유저를 언팔로우한 경우, currentUser의 정보 갱신
-  //TODO:신영 FOLLOW 객체의 _id
   const onUnfollow = useCallback((payload = { unfollowId: '' }) => {
-    console.log('CONTEXT_FOLLOW_UNFOLLOWID', payload.unfollowId);
     handleUnFollow(payload.unfollowId);
     dispatch({ type: UNFOLLOW, payload });
   }, []);
@@ -142,6 +125,11 @@ const UserProvider = ({ children }) => {
     dispatch({ type: DISLIKE, payload: like });
   }, []);
 
+  const onKeepLoggedIn = useCallback(async () => {
+    const user = await handleGetCurrentUser();
+    dispatch({ type: KEEP_LOGIN, payload: user });
+  }, [handleGetCurrentUser]);
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -149,7 +137,6 @@ const UserProvider = ({ children }) => {
       onLogin,
       onSignup,
       onLogout,
-      onGetCurrentUser,
       onFollow,
       onUnfollow,
       onChangeFullName,
@@ -157,6 +144,7 @@ const UserProvider = ({ children }) => {
       onChangePassword,
       onLike,
       onDisLike,
+      onKeepLoggedIn,
     };
   }, [
     currentUser,
@@ -164,7 +152,6 @@ const UserProvider = ({ children }) => {
     onLogin,
     onSignup,
     onLogout,
-    onGetCurrentUser,
     onFollow,
     onUnfollow,
     onChangeFullName,
@@ -172,6 +159,7 @@ const UserProvider = ({ children }) => {
     onChangePassword,
     onLike,
     onDisLike,
+    onKeepLoggedIn,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

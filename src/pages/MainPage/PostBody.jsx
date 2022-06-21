@@ -9,21 +9,20 @@ import Icon from 'components/basic/Icon';
 import theme from 'styles/theme';
 import { setLike, setDisLike } from 'utils/apis/postApi';
 import { setNotification } from 'utils/apis/userApi';
+import useLocalToken from 'hooks/useLocalToken';
 import { useUserContext } from 'contexts/UserContext';
-
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYyOWUyOWJkNmQxOGI0MWM1YjIzOGJhMiIsImVtYWlsIjoiYWRtaW5AcHJvZ3JhbW1lcnMuY28ua3IifSwiaWF0IjoxNjU0NjcxNjI5fQ.etL5BJpmU-w7nUg1JDa_1oEHqBKkTgTxPQ0tfOfj-As';
-
-const currentUserId = '629e29bd6d18b41c5b238ba2';
+import { IMAGE_URLS } from 'utils/constants/images';
+import displayedAt from 'utils/functions/displayedAt';
 
 const PostBody = ({ post, isDetailPage = false }) => {
-  const { _id: postId, image, likes, comments, updatedAt, author } = post || {};
+  const { _id: postId, image, likes, comments, createdAt, author } = post || {};
   const { content, contents, tags } = JSON.parse(post?.title);
   const [onHeart, setOnHeart] = useState(false);
   const [heartCount, setHeartCount] = useState(likes.length);
   const [likeId, setLikeId] = useState('');
-  const { onLike, onDisLike } = useUserContext();
   const [isShown, setIsShown] = useState(false);
+  const [localToken] = useLocalToken();
+  const { currentUser } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -31,7 +30,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
     if (isDetailPage) {
       return;
     }
-    navigate(`/post/detail/?id=${postId}`, {
+    navigate(`/post/detail/${postId}`, {
       state: {
         post,
       },
@@ -40,7 +39,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
 
   const handleTagClick = useCallback(
     (tag) => {
-      navigate(`/search/tag/${tag}`, {
+      navigate(`/tag/${tag.slice(1)}`, {
         state: {
           tag,
         },
@@ -53,33 +52,36 @@ const PostBody = ({ post, isDetailPage = false }) => {
     setOnHeart(!onHeart);
     if (!onHeart) {
       setHeartCount(heartCount + 1);
-      if (postId) {
-        const like = await setLike(token, postId).then((res) => res.data);
-        onLike(like);
+      if (localToken && postId) {
+        const like = await setLike(localToken, postId).then((res) => res.data);
         setLikeId(like._id);
-        // await setNotification(token, 'LIKE', like._id, author._id, postId);
+        if (currentUser.id !== author._id) {
+          await setNotification(localToken, 'LIKE', like._id, author._id, postId);
+        }
       }
     } else {
       setHeartCount(heartCount - 1);
-      if (likeId) {
-        const like = await setDisLike(token, likeId).then((res) => res.data);
-        onDisLike(like);
+      if (localToken && likeId) {
+        await setDisLike(localToken, likeId).then((res) => res.data);
         setLikeId('');
       }
     }
-  }, [onHeart, heartCount, postId, likeId, onLike, onDisLike]);
+  }, [onHeart, heartCount, postId, likeId, author._id, currentUser, localToken]);
 
   useEffect(() => {
-    const array = likes?.map(({ user, _id }) => {
-      if (user === currentUserId) {
-        return _id;
-      }
-    });
-    if (array.length) {
+    let likeId;
+    const isMyLikePost =
+      likes.filter(({ user, _id }) => {
+        if (user === currentUser.id) {
+          likeId = _id;
+          return true;
+        }
+      }).length > 0;
+    if (isMyLikePost) {
       setOnHeart(true);
-      setLikeId(array[0]);
+      setLikeId(likeId);
     }
-  }, []);
+  }, [currentUser, likes]);
 
   const handleMoreClick = () => {
     setIsShown(true);
@@ -87,18 +89,14 @@ const PostBody = ({ post, isDetailPage = false }) => {
 
   return (
     <Container>
-      <ImageWrapper onClick={handleTodetailpage}>
-        <Image
-          src={image ? image : 'https://picsum.photos/300/300/?image=71'}
-          width="100%"
-          height="100%"
-        />
+      <ImageWrapper onClick={handleTodetailpage} isDetailPage={isDetailPage}>
+        <Image src={image ? image : IMAGE_URLS.POST_DEFAULT_IMG} width="100%" height="100%" />
       </ImageWrapper>
       <Contents>
         <IconButtons>
           <IconButton
             className="heart-button"
-            name={onHeart ? 'HEART_RED' : 'HEART'}
+            name={onHeart ? 'HEART_RED' : 'HEART'} // Todo: 상수화
             onClick={handleHeartClick}
           >
             <IconButtonText>{heartCount}</IconButtonText>
@@ -111,7 +109,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
           <Paragraph isDetailPage={isDetailPage} isShown={isShown}>
             {content ? content : contents}
           </Paragraph>
-          {!isDetailPage && content.length > 50 && !isShown && (
+          {!isDetailPage && content?.length > 50 && !isShown && (
             <MoreText onClick={handleMoreClick}>더보기</MoreText>
           )}
         </TextContainer>
@@ -122,28 +120,32 @@ const PostBody = ({ post, isDetailPage = false }) => {
             </Tag>
           ))}
         </Tags>
-        <DateText>{updatedAt.substr(0, 10)}</DateText>
+        <DateText>{displayedAt(createdAt)}</DateText>
       </Contents>
     </Container>
   );
 };
 
 const Container = styled.div`
+  width: 100%;
   color: ${theme.color.fontBlack};
 `;
 
 const ImageWrapper = styled.div`
   width: 500px;
   height: 500px;
+  margin-left: -20px;
+  margin-right: -20px;
+  cursor: ${({ isDetailPage }) => (isDetailPage ? undefined : 'pointer')};
 
   @media screen and (max-width: 500px) {
-    width: 100%;
+    width: 100vw;
     height: 100%;
   }
 `;
 
 const Contents = styled.div`
-  padding: 20px 0;
+  padding: 18px 0;
 `;
 
 const IconButtons = styled.div`
@@ -159,6 +161,7 @@ const IconButton = ({ name, className, children, onClick }) => {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
+    color: theme.color.fontBlack,
   };
   return (
     <button className={className} style={style} onClick={onClick}>
@@ -171,8 +174,10 @@ const IconButton = ({ name, className, children, onClick }) => {
 const IconButtonText = ({ children, ...props }) => {
   const style = {
     color: theme.color.fontBlack,
-    marginLeft: '5px',
+    marginLeft: '8px',
     PointerEvent: 'none',
+    lineHeight: '19px',
+    transform: 'translateY(-1px)',
   };
   return (
     <Text fontSize={16} style={style} {...props}>
@@ -184,7 +189,8 @@ const IconButtonText = ({ children, ...props }) => {
 const TextContainer = styled.div`
   display: flex;
   align-items: flex-end;
-  margin: 18px 0;
+  margin-top: 15px;
+  margin-bottom: 18px;
 `;
 
 const Paragraph = styled.span`
@@ -193,6 +199,7 @@ const Paragraph = styled.span`
   line-height: 26px;
   font-size: 20px;
   word-break: keep-all;
+  word-wrap: break-word;
 
   ${({ isDetailPage, isShown }) =>
     !isDetailPage &&
@@ -204,7 +211,7 @@ const Paragraph = styled.span`
       overflow: hidden;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-    `}
+    `};
 `;
 
 const MoreText = styled.button`
@@ -218,12 +225,13 @@ const Tags = styled.div``;
 
 const Tag = ({ children, ...props }) => {
   const style = {
+    height: '29px',
     color: theme.color.mainGreen,
     fontSize: '16px',
     borderRadius: '15px',
     border: `1px solid ${theme.color.mainGreen}`,
-    padding: '5px 13px',
-    marginRight: '5px',
+    padding: '0px 13px',
+    marginRight: '4px',
     marginBottom: '5px',
   };
   return (
@@ -236,39 +244,14 @@ const Tag = ({ children, ...props }) => {
 const DateText = ({ children, ...props }) => {
   const style = {
     display: 'block',
-    color: theme.color.fontNormal,
-    margin: '18px 0',
+    marginTop: '13px',
+    marginBottom: '18px',
   };
   return (
-    <Text fontSize={16} style={style} {...props}>
+    <Text fontSize={16} color={theme.color.fontNormal} style={style} {...props}>
       {children}
     </Text>
   );
 };
 
 export default PostBody;
-
-// const Paragraph = ({ children }) => {
-//   const style = {
-//     width: '280px',
-//     maxHeight: '56px',
-//     lineheight: '26px',
-//     fontSize: '20px',
-//     margin: '18px 0',
-//   };
-
-//   const lineClamp = css`
-//     display: -webkit-box;
-//     word-wrap: break-word;
-//     text-overflow: ellipsis;
-//     overflow: hidden;
-//     -webkit-line-clamp: 2;
-//     -webkit-box-orient: vertical;
-//   `;
-
-//   return (
-//     <p style={style} css={lineClamp}>
-//       {children}
-//     </p>
-//   );
-// };

@@ -73,9 +73,9 @@ const useHandles = () => {
 
   //회원 이름수정
   const handlechangeUserName = useCallback(
-    async (fullName) => {
+    async (fullName, username) => {
       if (localToken && fullName) {
-        await changeUserName(localToken, fullName);
+        await changeUserName(localToken, fullName, username);
       }
     },
     [localToken],

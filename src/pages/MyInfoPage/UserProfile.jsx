@@ -50,7 +50,7 @@ const UserProfile = () => {
 
   const onFullNameChange = useCallback(
     (value) => {
-      onChangeFullName({ fullName: value, userName: '' });
+      onChangeFullName({ fullName: value, username: '' });
       setIsNameEditor(false);
     },
     [onChangeFullName],

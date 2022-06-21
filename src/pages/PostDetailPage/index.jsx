@@ -234,8 +234,9 @@ const DateText = styled.span`
 
 const CommentText = styled.p`
   font-size: 16px;
-  line-height: 19px;
+  line-height: 24px;
   word-break: break-all;
+  white-space: pre-wrap;
 `;
 
 const MoreButton = ({ onClick, ...props }) => {

@@ -105,7 +105,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
         </IconButtons>
         <TextContainer>
           <Paragraph isDetailPage={isDetailPage} isShown={isShown}>
-            {content ? content : contents}
+            {content}
           </Paragraph>
           {!isDetailPage && content?.length > 50 && !isShown && (
             <MoreText onClick={handleMoreClick}>더보기</MoreText>
@@ -194,10 +194,11 @@ const TextContainer = styled.div`
 const Paragraph = styled.span`
   display: inline-block;
   width: 84%;
-  line-height: 26px;
+  line-height: 28px;
   font-size: 20px;
   word-break: keep-all;
   word-wrap: break-word;
+  white-space: pre-wrap;
   flex: 1;
 
   ${({ isDetailPage, isShown }) =>

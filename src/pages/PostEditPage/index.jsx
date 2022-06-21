@@ -1,20 +1,15 @@
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import Button from 'components/basic/Button';
-import UploadImage from 'components/UploadImage';
-import TagAddForm from 'components/TagAddForm';
-import PageWrapper from 'components/basic/pageWrapper';
-import FixedContainer from 'components/FixedContainer';
-import Modal from 'components/Modal';
-import PostTextArea from 'components/PostTextArea';
-
+import { Button, UploadImage, TagAddForm, PageWrapper, FixedContainer, Modal } from 'components';
+import { PostTextArea } from 'components';
 import useLocalToken from 'hooks/useLocalToken';
 import { addPost, updatePost } from 'utils/apis/postApi';
-import theme from 'styles/theme';
 import { imageToFile, objectToForm } from 'utils/functions/converter';
+import theme from 'styles/theme';
 
 const { headerHeight } = theme.value;
+const channelId = '62b20b485baf8c52bfe6d453';
 
 const PageFixed = styled(PageWrapper)`
   position: fixed;
@@ -96,7 +91,7 @@ const PostEditPage = () => {
       const formData = await objectToForm({
         title,
         image: ImageBlob,
-        channelId: '62a04aa2703fdd3a82b4e66e',
+        channelId: channelId,
       });
       await addPost(token, formData);
       navigate('/');
@@ -115,7 +110,7 @@ const PostEditPage = () => {
         postId: id,
         title,
         image: ImageBlob,
-        channelId: '62a04aa2703fdd3a82b4e66e',
+        channelId: channelId,
       });
       await updatePost(token, formData);
       navigate('/');

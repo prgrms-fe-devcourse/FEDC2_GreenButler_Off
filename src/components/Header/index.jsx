@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { useUserContext } from 'contexts/UserContext';
 import FixedContainer from 'components/FixedContainer';
-import Badge from 'components/basic/Badge';
 import Icon from 'components/basic/Icon';
 import Text from 'components/basic/Text';
 import theme from 'styles/theme';

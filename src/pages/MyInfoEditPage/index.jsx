@@ -1,13 +1,10 @@
 import styled from '@emotion/styled';
-import Text from 'components/basic/Text';
 import { useUserContext } from 'contexts/UserContext';
-import PageWrapper from 'components/basic/pageWrapper';
+import { Text, PageWrapper, Input, Modal } from 'components';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Input from 'components/basic/Input';
 import theme from 'styles/theme';
 import useDebounce from 'hooks/useDebounce';
-import Modal from 'components/Modal';
 
 const MyInfoEditPage = () => {
   const { onChangePassword } = useUserContext();

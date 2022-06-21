@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Tab from 'components/basic/Tab';
-import InputForm from 'components/InputForm';
-import PageWrapper from 'components/basic/pageWrapper';
-import TagSearchResult from 'components/TagSearchResult';
-import UserSearchResult from 'components/UserSearchResult';
-import Icon from 'components/basic/Icon';
+import { Tab, InputForm, PageWrapper, Icon } from 'components';
+import TagSearchResult from './TagSearchResult';
+import UserSearchResult from './UserSearchResult';
 import { searchUsers } from 'utils/apis/userApi';
 import { searchTag } from 'utils/apis/postApi';
 import theme from 'styles/theme';

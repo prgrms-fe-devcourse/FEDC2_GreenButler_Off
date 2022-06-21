@@ -1,8 +1,6 @@
-import Icon from 'components/basic/Icon';
-import Text from 'components/basic/Text';
 import levels from 'utils/functions/userLevel/levels';
 import styled from '@emotion/styled';
-import Avatar from 'components/basic/Avatar';
+import { Text, Icon, Avatar } from 'components';
 import theme from 'styles/theme';
 
 const { fontNormal, fontBlack, backgroundLight, fontDark } = theme.color;

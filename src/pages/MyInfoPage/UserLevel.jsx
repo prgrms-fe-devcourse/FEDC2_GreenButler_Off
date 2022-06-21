@@ -1,11 +1,10 @@
-import Text from 'components/basic/Text';
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 import { useEffect } from 'react';
 import { getUser } from 'utils/apis/userApi';
 import { useUserContext } from 'contexts/UserContext';
 import { useState } from 'react';
-import Modal from 'components/Modal';
+import { Modal, Text } from 'components';
 import getUserLevel from 'utils/functions/userLevel/getUserLevel';
 import { useCallback } from 'react';
 import LevelModal from './LevelModal';

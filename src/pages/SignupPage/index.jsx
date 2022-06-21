@@ -9,7 +9,7 @@ import SignupModal from 'components/SignupModal';
 import Text from 'components/basic/Text';
 import useLocalStorage from 'hooks/useLocalStrorage';
 import { useUserContext } from 'contexts/UserContext';
-import PageWrapper from 'components/basic/pageWrapper';
+import PageWrapper from 'components/basic/PageWrapper';
 import Modal from 'components/Modal';
 
 const SignupWrapper = styled.div`

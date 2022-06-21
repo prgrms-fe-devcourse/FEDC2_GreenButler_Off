@@ -1,3 +1,12 @@
+export { default as Avatar } from './basic/Avatar';
+export { default as Button } from './basic/Button';
+export { default as Icon } from './basic/Icon';
+export { default as Image } from './basic/Image';
+export { default as Input } from './basic/Input';
+export { default as PageWrapper } from './basic/PageWrapper';
+export { default as Tab } from './basic/Tab';
+export { default as Text } from './basic/Text';
+
 export { default as Card } from './Card';
 export { default as ChangeNameForm } from './ChangeNameForm';
 export { default as ChangePasswordForm } from './ChangePasswordForm';
@@ -18,4 +27,3 @@ export { default as Profile } from './Profile';
 export { default as SignupForm } from './SignupForm';
 export { default as TagAddForm } from './TagAddForm';
 export { default as UploadImage } from './UploadImage';
-export { default as UserSearchResult } from './UserSearchResult';

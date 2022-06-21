@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import Text from 'components/basic/Text';
-import Icon from 'components/basic/Icon';
+import { Text, Icon, Modal } from 'components';
 import { LOGOUT, KEY } from 'utils/constants/icons/names';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
-import Modal from 'components/Modal';
 import { navigate } from '@storybook/addon-links';
 
 const UserDetails = () => {

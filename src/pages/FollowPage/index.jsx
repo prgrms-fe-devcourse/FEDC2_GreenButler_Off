@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Tab from 'components/basic/Tab';
 import { useParams } from 'react-router-dom';
-import PageWrapper from 'components/basic/pageWrapper';
+import PageWrapper from 'components/basic/PageWrapper';
 import FollowList from 'components/FollowList';
 import MyFollowList from 'components/FollowList/MyFollowList';
 import { useUserContext } from 'contexts/UserContext';

@@ -8,7 +8,7 @@ import { addComment } from 'utils/apis/postApi';
 import { IMAGE_URLS } from 'utils/constants/images';
 import useLocalToken from 'hooks/useLocalToken';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PageWrapper from 'components/basic/pageWrapper';
+import PageWrapper from 'components/basic/PageWrapper';
 import { getPostData, deleteComment } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
 import Modal from 'components/Modal';

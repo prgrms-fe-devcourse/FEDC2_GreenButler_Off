@@ -1,13 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import Icon from 'components/basic/Icon';
+import { Icon, PostImageContainer, PageWrapper } from 'components';
 import Tab from 'components/basic/Tab';
 import { useParams } from 'react-router-dom';
 import { initialUserData } from 'contexts/UserContext/reducer';
 import { useUserContext } from 'contexts/UserContext';
 import { getUser } from 'utils/apis/userApi';
 import { getUserPosts, getPostData } from 'utils/apis/postApi';
-import PostImageContainer from 'components/PostImageContainer';
-import PageWrapper from 'components/basic/pageWrapper';
 import { GRID, GRID_ACTIVE, HEART, HEART_ACTIVE } from 'utils/constants/icons/names';
 import { UserContainter } from './style';
 import UserData from './UserData';

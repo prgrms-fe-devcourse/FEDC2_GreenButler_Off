@@ -25,9 +25,9 @@ const useValidInput = (max = 0) => {
     setError('');
   };
 
-  const resetValue = () => {
+  const resetValue = useCallback(() => {
     setValue('');
-  };
+  }, []);
 
   return {
     value,

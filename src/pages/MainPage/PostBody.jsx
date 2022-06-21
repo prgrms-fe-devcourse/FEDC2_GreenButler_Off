@@ -22,7 +22,7 @@ const PostBody = ({ post, isDetailPage = false }) => {
   const [likeId, setLikeId] = useState('');
   const [isShown, setIsShown] = useState(false);
   const [localToken] = useLocalToken();
-  const { currentUser, onLike, onDisLike } = useUserContext();
+  const { currentUser } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -54,7 +54,6 @@ const PostBody = ({ post, isDetailPage = false }) => {
       setHeartCount(heartCount + 1);
       if (localToken && postId) {
         const like = await setLike(localToken, postId).then((res) => res.data);
-        onLike(like);
         setLikeId(like._id);
         if (currentUser.id !== author._id) {
           await setNotification(localToken, 'LIKE', like._id, author._id, postId);
@@ -63,22 +62,11 @@ const PostBody = ({ post, isDetailPage = false }) => {
     } else {
       setHeartCount(heartCount - 1);
       if (localToken && likeId) {
-        const like = await setDisLike(localToken, likeId).then((res) => res.data);
-        onDisLike(like);
+        await setDisLike(localToken, likeId).then((res) => res.data);
         setLikeId('');
       }
     }
-  }, [
-    onHeart,
-    heartCount,
-    postId,
-    likeId,
-    author._id,
-    currentUser,
-    localToken,
-    onLike,
-    onDisLike,
-  ]);
+  }, [onHeart, heartCount, postId, likeId, author._id, currentUser, localToken]);
 
   useEffect(() => {
     let likeId;
@@ -211,6 +199,7 @@ const Paragraph = styled.span`
   line-height: 26px;
   font-size: 20px;
   word-break: keep-all;
+  word-wrap: break-word;
 
   ${({ isDetailPage, isShown }) =>
     !isDetailPage &&
@@ -222,7 +211,7 @@ const Paragraph = styled.span`
       overflow: hidden;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-    `}
+    `};
 `;
 
 const MoreText = styled.button`

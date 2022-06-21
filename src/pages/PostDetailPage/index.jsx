@@ -111,7 +111,6 @@ const PostDetailPage = () => {
             </CommentInputForm>
             <CommentList>
               {post.comments
-                .reverse()
                 .map(({ _id: commentId, author: { _id, image, fullName }, comment, createdAt }) => (
                   <CommentItem key={commentId}>
                     <UserAvatar src={image} onClick={() => handleAvatarClick(_id)} />
@@ -126,7 +125,8 @@ const PostDetailPage = () => {
                       <MoreButton onClick={() => handleMoreClick(commentId)} />
                     )}
                   </CommentItem>
-                ))}
+                ))
+                .reverse()}
             </CommentList>
           </Container>
           <Modal visible={isModal} onClose={onClose}>
@@ -171,7 +171,7 @@ const SubmitButton = ({ ...props }) => {
     color: theme.color.mainWhite,
     backgroundColor: theme.color.mainGreen,
     fontSize: '18px',
-    fontWeight: 700,
+    fontWeight: 500,
     padding: '10px',
     borderRadius: '8px',
     marginLeft: '10px',
@@ -185,19 +185,24 @@ const SubmitButton = ({ ...props }) => {
 };
 
 const CommentList = styled.ul`
-  padding: 10px 0;
+  margin: 10px 0;
 `;
 
 const CommentItem = styled.li`
   display: flex;
   align-items: flex-start;
-  padding: 12px 25px 12px 0;
-  margin: 10px 0;
+  padding: 20px 25px 20px 0;
   position: relative;
+  border-bottom: 1px solid ${theme.color.borderLight};
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
 `;
 
 const Content = styled.div`
   margin: 0 10px;
+  transform: translateY(8px);
 `;
 
 const UserAvatar = ({ src, onClick }) => {
@@ -214,7 +219,7 @@ const UserAvatar = ({ src, onClick }) => {
 const MetaInformation = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 `;
 
 const UserNameText = styled.span`

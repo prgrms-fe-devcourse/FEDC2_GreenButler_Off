@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Icon, PostImageContainer, PageWrapper } from 'components';
-import Tab from 'components/basic/Tab';
+import { Icon, PostImageContainer, PageWrapper, Tab } from 'components';
 import { useParams } from 'react-router-dom';
 import { initialUserData } from 'contexts/UserContext/reducer';
 import { useUserContext } from 'contexts/UserContext';

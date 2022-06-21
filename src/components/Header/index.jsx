@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import FixedContainer from 'components/FixedContainer';
-import Icon from 'components/basic/Icon';
-import Text from 'components/basic/Text';
+import { Icon, Text, FixedContainer } from 'components';
 import theme from 'styles/theme';
 import { memo } from 'react';
 

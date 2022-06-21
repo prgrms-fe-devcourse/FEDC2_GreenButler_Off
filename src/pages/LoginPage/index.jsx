@@ -1,10 +1,9 @@
-import Logo from 'components/Logo';
 import styled from '@emotion/styled';
 import { IMAGE_NAMES } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useUserContext } from 'contexts/UserContext';
-import { PageWrapper, LoginForm, Modal } from 'components';
+import { PageWrapper, LoginForm, Modal, Logo } from 'components';
 
 const LoginWrapper = styled.div`
   width: 100%;

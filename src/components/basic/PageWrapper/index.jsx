@@ -1,5 +1,4 @@
-import Header from 'components/Header';
-import Navigation from 'components/Navigation';
+import { Header, Navigation } from 'components';
 import theme from 'styles/theme';
 
 const { headerHeight, navHeight, pagePadding } = theme.value;

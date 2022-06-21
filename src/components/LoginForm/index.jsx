@@ -1,11 +1,9 @@
-import Input from 'components/basic/Input';
-import Button from 'components/basic/Button';
+import { Input, Button, Text } from 'components';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import theme from 'styles/theme';
-import Text from 'components/basic/Text';
 
 const StyledForm = styled.form`
   margin-top: 54px;

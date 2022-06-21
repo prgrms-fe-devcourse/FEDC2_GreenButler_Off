@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import PageWrapper from 'components/basic/PageWrapper';
+import { PageWrapper } from 'components';
 import TagSearchResult from 'pages/SearchPage/TagSearchResult';
 import { searchTag } from 'utils/apis/postApi';
 

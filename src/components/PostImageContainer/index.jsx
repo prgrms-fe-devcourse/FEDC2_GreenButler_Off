@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import Image from 'components/basic/Image';
+import { Image } from 'components';
 import { IMAGE_URLS } from 'utils/constants/images';
 
 const PostImageContainer = React.memo(function ImageContainer({ posts }) {

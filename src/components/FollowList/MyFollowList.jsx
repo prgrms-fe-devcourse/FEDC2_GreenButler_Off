@@ -1,10 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import Avatar from 'components/basic/Avatar';
-import Button from 'components/basic/Button';
-import Modal from 'components/Modal';
-import Text from 'components/basic/Text';
+import { Avatar, Button, Modal, Text } from 'components';
 import { IMAGE_URLS } from 'utils/constants/images';
 import PropTypes from 'prop-types';
 import { useUserContext } from 'contexts/UserContext';

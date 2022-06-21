@@ -1,12 +1,10 @@
-import Input from 'components/basic/Input';
-import Button from 'components/basic/Button';
+import { Input, Button, Text } from 'components';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import theme from 'styles/theme';
 import PropTypes from 'prop-types';
-import Text from 'components/basic/Text';
 import useValidInputs from 'hooks/useValidInputs';
 
 const StyledForm = styled.form`

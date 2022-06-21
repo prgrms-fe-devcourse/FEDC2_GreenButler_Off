@@ -140,7 +140,7 @@ const ImageWrapper = styled.div`
 
   @media screen and (max-width: 500px) {
     width: 100vw;
-    height: 100%;
+    height: 100vw;
   }
 `;
 
@@ -200,6 +200,7 @@ const Paragraph = styled.span`
   font-size: 20px;
   word-break: keep-all;
   word-wrap: break-word;
+  flex: 1;
 
   ${({ isDetailPage, isShown }) =>
     !isDetailPage &&

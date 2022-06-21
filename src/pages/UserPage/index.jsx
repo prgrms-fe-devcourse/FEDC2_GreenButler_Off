@@ -76,8 +76,8 @@ const UserPage = () => {
         <Tab onActive={onActive}>
           <Tab.Item
             icon={{
-              active: <Icon name={GRID_ACTIVE} size={18} />,
-              inactive: <Icon name={GRID} size={18} />,
+              active: <Icon name={GRID_ACTIVE} size={24} />,
+              inactive: <Icon name={GRID} size={24} />,
             }}
             index={USER_POSTS}
           >
@@ -85,8 +85,8 @@ const UserPage = () => {
           </Tab.Item>
           <Tab.Item
             icon={{
-              active: <Icon name={HEART_ACTIVE} size={18} />,
-              inactive: <Icon name={HEART} size={18} />,
+              active: <Icon name={HEART_ACTIVE} size={24} />,
+              inactive: <Icon name={HEART} size={24} />,
             }}
             index={LIKE_POSTS}
           >

@@ -77,26 +77,34 @@ const UserData = ({ user, pageUserId, userLevel }) => {
       />
       <NickName>
         {userLevel.image && <Image src={userLevel.image} width={24} block={true} />}
-        <Text style={fullNameStyle}>{user.fullName}</Text>
+        <Text style={fullNameStyle} fontWeight={600}>
+          {user.fullName}
+        </Text>
       </NickName>
       <UserDetailWrapper>
         <UserDetail>
           <Text fontSize={16} color={theme.color.fontNormal}>
             게시물
           </Text>
-          <Text fontSize={18}> {user.posts.length}</Text>
+          <Text fontSize={20} fontWeight={600}>
+            {user.posts.length}
+          </Text>
         </UserDetail>
         <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
           <Text fontSize={16} color={theme.color.fontNormal}>
             팔로워
           </Text>
-          <Text fontSize={18}> {followers && followers}</Text>
+          <Text fontSize={20} fontWeight={600}>
+            {followers && followers}
+          </Text>
         </UserDetail>
         <UserDetail onClick={() => navigate(`/user/follow/${pageUserId}`)}>
           <Text fontSize={16} color={theme.color.fontNormal}>
             팔로잉
           </Text>
-          <Text fontSize={18}> {user.following.length}</Text>
+          <Text fontSize={20} fontWeight={600}>
+            {user.following.length}
+          </Text>
         </UserDetail>
       </UserDetailWrapper>
 
@@ -109,6 +117,8 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           style={{ ...followingButtonStyle }}
           onClick={() => setIsUnFollowModal(true)}
           borderColor={theme.color.borderNormal}
+          backgroundColor={theme.color.mainWhite}
+          color={theme.color.fontNormal}
           borderWidth={1}
         >
           팔로잉

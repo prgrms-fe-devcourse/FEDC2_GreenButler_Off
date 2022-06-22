@@ -32,9 +32,9 @@ const UserSearchResult = ({ users, isSearch }) => {
         ? users?.map((user) => {
             return (
               <ProfileContainer key={user._id}>
-                <Profile onClick={() => onClickProfile(user._id)}>
+                <Profile onClick={() => onClickProfile(user._id)} style={{ padding: '0px 20px' }}>
                   <Avatar size={60} src={user.image || IMAGE_URLS.PROFILE_IMG} />
-                  <Text style={{ marginLeft: 20 }} fontSize={18} block>
+                  <Text style={{ marginLeft: 20 }} fontSize={18} fontWeight={500} block>
                     {user.fullName}
                   </Text>
                 </Profile>

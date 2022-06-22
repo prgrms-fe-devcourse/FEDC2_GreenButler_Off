@@ -25,9 +25,11 @@ const PageFixed = styled(PageWrapper)`
 
 const page = {
   create: {
+    name: 'create',
     title: '게시물 등록',
   },
   edit: {
+    name: 'edit',
     title: '게시물 수정',
   },
 };
@@ -40,6 +42,7 @@ const PostEditPage = () => {
   const [modalMessage, setModalMessage] = useState('');
   const [token, setValue] = useLocalToken();
   const [defaultImg, setDefaultImg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,7 +82,9 @@ const PostEditPage = () => {
       return;
     }
 
-    if (currentPage === 'create') {
+    setIsLoading(true);
+
+    if (currentPage === page.create.name) {
       if (!imgSrc || !content) {
         setModalMessage(!imgSrc ? '이미지를 등록해주세요!' : '게시글을 작성해주세요!');
         setIsModal(true);
@@ -96,7 +101,7 @@ const PostEditPage = () => {
       navigate('/');
     }
 
-    if (currentPage === 'edit') {
+    if (currentPage === page.edit.name) {
       if (!content) {
         setModalMessage('게시글을 작성해주세요!');
         setIsModal(true);
@@ -114,6 +119,8 @@ const PostEditPage = () => {
       await updatePost(token, formData);
       navigate('/');
     }
+
+    setIsLoading(false);
   };
 
   const onChangeFile = useCallback((src) => {
@@ -147,7 +154,9 @@ const PostEditPage = () => {
           rows={10}
         ></PostTextArea>
         <FixedContainer bottom style={{ padding: 15 }}>
-          <Button onClick={onClickAddBtn}>{page[currentPage].title}</Button>
+          <Button onClick={onClickAddBtn} disabled={isLoading}>
+            {page[currentPage].title}
+          </Button>
         </FixedContainer>
         <Modal visible={isModal} onClose={onCloseModal}>
           <Modal.Content title={modalMessage} />

@@ -25,21 +25,24 @@ const PageFixed = styled(PageWrapper)`
 
 const page = {
   create: {
+    name: 'create',
     title: '게시물 등록',
   },
   edit: {
+    name: 'edit',
     title: '게시물 수정',
   },
 };
 
 const PostEditPage = () => {
   const [tags, setTags] = useState([]);
-  const [imgSrc, setImgSrc] = useState('');
+  const [BinaryImg, setBinaryImg] = useState('');
   const [content, setContent] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [token, setValue] = useLocalToken();
   const [defaultImg, setDefaultImg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,32 +82,33 @@ const PostEditPage = () => {
       return;
     }
 
-    if (currentPage === 'create') {
-      if (!imgSrc || !content) {
-        setModalMessage(!imgSrc ? '이미지를 등록해주세요!' : '게시글을 작성해주세요!');
-        setIsModal(true);
-        return;
-      }
-      const title = JSON.stringify({ content, tags });
-      const ImageBlob = imageToFile(imgSrc);
+    if (!defaultImg && !BinaryImg) {
+      setModalMessage('이미지를 등록해 주세요!');
+      setIsModal(true);
+      return;
+    }
+
+    if (!content) {
+      setModalMessage('게시글을 작성해 주세요!');
+      setIsModal(true);
+      return;
+    }
+
+    setIsLoading(true);
+
+    const title = JSON.stringify({ content, tags });
+    const ImageBlob = BinaryImg ? imageToFile(BinaryImg) : null;
+
+    if (currentPage === page.create.name) {
       const formData = await objectToForm({
         title,
         image: ImageBlob,
         channelId: channelId,
       });
       await addPost(token, formData);
-      navigate('/');
     }
 
-    if (currentPage === 'edit') {
-      if (!content) {
-        setModalMessage('게시글을 작성해주세요!');
-        setIsModal(true);
-        return;
-      }
-
-      const title = JSON.stringify({ content, tags });
-      const ImageBlob = imgSrc ? imageToFile(imgSrc) : null;
+    if (currentPage === page.edit.name) {
       const formData = await objectToForm({
         postId: id,
         title,
@@ -112,12 +116,14 @@ const PostEditPage = () => {
         channelId: channelId,
       });
       await updatePost(token, formData);
-      navigate('/');
     }
+
+    navigate('/');
+    setIsLoading(false);
   };
 
   const onChangeFile = useCallback((src) => {
-    setImgSrc(src);
+    setBinaryImg(src);
   }, []);
 
   const onChangeContent = useCallback((value) => {
@@ -147,7 +153,9 @@ const PostEditPage = () => {
           rows={10}
         ></PostTextArea>
         <FixedContainer bottom style={{ padding: 15 }}>
-          <Button onClick={onClickAddBtn}>{page[currentPage].title}</Button>
+          <Button onClick={onClickAddBtn} disabled={isLoading}>
+            {page[currentPage].title}
+          </Button>
         </FixedContainer>
         <Modal visible={isModal} onClose={onCloseModal}>
           <Modal.Content title={modalMessage} />

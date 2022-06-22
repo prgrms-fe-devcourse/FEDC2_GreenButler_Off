@@ -1,8 +1,6 @@
-import Icon from 'components/basic/Icon';
-import Text from 'components/basic/Text';
 import levels from 'utils/functions/userLevel/levels';
 import styled from '@emotion/styled';
-import Avatar from 'components/basic/Avatar';
+import { Text, Icon, Avatar } from 'components';
 import theme from 'styles/theme';
 
 const { fontNormal, fontBlack, backgroundLight, fontDark } = theme.color;
@@ -51,19 +49,23 @@ const LevelInfo = styled.div`
   flex-direction: column;
   margin-left: 18px;
 `;
+
 const LevelName = styled.span`
   font-size: 16px;
   font-weight: bold;
 `;
+
 const LevelDescription = styled.span`
   font-size: 14px;
   margin-top: 8px;
   color: ${fontNormal};
 `;
+
 const Strong = styled.span`
   font-weight: bold;
   color: ${fontBlack};
 `;
+
 const LevelModal = ({ onClose }) => {
   return (
     <ModalContainer>

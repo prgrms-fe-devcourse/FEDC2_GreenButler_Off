@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import PageWrapper from 'components/basic/pageWrapper';
+import { PageWrapper } from 'components';
 import { getPostsPart } from 'utils/apis/postApi';
 import PostItem from './PostItem';
 import { useState, useEffect, useCallback, useRef } from 'react';

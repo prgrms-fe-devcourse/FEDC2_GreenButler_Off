@@ -1,13 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
-import Text from 'components/basic/Text';
+import { Text, Avatar, Button, Image, Modal } from 'components';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
-import Avatar from 'components/basic/Avatar';
-import Button from 'components/basic/Button';
-import Image from 'components/basic/Image';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 
 import {
@@ -76,8 +72,8 @@ const UserData = ({ user, pageUserId, userLevel }) => {
         onClick={() => currentUser.id === pageUserId && navigate('/user/MyInfo')}
       />
       <NickName>
-        {userLevel.image && <Image src={userLevel.image} width={24} block={true} />}
-        <Text style={fullNameStyle} fontWeight={600}>
+        {userLevel.image && <Image src={userLevel.image} width={30} block={true} />}
+        <Text style={fullNameStyle} fontWeight={700}>
           {user.fullName}
         </Text>
       </NickName>
@@ -86,7 +82,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           <Text fontSize={16} color={theme.color.fontNormal}>
             게시물
           </Text>
-          <Text fontSize={20} fontWeight={600}>
+          <Text fontSize={20} fontWeight={700}>
             {user.posts.length}
           </Text>
         </UserDetail>
@@ -94,7 +90,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           <Text fontSize={16} color={theme.color.fontNormal}>
             팔로워
           </Text>
-          <Text fontSize={20} fontWeight={600}>
+          <Text fontSize={20} fontWeight={700}>
             {followers && followers}
           </Text>
         </UserDetail>
@@ -102,7 +98,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           <Text fontSize={16} color={theme.color.fontNormal}>
             팔로잉
           </Text>
-          <Text fontSize={20} fontWeight={600}>
+          <Text fontSize={20} fontWeight={700}>
             {user.following.length}
           </Text>
         </UserDetail>

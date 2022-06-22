@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Button from 'components/basic/Button';
+import { Button } from 'components';
 import PropTypes from 'prop-types';
 
 const StyledButton = styled(Button)`

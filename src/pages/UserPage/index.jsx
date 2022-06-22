@@ -1,14 +1,16 @@
 import { useEffect, useState, useCallback } from 'react';
-import Icon from 'components/basic/Icon';
-import Tab from 'components/basic/Tab';
+import { Icon, PostImageContainer, PageWrapper, Tab } from 'components';
 import { useParams } from 'react-router-dom';
 import { initialUserData } from 'contexts/UserContext/reducer';
 import { useUserContext } from 'contexts/UserContext';
 import { getUser } from 'utils/apis/userApi';
 import { getUserPosts, getPostData } from 'utils/apis/postApi';
-import PostImageContainer from 'components/PostImageContainer';
-import PageWrapper from 'components/basic/pageWrapper';
-import { GRID, GRID_ACTIVE, HEART, HEART_ACTIVE } from 'utils/constants/icons/names';
+import {
+  GRID_INACTIVE,
+  GRID_ACTIVE,
+  HEART_INACTIVE,
+  HEART_ACTIVE,
+} from 'utils/constants/icons/names';
 import { UserContainter } from './style';
 import UserData from './UserData';
 import getUserLevel from 'utils/functions/userLevel/getUserLevel';
@@ -77,7 +79,7 @@ const UserPage = () => {
           <Tab.Item
             icon={{
               active: <Icon name={GRID_ACTIVE} size={24} />,
-              inactive: <Icon name={GRID} size={24} />,
+              inactive: <Icon name={GRID_INACTIVE} size={24} />,
             }}
             index={USER_POSTS}
           >
@@ -86,7 +88,7 @@ const UserPage = () => {
           <Tab.Item
             icon={{
               active: <Icon name={HEART_ACTIVE} size={24} />,
-              inactive: <Icon name={HEART} size={24} />,
+              inactive: <Icon name={HEART_INACTIVE} size={24} />,
             }}
             index={LIKE_POSTS}
           >

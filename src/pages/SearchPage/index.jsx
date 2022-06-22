@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Tab from 'components/basic/Tab';
-import InputForm from 'components/InputForm';
-import PageWrapper from 'components/basic/pageWrapper';
-import TagSearchResult from 'components/TagSearchResult';
-import UserSearchResult from 'components/UserSearchResult';
-import Icon from 'components/basic/Icon';
+import { Tab, InputForm, PageWrapper, Icon } from 'components';
+import TagSearchResult from './TagSearchResult';
+import UserSearchResult from './UserSearchResult';
 import { searchUsers } from 'utils/apis/userApi';
 import { searchTag } from 'utils/apis/postApi';
 import theme from 'styles/theme';
@@ -16,7 +13,7 @@ const USER = 'user';
 const { backgroundLight } = theme.color;
 
 const SearchPage = () => {
-  const [currentTab, setCurrentTab] = useState('tag');
+  const [currentTab, setCurrentTab] = useState(TAG);
   const [inputValue, setInputValue] = useState('');
   const [searchData, setSearchData] = useState({
     keyword: '',
@@ -32,13 +29,11 @@ const SearchPage = () => {
       if (currentTab === TAG) {
         const { data } = await searchTag(keyword);
         setSearchData((state) => ({ ...state, tag: data, keyword }));
-        console.log(data);
       }
 
       if (currentTab === USER) {
         const { data } = await searchUsers(keyword);
         setSearchData((state) => ({ ...state, user: data, keyword }));
-        console.log(data);
       }
     },
     [currentTab],

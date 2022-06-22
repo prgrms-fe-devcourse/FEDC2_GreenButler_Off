@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-import Button from 'components/basic/Button';
+import { Button, Icon } from 'components';
 import styled from '@emotion/styled';
 import useForm from 'hooks/useForm';
 import theme from 'styles/theme';
 import { useState } from 'react';
-import Icon from '../Icon';
 
 const { mainGreen, borderNormal, fontNormal, backgroundLight } = theme.color;
 
@@ -115,26 +114,12 @@ const InputForm = ({
   };
 
   return (
-    <StyledForm
-      onSubmit={handleSubmit}
-      width={width}
-      style={{ ...props.style }}
-    >
+    <StyledForm onSubmit={handleSubmit} width={width} style={{ ...props.style }}>
       <StyledInner style={{ ...style[name] }}>
         {name === 'search' && <Icon name="SEARCH_GRAY" size={30} />}
-        <StyledInput
-          type="text"
-          name="value"
-          onChange={handleChange}
-          {...inputProps}
-        />
+        <StyledInput type="text" name="value" onChange={handleChange} {...inputProps} />
         {enterButton && (
-          <StyledButton
-            type="submit"
-            disabled={isLoading}
-            width={'auto'}
-            height={50}
-          >
+          <StyledButton type="submit" disabled={isLoading} width={'auto'} height={50}>
             {enterButton}
           </StyledButton>
         )}

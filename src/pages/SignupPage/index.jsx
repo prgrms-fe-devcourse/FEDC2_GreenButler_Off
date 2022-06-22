@@ -1,16 +1,11 @@
-import Logo from 'components/Logo';
+import { Logo, Text, Modal, PageWrapper, SignupForm } from 'components';
 import styled from '@emotion/styled';
 import { IMAGE_NAMES } from 'utils/constants/images';
-import SignupForm from 'components/SignupForm';
 import { signup, login } from 'utils/apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import SignupModal from 'components/SignupModal';
-import Text from 'components/basic/Text';
 import useLocalStorage from 'hooks/useLocalStrorage';
 import { useUserContext } from 'contexts/UserContext';
-import PageWrapper from 'components/basic/pageWrapper';
-import Modal from 'components/Modal';
 
 const SignupWrapper = styled.div`
   width: 100%;

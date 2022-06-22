@@ -1,8 +1,6 @@
-import Text from 'components/basic/Text';
-
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
-import Image from 'components/basic/Image';
+import { Image, Text } from 'components';
 import { IMAGE_URLS } from 'utils/constants/images';
 
 import PropTypes from 'prop-types';

@@ -1,10 +1,9 @@
-import axios from 'axios';
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
-import PageWrapper from 'components/basic/pageWrapper';
-import TagSearchResult from 'components/TagSearchResult';
-import { searchTag } from 'utils/apis/postApi';
 import { useParams } from 'react-router-dom';
+import { PageWrapper } from 'components';
+import TagSearchResult from 'pages/SearchPage/TagSearchResult';
+import { searchTag } from 'utils/apis/postApi';
 
 const Header = styled.h3`
   display: block;
@@ -20,13 +19,12 @@ const SearchTagPage = () => {
 
   const loadPosts = useCallback(async () => {
     const updatePost = await searchTag(tag);
-    console.log(updatePost, 'test');
+
     setPosts(updatePost.data);
-  }, []);
+  }, [tag]);
 
   useEffect(() => {
     loadPosts();
-    console.log('Loaded Post');
   }, [loadPosts]);
 
   return (

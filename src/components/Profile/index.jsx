@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import Avatar from 'components/basic/Avatar';
-import Text from 'components/basic/Text';
+import { Avatar, Text } from 'components';
 import { IMAGE_URLS } from 'utils/constants/images';
 
 const Profile = ({

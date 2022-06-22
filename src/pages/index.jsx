@@ -1,7 +1,6 @@
 export { default as LoginPage } from './LoginPage/index';
 export { default as SignupPage } from './SignupPage/index';
 export { default as MainPage } from './MainPage/index';
-export { default as PostAddPage } from './PostAddPage/index';
 export { default as PostEditPage } from './PostEditPage/index';
 export { default as PostDetailPage } from './PostDetailPage/index';
 export { default as UserPage } from './UserPage/index';

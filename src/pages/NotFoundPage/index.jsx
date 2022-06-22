@@ -1,9 +1,7 @@
-import Text from 'components/basic/Text';
 import theme from 'styles/theme';
 import styled from '@emotion/styled';
 import { IMAGE_URLS } from 'utils/constants/images';
-import Image from 'components/basic/Image';
-import Button from 'components/basic/Button';
+import { Image, Button, Text } from 'components';
 import { Link } from 'react-router-dom';
 
 const NofoundWrapper = styled.div`

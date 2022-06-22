@@ -11,27 +11,15 @@ import {
   UNFOLLOW,
   LOADING_ON,
   LOADING_OFF,
-  ADD_POST,
-  INIT_POST,
-  UPDATE_POST,
   CHANGE_PROFILE,
   CHANGE_FULLNAME,
   LIKE,
   DISLIKE,
 } from './types';
 
-/* 
-  UserConxt 생성
-  각 페이지 컴포넌트에서는 useUserContext를 임포트해서 사용한다. 
-*/
 export const UserContext = createContext(initialUserData);
 export const useUserContext = () => useContext(UserContext);
 
-/* 
-  전역으로 관리할 데이터 
-  1) currentUser: 로그인한 유저(나)의 정보
-  2) isLoading: 로딩 중인지 여부
-*/
 const UserProvider = ({ children }) => {
   const [{ currentUser, isLoading }, dispatch] = useReducer(reducer, initialUserData); // 데이터의 갱신은 reducer 함수로 관리한다.
   const [localToken] = useLocalToken(); // JWT 토큰
@@ -63,7 +51,7 @@ const UserProvider = ({ children }) => {
     async (data) => {
       dispatch({ type: LOADING_ON });
       const res = await handleSignup(data);
-      console.log(res.user, res.token);
+
       if (res.token) {
         dispatch({ type: SIGNUP, payload: res.user }); // 회원가입 성공 시, currentUser의 정보 갱신
       }

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Text from 'components/basic/Text';
+import { Text } from 'components';
 import theme from 'styles/theme';
 
 const { fontDark } = theme.color;

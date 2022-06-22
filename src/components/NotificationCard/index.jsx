@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
-import Card from 'components/Card';
+import { Card } from 'components';
 import displayedAt from 'utils/functions/displayedAt';
 
 const NotificationCard = ({

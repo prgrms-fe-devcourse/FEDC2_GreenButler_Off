@@ -31,7 +31,23 @@ export const initialUserData = {
 
 export const reducer = (state, { type, payload }) => {
   switch (type) {
-    case LOGIN:
+    case LOGIN: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          id: payload._id,
+          email: payload.email,
+          fullName: payload.fullName,
+          image: payload.image,
+          posts: payload.posts,
+          followers: payload.followers,
+          following: payload.following,
+          notifications: payload.notifications,
+          likes: payload.likes,
+        },
+      };
+    }
     case KEEP_LOGIN:
     case SIGNUP: {
       return {
@@ -51,12 +67,14 @@ export const reducer = (state, { type, payload }) => {
       };
     }
     case LOGOUT: {
+      console.log('로그아웃 REDUCER', { ...initialUserData });
       return {
         ...state,
         currentUser: { ...initialUserData },
       };
     }
     case FOLLOW: {
+      console.log('REDUCER_FOLLOW', payload);
       return {
         ...state,
         currentUser: {

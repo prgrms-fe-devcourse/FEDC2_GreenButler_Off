@@ -1,7 +1,6 @@
 import Input from 'components/basic/Input';
 import Button from 'components/basic/Button';
 import styled from '@emotion/styled';
-import useForm from 'hooks/useForm';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import theme from 'styles/theme';
@@ -69,49 +68,57 @@ const SignupForm = ({
   const [currentPasswordInvalid, setPasswordInvalid] = useState(inValidPassword);
   const [currentPasswordCheckInvalid, setPasswordCheckInvalid] = useState(inValidPasswordCheck);
   const [currentFullNameInvalid, setFullNameInvalid] = useState(inValidFullName);
-  const { isLoading, values, errors, handleChange, handleSubmit, errorPassword, errorfullName } =
-    useValidInputs({
-      initialValues: {
-        email: '',
-        password: '',
-      },
-      onSubmit,
-      validate: ({ email, password, fullName, passwordCheck }) => {
-        const newErrors = {};
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    errorPassword,
+    errorfullName,
+    handleBlur,
+    errorEmail,
+    errorPasswordCheck,
+  } = useValidInputs({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    onSubmit,
+    validate: ({ email, password, fullName, passwordCheck }) => {
+      const newErrors = {};
 
-        if (!email) {
-          newErrors.email = '* 이메일을 입력해 주세요.';
-          setEmailInvalid(true);
-        } else if (!emailValid(email)) {
-          newErrors.email = '* 이메일 형식이 아닙니다.';
-          setEmailInvalid(true);
-        } else {
-          setEmailInvalid(false);
-        }
-        if (!fullName) {
-          newErrors.fullName = '* 닉네임을 입력해 주세요.';
-          setFullNameInvalid(true);
-        } else {
-          setFullNameInvalid(false);
-        }
-        if (!password || password.length < 8) {
-          newErrors.password = '* 비밀번호를 8-10자 사이로 입력해 주세요.';
-          setPasswordInvalid(true);
-        } else {
-          setPasswordInvalid(false);
-        }
-        if (password !== passwordCheck) {
-          newErrors.passwordCheck = '* 비밀번호가 일치하지 않습니다.';
-          setPasswordCheckInvalid(true);
-        } else {
-          setPasswordCheckInvalid(false);
-        }
+      if (!email) {
+        newErrors.email = '* 이메일을 입력해 주세요.';
+        setEmailInvalid(true);
+      } else if (!emailValid(email)) {
+        newErrors.email = '* 이메일 형식이 아닙니다.';
+        setEmailInvalid(true);
+      } else {
+        setEmailInvalid(false);
+      }
+      if (!fullName) {
+        newErrors.fullName = '* 닉네임을 입력해 주세요.';
+        setFullNameInvalid(true);
+      } else {
+        setFullNameInvalid(false);
+      }
+      if (!password || password.length < 8) {
+        newErrors.password = '* 8-10자 사이로 입력해 주세요.';
+        setPasswordInvalid(true);
+      } else {
+        setPasswordInvalid(false);
+      }
+      if (password !== passwordCheck) {
+        newErrors.passwordCheck = '* 비밀번호가 일치하지 않습니다.';
+        setPasswordCheckInvalid(true);
+      } else {
+        setPasswordCheckInvalid(false);
+      }
 
-        return newErrors;
-      },
-      max: 10,
-    });
-  values.email;
+      return newErrors;
+    },
+    max: 10,
+  });
   return (
     <StyledForm onSubmit={handleSubmit}>
       <InputWrapper>
@@ -120,11 +127,15 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentEmailInvalid}
+          inValid={currentEmailInvalid || errorEmail ? true : false}
           placeholder={'이메일을 입력해 주세요.'}
           onChange={handleChange}
+          value={values.email || ''}
+          onBlur={handleBlur}
         ></Input>
-        {errors.email ? (
+        {errorEmail ? (
+          <ErrorText>{errorEmail}</ErrorText>
+        ) : errors.email ? (
           <ErrorText>{errors.email}</ErrorText>
         ) : (
           <div style={{ height: '23px' }}></div>
@@ -138,6 +149,7 @@ const SignupForm = ({
           fontSize={18}
           inValid={currentFullNameInvalid || errorfullName ? true : false}
           placeholder={'닉네임을 입력해주세요.'}
+          onBlur={handleBlur}
           onChange={handleChange}
           value={values.fullName || ''}
         ></Input>
@@ -162,6 +174,7 @@ const SignupForm = ({
           placeholder={'비밀번호를 입력해 주세요.'}
           onChange={handleChange}
           value={values.password}
+          onBlur={handleBlur}
         ></Input>
         {errorPassword ? (
           <ErrorText>{errorPassword}</ErrorText>
@@ -180,11 +193,15 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentPasswordCheckInvalid}
+          inValid={currentPasswordCheckInvalid || errorPasswordCheck ? true : false}
           placeholder={'비밀번호를 한번 더 입력해 주세요.'}
+          onBlur={handleBlur}
           onChange={handleChange}
+          value={values.passwordCheck || ''}
         ></Input>
-        {errors.passwordCheck ? (
+        {errorPasswordCheck ? (
+          <ErrorText>{errorPasswordCheck}</ErrorText>
+        ) : errors.passwordCheck ? (
           <ErrorText>{errors.passwordCheck}</ErrorText>
         ) : (
           <div style={{ height: '23px' }}></div>

@@ -31,7 +31,7 @@ const TabItem = ({ title, icon, active, onClick, ...props }) => {
           : null
         : icon}
       {title && (
-        <Text fontSize={20} block style={{ ...fontStyle }}>
+        <Text fontSize={20} block fontWeight={active && 500} style={{ ...fontStyle }}>
           {title}
         </Text>
       )}

@@ -1,7 +1,5 @@
-import Button from 'components/basic/Button';
-import UploadImage from 'components/UploadImage';
+import { Button, Text, UploadImage } from 'components';
 import styled from '@emotion/styled';
-import Text from 'components/basic/Text';
 import useClickAway from '../../hooks/useClickAway';
 
 const ChangeProfileModal = ({ onFileChange, onProfileSubmit, onClose }) => {

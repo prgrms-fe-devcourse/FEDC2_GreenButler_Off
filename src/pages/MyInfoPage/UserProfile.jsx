@@ -1,8 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
-import Avatar from 'components/basic/Avatar';
-import Text from 'components/basic/Text';
-import Icon from 'components/basic/Icon';
+import { Avatar, Text, Icon } from 'components';
 import { EDIT } from 'utils/constants/icons/names';
 import { IMAGE_URLS } from 'utils/constants/images';
 import ChangeNameForm from 'components/ChangeNameForm';
@@ -50,7 +48,7 @@ const UserProfile = () => {
 
   const onFullNameChange = useCallback(
     (value) => {
-      onChangeFullName({ fullName: value, userName: '' });
+      onChangeFullName({ fullName: value, username: '' });
       setIsNameEditor(false);
     },
     [onChangeFullName],
@@ -80,11 +78,11 @@ const UserProfile = () => {
           <Text
             style={{
               display: 'block',
-              fontWeight: 500,
               lineHeight: '34.75px',
               cursor: 'pointer',
             }}
             fontSize={24}
+            fontWeight={700}
           >
             {currentUser.fullName}
           </Text>

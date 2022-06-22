@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import PageWrapper from 'components/basic/pageWrapper';
+import { PageWrapper } from 'components';
 import UserDetails from './UserDetails';
 import UserProfile from './UserProfile';
 import UserLevel from './UserLevel';

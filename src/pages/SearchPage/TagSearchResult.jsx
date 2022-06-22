@@ -1,6 +1,5 @@
-import PostImageContainer from 'components/PostImageContainer';
 import PropTypes from 'prop-types';
-import NoResultMessage from 'components/Message/NoResultMessage';
+import { PostImageContainer, NoResultMessage } from 'components';
 
 const TagSearchResult = ({ posts, isSearch }) => {
   return (

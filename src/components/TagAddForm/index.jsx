@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
 import useValidInput from 'hooks/useValidInput';
-import InputForm from 'components/InputForm';
-import Text from 'components/basic/Text';
-import Icon from 'components/basic/Icon';
-
+import { InputForm, Text, Icon } from 'components';
 import theme from 'styles/theme';
 import { useState } from 'react';
 import { useCallback } from 'react';

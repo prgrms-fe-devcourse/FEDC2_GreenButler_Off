@@ -28,12 +28,7 @@ const InputFormInput = ({ placeholder, onChange, value, ...props }) => {
   };
   return (
     <>
-      <StyledInput
-        placeholder={placeholder}
-        value={value}
-        onChange={handleChange}
-        {...props}
-      />
+      <StyledInput placeholder={placeholder} value={value} onChange={handleChange} {...props} />
     </>
   );
 };

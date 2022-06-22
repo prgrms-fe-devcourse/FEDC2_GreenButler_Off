@@ -1,11 +1,10 @@
-import NotificationCard from 'components/NotificationCard';
+import { NotificationCard, PageWrapper } from 'components';
 import { getNotifications } from 'utils/apis/userApi';
 import useLocalToken from 'hooks/useLocalToken';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useUserContext } from 'contexts/UserContext';
-import PageWrapper from 'components/basic/pageWrapper';
 import theme from 'styles/theme';
 
 const NotificationsWrapper = styled.div`

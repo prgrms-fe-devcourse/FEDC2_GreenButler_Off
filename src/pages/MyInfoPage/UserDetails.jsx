@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import Text from 'components/basic/Text';
-import Icon from 'components/basic/Icon';
+import { Text, Icon, Modal } from 'components';
 import { LOGOUT, KEY } from 'utils/constants/icons/names';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
-import Modal from 'components/Modal';
 import { navigate } from '@storybook/addon-links';
 
 const UserDetails = () => {
@@ -68,7 +66,7 @@ const UserDetails = () => {
         <Modal visible={isLogoutModal} onClose={onCloseLogout}>
           <Modal.Content
             title="로그아웃 하시겠어요?"
-            description="로그아웃 시 로그인 화면으로 이동합니다."
+            description="로그아웃 시 로그인 화면으로 이동됩니다."
             onClose={onCloseLogout}
           />
           <Modal.Button

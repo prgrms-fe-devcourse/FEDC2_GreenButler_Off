@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import Avatar from 'components/basic/Avatar';
-import Text from 'components/basic/Text';
+import { Avatar, Text, NoResultMessage } from 'components';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
-import NoResultMessage from 'components/Message/NoResultMessage';
 
 const ProfileContainer = styled.div`
   display: flex;

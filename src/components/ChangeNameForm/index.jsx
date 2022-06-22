@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import useValidInput from 'hooks/useValidInput';
-import InputForm from 'components/InputForm';
+import { InputForm } from 'components';
 
 const ChangeNameForm = ({ handleSubmit }) => {
   const { value, resetValue, error, setError, handleChange } = useValidInput(6);

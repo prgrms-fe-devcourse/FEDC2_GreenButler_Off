@@ -1,18 +1,12 @@
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import Button from 'components/basic/Button';
-import UploadImage from 'components/UploadImage';
-import TagAddForm from 'components/TagAddForm';
-import PageWrapper from 'components/basic/pageWrapper';
-import FixedContainer from 'components/FixedContainer';
-import Modal from 'components/Modal';
-import PostTextArea from 'components/PostTextArea';
-
+import { Button, UploadImage, TagAddForm, PageWrapper, FixedContainer, Modal } from 'components';
+import { PostTextArea } from 'components';
 import useLocalToken from 'hooks/useLocalToken';
-import { addPost, getPostData, updatePost } from 'utils/apis/postApi';
-import theme from 'styles/theme';
+import { channelId, addPost, updatePost } from 'utils/apis/postApi';
 import { imageToFile, objectToForm } from 'utils/functions/converter';
+import theme from 'styles/theme';
 
 const { headerHeight } = theme.value;
 
@@ -54,15 +48,9 @@ const PostEditPage = () => {
 
   const { id } = useParams();
 
-  const getCurrentPost = useCallback(async () => {
-    const result = await getPostData(id).then((res) => res.data);
-    injectState(result);
-  }, [id]);
-
   const injectState = (post) => {
     const title = JSON.parse(post.title);
 
-    // ImgSrc(post.image);
     setContent(title.content);
     setTags(title.tags);
     setDefaultImg(post.image);
@@ -102,10 +90,9 @@ const PostEditPage = () => {
       const formData = await objectToForm({
         title,
         image: ImageBlob,
-        channelId: '62a04aa2703fdd3a82b4e66e',
+        channelId: channelId,
       });
-      const result = await addPost(token, formData);
-      console.log(result, '포스트 등록 결과');
+      await addPost(token, formData);
       navigate('/');
     }
 
@@ -122,10 +109,9 @@ const PostEditPage = () => {
         postId: id,
         title,
         image: ImageBlob,
-        channelId: '62a04aa2703fdd3a82b4e66e',
+        channelId: channelId,
       });
-      const result = await updatePost(token, formData);
-      console.log(result, '포스트 수정 결과');
+      await updatePost(token, formData);
       navigate('/');
     }
   };

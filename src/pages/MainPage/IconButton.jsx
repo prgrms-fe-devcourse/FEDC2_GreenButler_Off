@@ -1,4 +1,4 @@
-import Icon from 'components/basic/Icon';
+import { Icon } from 'components';
 
 const IconButton = ({ children, name, onClick, size = 15 }) => {
   const style = {

@@ -1,17 +1,14 @@
 import styled from '@emotion/styled';
 import PostItem from 'pages/MainPage/PostItem';
-import Avatar from 'components/basic/Avatar';
-import Icon from 'components/basic/Icon';
+import { Avatar, Icon, Modal, PageWrapper } from 'components';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState, useEffect } from 'react';
 import { addComment } from 'utils/apis/postApi';
 import { IMAGE_URLS } from 'utils/constants/images';
 import useLocalToken from 'hooks/useLocalToken';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PageWrapper from 'components/basic/pageWrapper';
 import { getPostData, deleteComment } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
-import Modal from 'components/Modal';
 import { setNotification } from 'utils/apis/userApi';
 import displayedAt from 'utils/functions/displayedAt';
 
@@ -234,8 +231,9 @@ const DateText = styled.span`
 
 const CommentText = styled.p`
   font-size: 16px;
-  line-height: 19px;
+  line-height: 24px;
   word-break: break-all;
+  white-space: pre-wrap;
 `;
 
 const MoreButton = ({ onClick, ...props }) => {

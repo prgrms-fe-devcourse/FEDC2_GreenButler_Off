@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
-import Icon from 'components/basic/Icon';
+import { Icon, FixedContainer } from 'components';
 import theme from 'styles/theme';
 import { useLocation } from 'react-router-dom';
-import FixedContainer from 'components/FixedContainer';
 import { useUserContext } from 'contexts/UserContext';
 
 const { navHeight } = theme.value;

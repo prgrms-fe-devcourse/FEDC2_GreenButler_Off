@@ -48,6 +48,7 @@ const NewInput = ({
   fontSize = '18px',
   placeholder,
   onChange,
+  onBlur,
   value,
   ...props
 }) => {
@@ -62,6 +63,13 @@ const NewInput = ({
     [onChange],
   );
 
+  const handleBur = useCallback(
+    (e) => {
+      onBlur && onBlur(e);
+    },
+    [onBlur],
+  );
+
   return (
     <InputWrapper block={block} width={width} style={{ ...props.style }}>
       {label && <Label>{label}</Label>}
@@ -72,6 +80,7 @@ const NewInput = ({
         placeholder={placeholder}
         inputStyle={InputStyle}
         onChange={handleChange}
+        onBlur={handleBur}
         inValid={inValid}
         value={value}
       />
@@ -92,4 +101,5 @@ NewInput.propTypes = {
   fontSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };

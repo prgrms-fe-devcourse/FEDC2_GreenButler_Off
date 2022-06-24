@@ -61,6 +61,9 @@ const PostEditPage = () => {
 
   const onAddTag = useCallback(
     (value) => {
+      if (tags.includes(`#${value}`)) {
+        return;
+      }
       const tag = `#${value}`;
       if (tags.length < 5) {
         setTags([...tags, tag]);

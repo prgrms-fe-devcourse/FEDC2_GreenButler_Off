@@ -44,12 +44,14 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
 
   const handleFileChange = (e) => {
     const fileBlob = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    reader.onload = () => {
-      setImageSrc(reader.result);
-      onChange(reader.result);
-    };
+    if (fileBlob) {
+      const reader = new FileReader();
+      reader.readAsDataURL(fileBlob);
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        onChange(reader.result);
+      };
+    }
   };
 
   useEffect(() => {

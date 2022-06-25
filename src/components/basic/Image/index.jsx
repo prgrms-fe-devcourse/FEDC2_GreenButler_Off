@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
+import { useCallback } from 'react';
 import { useState, useRef, useEffect } from 'react';
+import { IMAGE_URLS } from 'utils/constants/images';
 
 let observer = null;
 const LOAD_IMG_EVENT_TYPE = 'loadImage';
@@ -57,6 +59,19 @@ const Image = ({
     imgRef.current && observer.observe(imgRef.current);
   }, [lazy, threshold]);
 
+  const handleError = useCallback(
+    ({ target }) => {
+      target.onerror = null;
+      if (alt === '유저 프로필 이미지') {
+        target.src = IMAGE_URLS.PROFILE_IMG;
+        target.style.opacity = 1;
+      } else {
+        target.src = IMAGE_URLS.POST_DEFAULT_IMG;
+      }
+    },
+    [alt],
+  );
+
   return (
     <img
       ref={imgRef}
@@ -65,6 +80,7 @@ const Image = ({
       width={width}
       height={height}
       style={{ ...props.style, ...imageStyle }}
+      onError={handleError}
     />
   );
 };

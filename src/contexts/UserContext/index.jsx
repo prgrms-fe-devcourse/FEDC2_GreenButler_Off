@@ -123,16 +123,16 @@ const UserProvider = ({ children }) => {
   }, [handleGetCurrentUser]);
 
   const onAddPost = useCallback(
-    async (formData) => {
-      const post = await handleAddPost(formData);
+    async (title, image) => {
+      const post = await handleAddPost(title, image);
       dispatch({ type: ADD_POST, payload: post });
     },
     [handleAddPost],
   );
 
   const onEditPost = useCallback(
-    async (formData, postId) => {
-      const posts = await handleEditPost(formData, postId);
+    async (postId, title, image) => {
+      const posts = await handleEditPost(postId, title, image);
       dispatch({ type: EDIT_POST, payload: posts });
     },
     [handleEditPost],

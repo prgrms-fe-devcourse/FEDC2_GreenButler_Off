@@ -4,8 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button, UploadImage, TagAddForm, PageWrapper, FixedContainer, Modal } from 'components';
 import { PostTextArea } from 'components';
 import useLocalToken from 'hooks/useLocalToken';
-import { channelId, addPost, updatePost } from 'utils/apis/postApi';
-import { imageToFile, objectToForm } from 'utils/functions/converter';
+import { imageToFile } from 'utils/functions/converter';
 import theme from 'styles/theme';
 import { useUserContext } from 'contexts/UserContext';
 
@@ -52,7 +51,7 @@ const PostEditPage = () => {
 
   const { id } = useParams();
 
-  const { currentUser, onAddPost, onEditPost } = useUserContext();
+  const { onAddPost, onEditPost } = useUserContext();
 
   const injectState = (post) => {
     const title = JSON.parse(post.title);
@@ -80,7 +79,7 @@ const PostEditPage = () => {
     [tags],
   );
 
-  const onClickAddBtn = async () => {
+  const onClickSubmitBtn = async () => {
     if (!token) {
       return;
     }
@@ -103,23 +102,11 @@ const PostEditPage = () => {
     const ImageBlob = BinaryImg ? imageToFile(BinaryImg) : null;
 
     if (currentPage === page.create.name) {
-      const formData = await objectToForm({
-        title,
-        image: ImageBlob,
-        channelId: channelId,
-      });
-
-      await onAddPost(formData);
+      await onAddPost(title, ImageBlob);
     }
 
     if (currentPage === page.edit.name) {
-      const formData = await objectToForm({
-        postId: id,
-        title,
-        image: ImageBlob,
-        channelId: channelId,
-      });
-      await onEditPost(formData, currentUser.id);
+      await onEditPost(id, title, ImageBlob);
     }
 
     navigate('/');
@@ -157,7 +144,7 @@ const PostEditPage = () => {
           rows={10}
         ></PostTextArea>
         <FixedContainer bottom style={{ padding: 15 }}>
-          <Button onClick={onClickAddBtn} disabled={isLoading}>
+          <Button onClick={onClickSubmitBtn} disabled={isLoading}>
             {page[currentPage].title}
           </Button>
         </FixedContainer>

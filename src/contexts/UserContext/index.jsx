@@ -16,6 +16,7 @@ import {
   LIKE,
   DISLIKE,
   ADD_POST,
+  EDIT_POST,
 } from './types';
 
 export const UserContext = createContext(initialUserData);
@@ -35,6 +36,7 @@ const UserProvider = ({ children }) => {
     handlefollow,
     handleUnFollow,
     handleAddPost,
+    handleEditPost,
   } = useHandles();
 
   const onLogin = useCallback(
@@ -128,6 +130,14 @@ const UserProvider = ({ children }) => {
     [handleAddPost],
   );
 
+  const onEditPost = useCallback(
+    async (formData, postId) => {
+      const posts = await handleEditPost(formData, postId);
+      dispatch({ type: EDIT_POST, payload: posts });
+    },
+    [handleEditPost],
+  );
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -144,6 +154,7 @@ const UserProvider = ({ children }) => {
       onDisLike,
       onKeepLoggedIn,
       onAddPost,
+      onEditPost,
     };
   }, [
     currentUser,
@@ -160,6 +171,7 @@ const UserProvider = ({ children }) => {
     onDisLike,
     onKeepLoggedIn,
     onAddPost,
+    onEditPost,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

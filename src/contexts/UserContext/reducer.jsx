@@ -13,6 +13,7 @@ import {
   LIKE,
   DISLIKE,
   ADD_POST,
+  EDIT_POST,
 } from './types';
 
 export const initialUserData = {
@@ -173,6 +174,15 @@ export const reducer = (state, { type, payload }) => {
         currentUser: {
           ...state.currentUser,
           posts: [payload, ...state.currentUser.posts],
+        },
+      };
+    }
+    case EDIT_POST: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          posts: payload,
         },
       };
     }

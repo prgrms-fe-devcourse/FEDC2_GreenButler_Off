@@ -52,8 +52,7 @@ const PostEditPage = () => {
 
   const { id } = useParams();
 
-  const { currentUser, onAddPost } = useUserContext();
-  console.log(currentUser, 'currentUser');
+  const { currentUser, onAddPost, onEditPost } = useUserContext();
 
   const injectState = (post) => {
     const title = JSON.parse(post.title);
@@ -120,7 +119,7 @@ const PostEditPage = () => {
         image: ImageBlob,
         channelId: channelId,
       });
-      await updatePost(token, formData);
+      await onEditPost(formData, currentUser.id);
     }
 
     navigate('/');

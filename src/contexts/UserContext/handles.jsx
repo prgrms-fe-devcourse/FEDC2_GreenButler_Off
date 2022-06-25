@@ -14,7 +14,7 @@ import {
   setNotification,
 } from 'utils/apis/userApi';
 
-import { addPost } from 'utils/apis/postApi';
+import { addPost, updatePost, getUserPosts } from 'utils/apis/postApi';
 
 const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
@@ -149,6 +149,14 @@ const useHandles = () => {
     [localToken],
   );
 
+  const handleEditPost = useCallback(
+    async (formData, postId) => {
+      await updatePost(localToken, formData).then((res) => res.data);
+      return await getUserPosts(postId).then((res) => res.data);
+    },
+    [localToken],
+  );
+
   return {
     handleGetCurrentUser,
     handleLogin,
@@ -160,6 +168,7 @@ const useHandles = () => {
     handlefollow,
     handleUnFollow,
     handleAddPost,
+    handleEditPost,
   };
 };
 

@@ -4,6 +4,7 @@ import { InputForm, Text, Icon } from 'components';
 import theme from 'styles/theme';
 import { useState } from 'react';
 import { useCallback } from 'react';
+import { useEffect } from 'react';
 
 const { mainGreen, fontNormal, mainRed } = theme.color;
 
@@ -30,27 +31,39 @@ const RemoveBtn = styled.button`
 const TagAddForm = ({ onAddTag, onRemoveTag, tags }) => {
   const CHARACTER_LIMIT = 6;
   const TAG_LIMIT = 5;
-  const { value, resetValue, error, setError, handleChange } = useValidInput(CHARACTER_LIMIT);
+  const { value, resetValue, error, handleChange } = useValidInput(CHARACTER_LIMIT);
   const [isEmphasis, setIsEmphasis] = useState(false);
+  const [errorMsg, setErrorMsg] = useState();
 
   const handleRemoveTag = (index) => {
     onRemoveTag(index);
-    setError('');
+    setErrorMsg('');
   };
 
   const onSubmit = useCallback(() => {
-    setError('');
+    setErrorMsg('');
+
+    if (tags.includes(`#${value}`)) {
+      setErrorMsg('* 이미 등록한 태그입니다.');
+      return;
+    }
 
     if (tags.length >= TAG_LIMIT) {
       setIsEmphasis(true);
+      return;
     }
+
     onAddTag(value.slice(0, CHARACTER_LIMIT));
     resetValue();
-  }, [tags.length, onAddTag, resetValue, setError, value]);
+  }, [tags, onAddTag, resetValue, setErrorMsg, value]);
+
+  useEffect(() => {
+    setErrorMsg(error);
+  }, [error]);
 
   return (
     <>
-      <InputForm onSubmit={onSubmit} error={error} style={{ marginTop: '15px' }}>
+      <InputForm onSubmit={onSubmit} error={errorMsg} style={{ marginTop: '15px' }}>
         <InputForm.Input
           placeholder="태그를 입력해주세요"
           onChange={handleChange}

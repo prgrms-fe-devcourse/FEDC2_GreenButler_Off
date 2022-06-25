@@ -14,6 +14,8 @@ import {
   setNotification,
 } from 'utils/apis/userApi';
 
+import { addPost } from 'utils/apis/postApi';
+
 const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
   const navigate = useNavigate();
@@ -139,6 +141,14 @@ const useHandles = () => {
     [localToken],
   );
 
+  // 포스트 등록
+  const handleAddPost = useCallback(
+    async (formData) => {
+      return await addPost(localToken, formData).then((res) => res.data);
+    },
+    [localToken],
+  );
+
   return {
     handleGetCurrentUser,
     handleLogin,
@@ -149,6 +159,7 @@ const useHandles = () => {
     handlechangePassword,
     handlefollow,
     handleUnFollow,
+    handleAddPost,
   };
 };
 

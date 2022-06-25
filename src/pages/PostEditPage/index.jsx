@@ -7,6 +7,7 @@ import useLocalToken from 'hooks/useLocalToken';
 import { channelId, addPost, updatePost } from 'utils/apis/postApi';
 import { imageToFile, objectToForm } from 'utils/functions/converter';
 import theme from 'styles/theme';
+import { useUserContext } from 'contexts/UserContext';
 
 const { headerHeight } = theme.value;
 
@@ -50,6 +51,9 @@ const PostEditPage = () => {
   const currentPage = location.pathname.split('/')[2]; // 페이지 구분
 
   const { id } = useParams();
+
+  const { currentUser, onAddPost } = useUserContext();
+  console.log(currentUser, 'currentUser');
 
   const injectState = (post) => {
     const title = JSON.parse(post.title);
@@ -105,7 +109,8 @@ const PostEditPage = () => {
         image: ImageBlob,
         channelId: channelId,
       });
-      await addPost(token, formData);
+
+      await onAddPost(formData);
     }
 
     if (currentPage === page.edit.name) {

@@ -15,6 +15,7 @@ import {
   CHANGE_FULLNAME,
   LIKE,
   DISLIKE,
+  ADD_POST,
 } from './types';
 
 export const UserContext = createContext(initialUserData);
@@ -33,6 +34,7 @@ const UserProvider = ({ children }) => {
     handlechangePassword,
     handlefollow,
     handleUnFollow,
+    handleAddPost,
   } = useHandles();
 
   const onLogin = useCallback(
@@ -118,6 +120,14 @@ const UserProvider = ({ children }) => {
     dispatch({ type: KEEP_LOGIN, payload: user });
   }, [handleGetCurrentUser]);
 
+  const onAddPost = useCallback(
+    async (formData) => {
+      const post = await handleAddPost(formData);
+      dispatch({ type: ADD_POST, payload: post });
+    },
+    [handleAddPost],
+  );
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -133,6 +143,7 @@ const UserProvider = ({ children }) => {
       onLike,
       onDisLike,
       onKeepLoggedIn,
+      onAddPost,
     };
   }, [
     currentUser,
@@ -148,6 +159,7 @@ const UserProvider = ({ children }) => {
     onLike,
     onDisLike,
     onKeepLoggedIn,
+    onAddPost,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

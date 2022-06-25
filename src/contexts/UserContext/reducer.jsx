@@ -67,14 +67,12 @@ export const reducer = (state, { type, payload }) => {
       };
     }
     case LOGOUT: {
-      console.log('로그아웃 REDUCER', { ...initialUserData });
       return {
         ...state,
         currentUser: { ...initialUserData },
       };
     }
     case FOLLOW: {
-      console.log('REDUCER_FOLLOW', payload);
       return {
         ...state,
         currentUser: {

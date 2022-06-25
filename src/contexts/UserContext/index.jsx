@@ -68,16 +68,22 @@ const UserProvider = ({ children }) => {
   }, [handleLogout]);
 
   // 특정 유저를 팔로우한 경우, currentUser의 정보 갱신
-  const onFollow = useCallback(async (payload = { userId: '', followId: '' }) => {
-    const data = await handlefollow(payload.userId);
-    dispatch({ type: FOLLOW, payload: data });
-  }, []);
+  const onFollow = useCallback(
+    async (payload = { userId: '', followId: '' }) => {
+      const data = await handlefollow(payload.userId);
+      dispatch({ type: FOLLOW, payload: data });
+    },
+    [handlefollow],
+  );
 
   // 특정 유저를 언팔로우한 경우, currentUser의 정보 갱신
-  const onUnfollow = useCallback((payload = { unfollowId: '' }) => {
-    handleUnFollow(payload.unfollowId);
-    dispatch({ type: UNFOLLOW, payload });
-  }, []);
+  const onUnfollow = useCallback(
+    (payload = { unfollowId: '' }) => {
+      handleUnFollow(payload.unfollowId);
+      dispatch({ type: UNFOLLOW, payload });
+    },
+    [handleUnFollow],
+  );
 
   //현재 유저의 닉네임을 수정
   const onChangeFullName = useCallback(

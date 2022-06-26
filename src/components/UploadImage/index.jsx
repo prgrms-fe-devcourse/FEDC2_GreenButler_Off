@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import theme from 'styles/theme';
 import { IMAGE_URLS } from 'utils/constants/images';
+import { Modal } from 'components';
 
 const { backgroundGreen, mainWhite } = theme.color;
 const { POST_ADD_IMG } = IMAGE_URLS;
@@ -41,17 +42,15 @@ const ImageInner = styled.div`
 const UploadImage = ({ onChange, defaultImage, ...props }) => {
   const [imageSrc, setImageSrc] = useState(defaultImage);
   const fileInputRef = useRef(null);
+  const [isModal, setIsModal] = useState(false);
+  const [modalMsg, setModalMsg] = useState('');
 
   const handleFileChange = (e) => {
     const fileBlob = e.target.files[0];
 
     if (fileBlob.size > 1024 * 1024) {
-      alert(
-        '1MB 이하 파일만 등록할 수 있습니다.\n\n' +
-          '현재파일 용량 : ' +
-          Math.round((fileBlob.size / 1024 / 1024) * 100) / 100 +
-          'MB',
-      );
+      setModalMsg(`현재 파일 용량 : ${Math.round((fileBlob.size / 1024 / 1024) * 100) / 100}MB`);
+      setIsModal(true);
       return;
     }
 
@@ -63,6 +62,10 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
         onChange(reader.result);
       };
     }
+  };
+
+  const onCloseModal = () => {
+    setIsModal(false);
   };
 
   useEffect(() => {
@@ -86,6 +89,13 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
         accept="image/*"
         onChange={handleFileChange}
       />
+      <Modal visible={isModal} onClose={onCloseModal}>
+        <Modal.Content
+          title="1MB 이하 파일만 등록해 주세요!"
+          description={modalMsg}
+        ></Modal.Content>
+        <Modal.Button onClick={onCloseModal}>확인</Modal.Button>
+      </Modal>
     </ImageWrapper>
   );
 };

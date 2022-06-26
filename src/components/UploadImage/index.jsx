@@ -44,6 +44,17 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
 
   const handleFileChange = (e) => {
     const fileBlob = e.target.files[0];
+
+    if (fileBlob.size > 1024 * 1024) {
+      alert(
+        '1MB 이하 파일만 등록할 수 있습니다.\n\n' +
+          '현재파일 용량 : ' +
+          Math.round((fileBlob.size / 1024 / 1024) * 100) / 100 +
+          'MB',
+      );
+      return;
+    }
+
     if (fileBlob) {
       const reader = new FileReader();
       reader.readAsDataURL(fileBlob);
@@ -68,7 +79,13 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
       <ImageLoad onClick={() => fileInputRef.current.click()} style={{ ...props.style }}>
         <ImageInner style={{ ...ImageStyle }} />
       </ImageLoad>
-      <FileInput ref={fileInputRef} type="file" id="file" onChange={handleFileChange} />
+      <FileInput
+        ref={fileInputRef}
+        type="file"
+        id="file"
+        accept="image/*"
+        onChange={handleFileChange}
+      />
     </ImageWrapper>
   );
 };

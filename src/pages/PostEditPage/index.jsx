@@ -143,16 +143,17 @@ const PostEditPage = () => {
           value={content}
           rows={10}
         ></PostTextArea>
-        <FixedContainer bottom style={{ padding: 15 }}>
-          <Button onClick={onClickSubmitBtn} disabled={isLoading}>
-            {page[currentPage].title}
-          </Button>
-        </FixedContainer>
+
         <Modal visible={isModal} onClose={onCloseModal}>
           <Modal.Content title={modalMessage} />
           <Modal.Button onClick={onCloseModal}>확인</Modal.Button>
         </Modal>
       </PageFixed>
+      <FixedContainer bottom style={{ padding: 15 }}>
+        <Button onClick={onClickSubmitBtn} disabled={isLoading}>
+          {page[currentPage].title}
+        </Button>
+      </FixedContainer>
     </>
   );
 };

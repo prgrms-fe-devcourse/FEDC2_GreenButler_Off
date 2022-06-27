@@ -46,6 +46,11 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
 
   const handleFileChange = (e) => {
     const fileBlob = e.target.files[0];
+
+    if (!fileBlob) {
+      return;
+    }
+
     if (!/\.(gif|jpg|jpeg|png)$/i.test(fileBlob.name)) {
       setModalMsg({
         isModal: true,
@@ -64,14 +69,12 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
       return;
     }
 
-    if (fileBlob) {
-      const reader = new FileReader();
-      reader.readAsDataURL(fileBlob);
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        onChange(reader.result);
-      };
-    }
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    reader.onload = () => {
+      setImageSrc(reader.result);
+      onChange(reader.result);
+    };
   };
 
   const onCloseModal = () => {

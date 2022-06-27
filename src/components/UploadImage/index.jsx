@@ -42,15 +42,25 @@ const ImageInner = styled.div`
 const UploadImage = ({ onChange, defaultImage, ...props }) => {
   const [imageSrc, setImageSrc] = useState(defaultImage);
   const fileInputRef = useRef(null);
-  const [isModal, setIsModal] = useState(false);
-  const [modalMsg, setModalMsg] = useState('');
+  const [modalMsg, setModalMsg] = useState({ isModal: false, title: '', description: '' });
 
   const handleFileChange = (e) => {
     const fileBlob = e.target.files[0];
+    if (!/\.(gif|jpg|jpeg|png)$/i.test(fileBlob.name)) {
+      setModalMsg({
+        isModal: true,
+        title: '등록할 수 없는 파일입니다.',
+        description: '등록 가능한 확장자: jpg, jpeg, gif, png',
+      });
+      return;
+    }
 
     if (fileBlob.size > 1024 * 1024) {
-      setModalMsg(`현재 파일 용량 : ${Math.round((fileBlob.size / 1024 / 1024) * 100) / 100}MB`);
-      setIsModal(true);
+      setModalMsg({
+        isModal: true,
+        title: '1MB 이하 파일만 등록해 주세요!',
+        description: `현재 파일 용량 : ${Math.round((fileBlob.size / 1024 / 1024) * 100) / 100}MB`,
+      });
       return;
     }
 
@@ -65,7 +75,7 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
   };
 
   const onCloseModal = () => {
-    setIsModal(false);
+    setModalMsg({ isModal: false, title: '', description: '' });
   };
 
   useEffect(() => {
@@ -86,14 +96,11 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
         ref={fileInputRef}
         type="file"
         id="file"
-        accept="image/*"
+        accept="image/gif, image/jpeg, image/png"
         onChange={handleFileChange}
       />
-      <Modal visible={isModal} onClose={onCloseModal}>
-        <Modal.Content
-          title="1MB 이하 파일만 등록해 주세요!"
-          description={modalMsg}
-        ></Modal.Content>
+      <Modal visible={modalMsg.isModal} onClose={onCloseModal}>
+        <Modal.Content title={modalMsg.title} description={modalMsg.description}></Modal.Content>
         <Modal.Button onClick={onCloseModal}>확인</Modal.Button>
       </Modal>
     </ImageWrapper>

@@ -25,6 +25,7 @@ const Image = ({
   height,
   alt,
   mode = 'cover',
+  defaultImageUrl,
   ...props
 }) => {
   const [loaded, setLoaded] = useState(false);
@@ -62,14 +63,10 @@ const Image = ({
   const handleError = useCallback(
     ({ target }) => {
       target.onerror = null;
-      if (alt === '유저 프로필 이미지') {
-        target.src = IMAGE_URLS.PROFILE_IMG;
-        target.style.opacity = 1;
-      } else {
-        target.src = IMAGE_URLS.POST_DEFAULT_IMG;
-      }
+      target.src = defaultImageUrl || '';
+      target.style.opacity = 1;
     },
-    [alt],
+    [defaultImageUrl],
   );
 
   return (

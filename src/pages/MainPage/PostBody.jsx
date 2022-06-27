@@ -88,7 +88,12 @@ const PostBody = ({ post, isDetailPage = false }) => {
   return (
     <Container>
       <ImageWrapper onClick={handleTodetailpage} isDetailPage={isDetailPage}>
-        <Image src={image ? image : IMAGE_URLS.POST_DEFAULT_IMG} width="100%" height="100%" />
+        <Image
+          src={image ? image : IMAGE_URLS.POST_DEFAULT_IMG}
+          defaultImageUrl={IMAGE_URLS.POST_DEFAULT_IMG}
+          width="100%"
+          height="100%"
+        />
       </ImageWrapper>
       <Contents>
         <IconButtons>

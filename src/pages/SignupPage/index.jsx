@@ -4,7 +4,7 @@ import { IMAGE_NAMES } from 'utils/constants/images';
 import { signup, login } from 'utils/apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import useLocalStorage from 'hooks/useLocalStrorage';
+import useLocalStorage from 'hooks/useLocalStorage';
 import { useUserContext } from 'contexts/UserContext';
 
 const SignupWrapper = styled.div`

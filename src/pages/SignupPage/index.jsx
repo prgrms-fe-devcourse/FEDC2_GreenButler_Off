@@ -1,10 +1,7 @@
-import { Logo, Text, Modal, PageWrapper, SignupForm } from 'components';
+import { Text, Modal, PageWrapper, SignupForm } from 'components';
 import styled from '@emotion/styled';
-import { IMAGE_NAMES } from 'utils/constants/images';
-import { signup, login } from 'utils/apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import useLocalStorage from 'hooks/useLocalStrorage';
 import { useUserContext } from 'contexts/UserContext';
 
 const SignupWrapper = styled.div`
@@ -22,9 +19,9 @@ const StyledText = styled(Text)`
 `;
 
 const SignupPage = () => {
+  const [description, setDescription] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [tokenInfo, setTokenInfo] = useLocalStorage('tokenInfo', '');
   const navigate = useNavigate();
   const { onSignup } = useUserContext();
 
@@ -50,6 +47,11 @@ const SignupPage = () => {
       setShowLoginModal(true);
     } catch (e) {
       e.message = 'SignupError';
+      if (e.code === 'ERR_BAD_REQUEST') {
+        setDescription('이미 가입된 이메일입니다.');
+      } else if (e.code === 'ERR_NETWORK') {
+        setDescription('네트워크 연결이 불안정합니다.');
+      }
       setShowModal(true);
       throw e;
     }
@@ -70,7 +72,7 @@ const SignupPage = () => {
         <Modal visible={showModal} onClose={closeModal}>
           <Modal.Content
             title="회원가입에 실패했어요!"
-            description="이메일 및 비밀번호를 다시 확인해 주세요."
+            description={description ? description : '이메일 및 비밀번호를 다시 확인해 주세요.'}
             onClose={closeModal}
           ></Modal.Content>
           <Modal.Button onClick={closeModal}>확인</Modal.Button>

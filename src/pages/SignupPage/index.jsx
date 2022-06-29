@@ -1,7 +1,5 @@
-import { Logo, Text, Modal, PageWrapper, SignupForm } from 'components';
+import { Text, Modal, PageWrapper, SignupForm } from 'components';
 import styled from '@emotion/styled';
-import { IMAGE_NAMES } from 'utils/constants/images';
-import { signup, login } from 'utils/apis/userApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import useLocalStorage from 'hooks/useLocalStorage';
@@ -24,7 +22,6 @@ const StyledText = styled(Text)`
 const SignupPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [tokenInfo, setTokenInfo] = useLocalStorage('tokenInfo', '');
   const navigate = useNavigate();
   const { onSignup } = useUserContext();
 

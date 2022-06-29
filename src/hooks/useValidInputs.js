@@ -13,7 +13,17 @@ const useValidInputs = ({ initialValues, onSubmit, validate, max = 0 }) => {
     const reg = /[`~!@#$%^&*()_|+\-=?;:'",.<>\s\{\}\[\]\\\/]/gi;
 
     const { name, value } = e.target;
-
+    const regEmail =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (name === 'email') {
+      if (!regEmail.test(value)) {
+        setErrorEmail('* 이메일 형식이 아닙니다.');
+        setValues({ ...values, [name]: value });
+        return;
+      }
+      setErrorEmail('');
+      setValues({ ...values, [name]: value });
+    }
     if (name === 'password') {
       if (max && value.length > max) {
         setErrorPassword('* 8-10자 사이로 입력해 주세요.');
@@ -42,6 +52,10 @@ const useValidInputs = ({ initialValues, onSubmit, validate, max = 0 }) => {
     if (name === 'passwordCheck') {
       if (max && value.length > max) {
         setValues({ ...values, [name]: value.slice(0, max) });
+        return;
+      } else if (value !== values['password']) {
+        setErrorPasswordCheck('* 비밀번호가 일치하지 않습니다.');
+        setValues({ ...values, [name]: value });
         return;
       }
 
@@ -123,6 +137,12 @@ const useValidInputs = ({ initialValues, onSubmit, validate, max = 0 }) => {
     setIsLoading(true);
     e.preventDefault();
     const newErrors = validate ? validate(values) : {};
+    
+    setErrorEmail(newErrors['email']);
+    setErrorPassword(newErrors['password']);
+    setErrorfullName(newErrors['fullName']);
+    setErrorPasswordCheck(newErrors['passwordCheck']);
+
     if (Object.keys(newErrors).length === 0) {
       await onSubmit(values);
     }

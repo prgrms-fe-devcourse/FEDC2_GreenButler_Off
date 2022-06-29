@@ -1,4 +1,4 @@
-import useLocalStorage from './useLocalStrorage';
+import useLocalStorage from './useLocalStorage';
 
 const LOCAL_TOKEN_KEY = 'greenButlerUserToken';
 

@@ -1,20 +1,8 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 
 const DefaultTemplate = ({ children }) => {
-  const [height, setHeight] = useState(window.innerHeight);
-
-  const handleResize = () => {
-    setHeight(window.innerHeight);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  });
-
   return (
-    <Container id="default-template-container" height={height}>
+    <Container id="default-template-container">
       <StyledMain>{children}</StyledMain>
     </Container>
   );
@@ -29,11 +17,10 @@ const Container = styled.div`
   flex-direction: column;
   position: relative;
   width: 500px;
+  min-height: 100vh;
   overflow-x: hidden;
   margin: 0 auto;
-  height: ${({ height }) => `${height}`}px;
   background-color: ${({ theme }) => theme.color.mainWhite};
-
   -ms-overflow-style: none;
 
   ::-webkit-scrollbar {

@@ -55,20 +55,9 @@ const emailValid = (email) => {
   return reg.test(email);
 };
 
-const SignupForm = ({
-  onSubmit,
-  inValidEmail = false,
-  inValidPassword = false,
-  inValidFullName = false,
-  inValidPasswordCheck = false,
-}) => {
-  const [currentEmailInvalid, setEmailInvalid] = useState(inValidEmail);
-  const [currentPasswordInvalid, setPasswordInvalid] = useState(inValidPassword);
-  const [currentPasswordCheckInvalid, setPasswordCheckInvalid] = useState(inValidPasswordCheck);
-  const [currentFullNameInvalid, setFullNameInvalid] = useState(inValidFullName);
+const SignupForm = ({ onSubmit }) => {
   const {
     values,
-    errors,
     handleChange,
     handleSubmit,
     errorPassword,
@@ -80,6 +69,8 @@ const SignupForm = ({
     initialValues: {
       email: '',
       password: '',
+      fullame: '',
+      passwordCheck: '',
     },
     onSubmit,
     validate: ({ email, password, fullName, passwordCheck }) => {
@@ -87,30 +78,19 @@ const SignupForm = ({
 
       if (!email) {
         newErrors.email = '* 이메일을 입력해 주세요.';
-        setEmailInvalid(true);
       } else if (!emailValid(email)) {
         newErrors.email = '* 이메일 형식이 아닙니다.';
-        setEmailInvalid(true);
-      } else {
-        setEmailInvalid(false);
       }
       if (!fullName) {
         newErrors.fullName = '* 닉네임을 입력해 주세요.';
-        setFullNameInvalid(true);
-      } else {
-        setFullNameInvalid(false);
       }
       if (!password || password.length < 8) {
         newErrors.password = '* 8-10자 사이로 입력해 주세요.';
-        setPasswordInvalid(true);
-      } else {
-        setPasswordInvalid(false);
       }
-      if (password !== passwordCheck) {
+      if (!passwordCheck || passwordCheck.length < 8) {
+        newErrors.passwordCheck = '* 8-10자 사이로 입력해 주세요.';
+      } else if (password !== passwordCheck) {
         newErrors.passwordCheck = '* 비밀번호가 일치하지 않습니다.';
-        setPasswordCheckInvalid(true);
-      } else {
-        setPasswordCheckInvalid(false);
       }
 
       return newErrors;
@@ -125,19 +105,13 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentEmailInvalid || errorEmail ? true : false}
+          inValid={errorEmail ? true : false}
           placeholder={'이메일을 입력해 주세요.'}
           onChange={handleChange}
-          value={values.email || ''}
+          value={values.email}
           onBlur={handleBlur}
         ></Input>
-        {errorEmail ? (
-          <ErrorText>{errorEmail}</ErrorText>
-        ) : errors.email ? (
-          <ErrorText>{errors.email}</ErrorText>
-        ) : (
-          <div style={{ height: '23px' }}></div>
-        )}
+        {errorEmail ? <ErrorText>{errorEmail}</ErrorText> : <div style={{ height: '23px' }}></div>}
       </InputWrapper>
       <InputWrapper>
         <Input
@@ -145,16 +119,14 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentFullNameInvalid || errorfullName ? true : false}
+          inValid={errorfullName ? true : false}
           placeholder={'닉네임을 입력해주세요.'}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.fullName || ''}
+          value={values.fullName}
         ></Input>
         {errorfullName ? (
           <ErrorText>{errorfullName}</ErrorText>
-        ) : errors.fullName ? (
-          <ErrorText>{errors.fullName}</ErrorText>
         ) : (
           <ErrorText style={{ color: theme.color.fontNormal }}>
             * 특수문자를 제외하고 6자 이내로 입력해 주세요.
@@ -168,7 +140,7 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentPasswordInvalid || errorPassword ? true : false}
+          inValid={errorPassword ? true : false}
           placeholder={'비밀번호를 입력해 주세요.'}
           onChange={handleChange}
           value={values.password}
@@ -176,8 +148,6 @@ const SignupForm = ({
         ></Input>
         {errorPassword ? (
           <ErrorText>{errorPassword}</ErrorText>
-        ) : errors.password ? (
-          <ErrorText>{errors.password}</ErrorText>
         ) : (
           <ErrorText style={{ color: theme.color.fontNormal }}>
             * 8-10자 사이로 입력해 주세요.
@@ -191,16 +161,14 @@ const SignupForm = ({
           height={'70'}
           label={''}
           fontSize={18}
-          inValid={currentPasswordCheckInvalid || errorPasswordCheck ? true : false}
-          placeholder={'비밀번호를 한번 더 입력해 주세요.'}
+          inValid={errorPasswordCheck ? true : false}
+          placeholder={'비밀번호를 한 번 더 입력해 주세요.'}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.passwordCheck || ''}
+          value={values.passwordCheck}
         ></Input>
         {errorPasswordCheck ? (
           <ErrorText>{errorPasswordCheck}</ErrorText>
-        ) : errors.passwordCheck ? (
-          <ErrorText>{errors.passwordCheck}</ErrorText>
         ) : (
           <div style={{ height: '23px' }}></div>
         )}

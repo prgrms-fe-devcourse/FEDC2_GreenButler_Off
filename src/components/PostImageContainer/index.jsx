@@ -26,6 +26,7 @@ const PostImageContainer = React.memo(function ImageContainer({ posts }) {
             threshold={0.4}
             placeholder={IMAGE_URLS.POST_DEFAULT_IMG}
             style={{ position: 'absolute', left: 0, top: 0 }}
+            defaultImageUrl={IMAGE_URLS.POST_DEFAULT_GRID_IMG}
           />
         </ImageItem>
       ))}

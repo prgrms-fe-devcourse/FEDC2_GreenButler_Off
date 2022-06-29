@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import useLocalToken from 'hooks/useLocalToken';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useUserContext } from 'contexts/UserContext';
+import useScrollToTop from 'hooks/useScrollToTop';
 import {
   LoginPage,
   SignupPage,
@@ -22,6 +23,7 @@ const Router = () => {
   const navigate = useNavigate();
   const [token] = useLocalToken();
   const { onKeepLoggedIn } = useUserContext();
+  useScrollToTop();
 
   useEffect(() => {
     if (!token) {

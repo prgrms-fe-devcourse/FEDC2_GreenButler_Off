@@ -4,7 +4,6 @@ import { Avatar, Icon, Modal, PageWrapper } from 'components';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState, useEffect } from 'react';
 import { addComment } from 'utils/apis/postApi';
-import { IMAGE_URLS } from 'utils/constants/images';
 import useLocalToken from 'hooks/useLocalToken';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getPostData, deleteComment } from 'utils/apis/postApi';
@@ -97,7 +96,7 @@ const PostDetailPage = () => {
       {post && (
         <PageWrapper header nav prev title={post.author.fullName + '님의 게시물'}>
           <Container>
-            <PostItem post={post} isDetailPage={true} />
+            <PostItem post={post} isDetailPage={true} index={location.state?.index} />
             <CommentInputForm onSubmit={handleSubmit}>
               <CommentInput
                 ref={inputRef}

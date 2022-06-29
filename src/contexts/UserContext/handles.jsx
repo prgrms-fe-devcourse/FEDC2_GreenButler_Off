@@ -14,6 +14,9 @@ import {
   setNotification,
 } from 'utils/apis/userApi';
 
+import { channelId, addPost, updatePost, getUserPosts } from 'utils/apis/postApi';
+import { objectToForm } from 'utils/functions/converter';
+
 const useHandles = () => {
   const [localToken, setLocalToken] = useLocalToken();
   const navigate = useNavigate();
@@ -139,6 +142,24 @@ const useHandles = () => {
     [localToken],
   );
 
+  // 포스트 등록
+  const handleAddPost = useCallback(
+    async (title, image) => {
+      const formData = await objectToForm({ title, image, channelId });
+      return await addPost(localToken, formData).then((res) => res.data);
+    },
+    [localToken],
+  );
+
+  const handleEditPost = useCallback(
+    async (postId, title, image) => {
+      const formData = await objectToForm({ postId, title, image, channelId });
+      await updatePost(localToken, formData).then((res) => res.data);
+      return await getUserPosts(postId).then((res) => res.data);
+    },
+    [localToken],
+  );
+
   return {
     handleGetCurrentUser,
     handleLogin,
@@ -149,6 +170,8 @@ const useHandles = () => {
     handlechangePassword,
     handlefollow,
     handleUnFollow,
+    handleAddPost,
+    handleEditPost,
   };
 };
 

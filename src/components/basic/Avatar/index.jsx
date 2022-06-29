@@ -48,6 +48,7 @@ const Avatar = ({
         mode="cover"
         placeholder={placeholder}
         style={{ opacity: loaded ? 1 : 0 }}
+        defaultImageUrl={IMAGE_URLS.PROFILE_IMG}
       />
     </AvatarWrapper>
   );

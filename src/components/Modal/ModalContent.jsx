@@ -30,7 +30,7 @@ const ModalContent = ({ title, description }) => {
     <Inner>
       <Image width={55} height={55} src={FLOWERPOT} />
       {title && (
-        <Title block fontSize={26} strong>
+        <Title block fontSize={24} strong>
           {title}
         </Title>
       )}

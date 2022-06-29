@@ -4,14 +4,14 @@ import { useParams } from 'react-router-dom';
 import { initialUserData } from 'contexts/UserContext/reducer';
 import { useUserContext } from 'contexts/UserContext';
 import { getUser } from 'utils/apis/userApi';
-import { getUserPosts, getPostData } from 'utils/apis/postApi';
+import { getPostData } from 'utils/apis/postApi';
 import {
   GRID_INACTIVE,
   GRID_ACTIVE,
   HEART_INACTIVE,
   HEART_ACTIVE,
 } from 'utils/constants/icons/names';
-import { UserContainter } from './style';
+import { UserContainer } from './style';
 import UserData from './UserData';
 import getUserLevel from 'utils/functions/userLevel/getUserLevel';
 
@@ -33,23 +33,16 @@ const UserPage = () => {
     setCurrentTab(value);
   };
 
-  const handleGetUserPosts = useCallback(async () => {
-    if (pageUserId) {
-      const { data } = await getUserPosts(pageUserId);
-      setUserPosts(data);
-    }
-  }, [pageUserId]);
-
   const handleGetUser = useCallback(async () => {
     if (pageUserId) {
       const { data } = await getUser(pageUserId);
       setUser(data);
       const { posts, comments, followers } = data;
       const { level } = getUserLevel({ posts, comments, followers });
+      setUserPosts(posts);
       setUserLevel(level);
-      await handleGetUserPosts();
     }
-  }, [pageUserId, handleGetUserPosts]);
+  }, [pageUserId]);
 
   const handleGetLikePosts = useCallback(async () => {
     const { likes } = user;
@@ -73,7 +66,7 @@ const UserPage = () => {
 
   return (
     <PageWrapper header prev nav info={currentUser.id === pageUserId}>
-      <UserContainter>
+      <UserContainer>
         <UserData user={user} pageUserId={pageUserId} userLevel={userLevel} />
         <Tab onActive={onActive}>
           <Tab.Item
@@ -95,7 +88,7 @@ const UserPage = () => {
             <PostImageContainer posts={userLikePosts} />
           </Tab.Item>
         </Tab>
-      </UserContainter>
+      </UserContainer>
     </PageWrapper>
   );
 };

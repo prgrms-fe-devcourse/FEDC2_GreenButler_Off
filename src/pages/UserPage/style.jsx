@@ -38,7 +38,7 @@ export const smallTextStyle = {
   color: theme.color.fontNormal,
 };
 
-export const UserContainter = styled.div`
+export const UserContainer = styled.div`
   width: 100%;
   position: relative;
   background-color: white;

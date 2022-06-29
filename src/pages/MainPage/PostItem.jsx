@@ -3,11 +3,11 @@ import PostBody from './PostBody';
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 
-const PostItem = ({ post, isDetailPage }) => {
+const PostItem = ({ index, post, isDetailPage }) => {
   return (
     <Article>
       <PostHeader post={post} isDetailPage={isDetailPage} />
-      <PostBody post={post} isDetailPage={isDetailPage} />
+      <PostBody index={index} post={post} isDetailPage={isDetailPage} />
     </Article>
   );
 };

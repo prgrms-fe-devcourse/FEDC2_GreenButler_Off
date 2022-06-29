@@ -69,6 +69,8 @@ const SignupForm = ({ onSubmit }) => {
     initialValues: {
       email: '',
       password: '',
+      fullame: '',
+      passwordCheck: '',
     },
     onSubmit,
     validate: ({ email, password, fullName, passwordCheck }) => {
@@ -106,7 +108,7 @@ const SignupForm = ({ onSubmit }) => {
           inValid={errorEmail ? true : false}
           placeholder={'이메일을 입력해 주세요.'}
           onChange={handleChange}
-          value={values.email || ''}
+          value={values.email}
           onBlur={handleBlur}
         ></Input>
         {errorEmail ? <ErrorText>{errorEmail}</ErrorText> : <div style={{ height: '23px' }}></div>}
@@ -121,7 +123,7 @@ const SignupForm = ({ onSubmit }) => {
           placeholder={'닉네임을 입력해주세요.'}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.fullName || ''}
+          value={values.fullName}
         ></Input>
         {errorfullName ? (
           <ErrorText>{errorfullName}</ErrorText>
@@ -163,7 +165,7 @@ const SignupForm = ({ onSubmit }) => {
           placeholder={'비밀번호를 한 번 더 입력해 주세요.'}
           onBlur={handleBlur}
           onChange={handleChange}
-          value={values.passwordCheck || ''}
+          value={values.passwordCheck}
         ></Input>
         {errorPasswordCheck ? (
           <ErrorText>{errorPasswordCheck}</ErrorText>

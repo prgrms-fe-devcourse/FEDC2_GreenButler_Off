@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
+import { useCallback } from 'react';
 import { useState, useRef, useEffect } from 'react';
+import { IMAGE_URLS } from 'utils/constants/images';
 
 let observer = null;
 const LOAD_IMG_EVENT_TYPE = 'loadImage';
@@ -23,6 +25,7 @@ const Image = ({
   height,
   alt,
   mode = 'cover',
+  defaultImageUrl,
   ...props
 }) => {
   const [loaded, setLoaded] = useState(false);
@@ -57,6 +60,15 @@ const Image = ({
     imgRef.current && observer.observe(imgRef.current);
   }, [lazy, threshold]);
 
+  const handleError = useCallback(
+    ({ target }) => {
+      target.onerror = null;
+      target.src = defaultImageUrl || '';
+      target.style.opacity = 1;
+    },
+    [defaultImageUrl],
+  );
+
   return (
     <img
       ref={imgRef}
@@ -65,6 +77,7 @@ const Image = ({
       width={width}
       height={height}
       style={{ ...props.style, ...imageStyle }}
+      onError={handleError}
     />
   );
 };

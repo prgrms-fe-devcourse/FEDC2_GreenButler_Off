@@ -11,3 +11,5 @@ export const CHANGE_FULLNAME = 'CHANGE_FULLNAME';
 export const CHANGE_PROFILE = 'CHANGE_PROFILE';
 export const LIKE = 'LIKE';
 export const DISLIKE = 'DISLIKE';
+export const ADD_POST = 'ADD_POST';
+export const EDIT_POST = 'EDIT_POST';

@@ -15,6 +15,8 @@ import {
   CHANGE_FULLNAME,
   LIKE,
   DISLIKE,
+  ADD_POST,
+  EDIT_POST,
 } from './types';
 
 export const UserContext = createContext(initialUserData);
@@ -33,6 +35,8 @@ const UserProvider = ({ children }) => {
     handlechangePassword,
     handlefollow,
     handleUnFollow,
+    handleAddPost,
+    handleEditPost,
   } = useHandles();
 
   const onLogin = useCallback(
@@ -68,16 +72,22 @@ const UserProvider = ({ children }) => {
   }, [handleLogout]);
 
   // 특정 유저를 팔로우한 경우, currentUser의 정보 갱신
-  const onFollow = useCallback(async (payload = { userId: '', followId: '' }) => {
-    const data = await handlefollow(payload.userId);
-    dispatch({ type: FOLLOW, payload: data });
-  }, []);
+  const onFollow = useCallback(
+    async (payload = { userId: '', followId: '' }) => {
+      const data = await handlefollow(payload.userId);
+      dispatch({ type: FOLLOW, payload: data });
+    },
+    [handlefollow],
+  );
 
   // 특정 유저를 언팔로우한 경우, currentUser의 정보 갱신
-  const onUnfollow = useCallback((payload = { unfollowId: '' }) => {
-    handleUnFollow(payload.unfollowId);
-    dispatch({ type: UNFOLLOW, payload });
-  }, []);
+  const onUnfollow = useCallback(
+    (payload = { unfollowId: '' }) => {
+      handleUnFollow(payload.unfollowId);
+      dispatch({ type: UNFOLLOW, payload });
+    },
+    [handleUnFollow],
+  );
 
   //현재 유저의 닉네임을 수정
   const onChangeFullName = useCallback(
@@ -118,6 +128,22 @@ const UserProvider = ({ children }) => {
     dispatch({ type: KEEP_LOGIN, payload: user });
   }, [handleGetCurrentUser]);
 
+  const onAddPost = useCallback(
+    async (title, image) => {
+      const post = await handleAddPost(title, image);
+      dispatch({ type: ADD_POST, payload: post });
+    },
+    [handleAddPost],
+  );
+
+  const onEditPost = useCallback(
+    async (postId, title, image) => {
+      const posts = await handleEditPost(postId, title, image);
+      dispatch({ type: EDIT_POST, payload: posts });
+    },
+    [handleEditPost],
+  );
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -133,6 +159,8 @@ const UserProvider = ({ children }) => {
       onLike,
       onDisLike,
       onKeepLoggedIn,
+      onAddPost,
+      onEditPost,
     };
   }, [
     currentUser,
@@ -148,6 +176,8 @@ const UserProvider = ({ children }) => {
     onLike,
     onDisLike,
     onKeepLoggedIn,
+    onAddPost,
+    onEditPost,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

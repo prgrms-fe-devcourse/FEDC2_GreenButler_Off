@@ -4,9 +4,9 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button, UploadImage, TagAddForm, PageWrapper, FixedContainer, Modal } from 'components';
 import { PostTextArea } from 'components';
 import useLocalToken from 'hooks/useLocalToken';
-import { channelId, addPost, updatePost } from 'utils/apis/postApi';
-import { imageToFile, objectToForm } from 'utils/functions/converter';
+import { imageToFile } from 'utils/functions/converter';
 import theme from 'styles/theme';
+import { useUserContext } from 'contexts/UserContext';
 
 const { headerHeight } = theme.value;
 
@@ -51,6 +51,8 @@ const PostEditPage = () => {
 
   const { id } = useParams();
 
+  const { onAddPost, onEditPost } = useUserContext();
+
   const injectState = (post) => {
     const title = JSON.parse(post.title);
 
@@ -77,7 +79,7 @@ const PostEditPage = () => {
     [tags],
   );
 
-  const onClickAddBtn = async () => {
+  const onClickSubmitBtn = async () => {
     if (!token) {
       return;
     }
@@ -100,22 +102,11 @@ const PostEditPage = () => {
     const ImageBlob = BinaryImg ? imageToFile(BinaryImg) : null;
 
     if (currentPage === page.create.name) {
-      const formData = await objectToForm({
-        title,
-        image: ImageBlob,
-        channelId: channelId,
-      });
-      await addPost(token, formData);
+      await onAddPost(title, ImageBlob);
     }
 
     if (currentPage === page.edit.name) {
-      const formData = await objectToForm({
-        postId: id,
-        title,
-        image: ImageBlob,
-        channelId: channelId,
-      });
-      await updatePost(token, formData);
+      await onEditPost(id, title, ImageBlob);
     }
 
     navigate('/');
@@ -152,16 +143,17 @@ const PostEditPage = () => {
           value={content}
           rows={10}
         ></PostTextArea>
-        <FixedContainer bottom style={{ padding: 15 }}>
-          <Button onClick={onClickAddBtn} disabled={isLoading}>
-            {page[currentPage].title}
-          </Button>
-        </FixedContainer>
+
         <Modal visible={isModal} onClose={onCloseModal}>
           <Modal.Content title={modalMessage} />
           <Modal.Button onClick={onCloseModal}>확인</Modal.Button>
         </Modal>
       </PageFixed>
+      <FixedContainer bottom style={{ padding: 15 }}>
+        <Button onClick={onClickSubmitBtn} disabled={isLoading}>
+          {page[currentPage].title}
+        </Button>
+      </FixedContainer>
     </>
   );
 };

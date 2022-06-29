@@ -8,45 +8,52 @@ import theme from 'styles/theme';
 import { setLike, setDisLike } from 'utils/apis/postApi';
 import { setNotification } from 'utils/apis/userApi';
 import useLocalToken from 'hooks/useLocalToken';
+import useScrollPosition from 'hooks/useScrollPosition';
 import { useUserContext } from 'contexts/UserContext';
 import { IMAGE_URLS } from 'utils/constants/images';
 import displayedAt from 'utils/functions/displayedAt';
 
-const PostBody = ({ post, isDetailPage = false }) => {
+const PostBody = ({ index, post, isDetailPage = false }) => {
   const { _id: postId, image, likes, comments, createdAt, author } = post || {};
-  const { content, contents, tags } = JSON.parse(post?.title);
+  const { content, tags } = JSON.parse(post?.title);
   const [onHeart, setOnHeart] = useState(false);
   const [heartCount, setHeartCount] = useState(likes.length);
   const [likeId, setLikeId] = useState('');
   const [isShown, setIsShown] = useState(false);
   const [localToken] = useLocalToken();
   const { currentUser } = useUserContext();
-
+  const [, setCurrentPostIndex] = useScrollPosition();
   const navigate = useNavigate();
 
-  const handleTodetailpage = useCallback(() => {
+  useEffect(() => {
+    let likeId;
+    const isMyLikePost =
+      likes.filter(({ user, _id }) => {
+        if (user === currentUser.id) {
+          likeId = _id;
+          return true;
+        }
+      }).length > 0;
+    if (isMyLikePost) {
+      setOnHeart(true);
+      setLikeId(likeId);
+    }
+  }, [currentUser, likes]);
+
+  const navigateToDetailPage = useCallback(() => {
     if (isDetailPage) {
       return;
     }
+    setCurrentPostIndex(index + 1);
     navigate(`/post/detail/${postId}`, {
       state: {
         post,
+        index,
       },
     });
-  }, [postId, post, isDetailPage, navigate]);
+  }, [setCurrentPostIndex, index, postId, post, isDetailPage, navigate]);
 
-  const handleTagClick = useCallback(
-    (tag) => {
-      navigate(`/tag/${tag.slice(1)}`, {
-        state: {
-          tag,
-        },
-      });
-    },
-    [navigate],
-  );
-
-  const handleHeartClick = useCallback(async () => {
+  const handleClickHeart = useCallback(async () => {
     setOnHeart(!onHeart);
     if (!onHeart) {
       setHeartCount(heartCount + 1);
@@ -66,28 +73,25 @@ const PostBody = ({ post, isDetailPage = false }) => {
     }
   }, [onHeart, heartCount, postId, likeId, author._id, currentUser, localToken]);
 
-  useEffect(() => {
-    let likeId;
-    const isMyLikePost =
-      likes.filter(({ user, _id }) => {
-        if (user === currentUser.id) {
-          likeId = _id;
-          return true;
-        }
-      }).length > 0;
-    if (isMyLikePost) {
-      setOnHeart(true);
-      setLikeId(likeId);
-    }
-  }, [currentUser, likes]);
+  const handleClickTag = useCallback(
+    (tag) => {
+      setCurrentPostIndex(index + 1);
+      navigate(`/tag/${tag.slice(1)}`, {
+        state: {
+          tag,
+        },
+      });
+    },
+    [index, setCurrentPostIndex, navigate],
+  );
 
-  const handleMoreClick = () => {
+  const handleClickMore = () => {
     setIsShown(true);
   };
 
   return (
     <Container>
-      <ImageWrapper onClick={handleTodetailpage} isDetailPage={isDetailPage}>
+      <ImageWrapper onClick={navigateToDetailPage} isDetailPage={isDetailPage}>
         <Image
           src={image ? image : IMAGE_URLS.POST_DEFAULT_IMG}
           defaultImageUrl={IMAGE_URLS.POST_DEFAULT_IMG}
@@ -98,13 +102,12 @@ const PostBody = ({ post, isDetailPage = false }) => {
       <Contents>
         <IconButtons>
           <IconButton
-            className="heart-button"
             name={onHeart ? 'HEART_RED' : 'HEART'} // Todo: 상수화
-            onClick={handleHeartClick}
+            onClick={handleClickHeart}
           >
             <IconButtonText>{heartCount}</IconButtonText>
           </IconButton>
-          <IconButton className="comment-button" name="COMMENT" onClick={handleTodetailpage}>
+          <IconButton name="COMMENT" onClick={navigateToDetailPage}>
             <IconButtonText>{comments.length}</IconButtonText>
           </IconButton>
         </IconButtons>
@@ -113,12 +116,12 @@ const PostBody = ({ post, isDetailPage = false }) => {
             {content}
           </Paragraph>
           {!isDetailPage && content?.length > 50 && !isShown && (
-            <MoreText onClick={handleMoreClick}>더보기</MoreText>
+            <MoreText onClick={handleClickMore}>더보기</MoreText>
           )}
         </TextContainer>
         <Tags>
           {tags.map((tag, i) => (
-            <Tag key={i} onClick={() => handleTagClick(tag)}>
+            <Tag key={i} onClick={() => handleClickTag(tag)}>
               {tag[0] === '#' ? tag : `#${tag}`}
             </Tag>
           ))}
@@ -155,7 +158,7 @@ const IconButtons = styled.div`
   display: flex;
 `;
 
-const IconButton = ({ name, className, children, onClick }) => {
+const IconButton = ({ name, children, onClick }) => {
   const style = {
     padding: 0,
     borderRadius: '0',
@@ -167,7 +170,7 @@ const IconButton = ({ name, className, children, onClick }) => {
     color: theme.color.fontBlack,
   };
   return (
-    <button className={className} style={style} onClick={onClick}>
+    <button style={style} onClick={onClick}>
       <Icon name={name} size={22} />
       {children}
     </button>

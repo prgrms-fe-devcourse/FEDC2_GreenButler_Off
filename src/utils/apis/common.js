@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  timeout: 3000,
+  timeout: 5000,
 });
 
 instance.defaults.baseURL = process.env.REACT_APP_API_URL;

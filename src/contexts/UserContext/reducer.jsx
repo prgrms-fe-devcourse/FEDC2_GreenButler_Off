@@ -12,6 +12,8 @@ import {
   CHANGE_PROFILE,
   LIKE,
   DISLIKE,
+  ADD_POST,
+  EDIT_POST,
 } from './types';
 
 export const initialUserData = {
@@ -161,6 +163,24 @@ export const reducer = (state, { type, payload }) => {
         currentUser: {
           ...state.currentUser,
           likes: state.currentUser.likes.filter(({ _id }) => _id !== payload._id),
+        },
+      };
+    }
+    case ADD_POST: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          posts: [payload, ...state.currentUser.posts],
+        },
+      };
+    }
+    case EDIT_POST: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          posts: payload,
         },
       };
     }

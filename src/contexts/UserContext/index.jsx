@@ -15,6 +15,8 @@ import {
   CHANGE_FULLNAME,
   LIKE,
   DISLIKE,
+  ADD_POST,
+  EDIT_POST,
 } from './types';
 
 export const UserContext = createContext(initialUserData);
@@ -33,6 +35,8 @@ const UserProvider = ({ children }) => {
     handlechangePassword,
     handlefollow,
     handleUnFollow,
+    handleAddPost,
+    handleEditPost,
   } = useHandles();
 
   const onLogin = useCallback(
@@ -124,6 +128,22 @@ const UserProvider = ({ children }) => {
     dispatch({ type: KEEP_LOGIN, payload: user });
   }, [handleGetCurrentUser]);
 
+  const onAddPost = useCallback(
+    async (title, image) => {
+      const post = await handleAddPost(title, image);
+      dispatch({ type: ADD_POST, payload: post });
+    },
+    [handleAddPost],
+  );
+
+  const onEditPost = useCallback(
+    async (postId, title, image) => {
+      const posts = await handleEditPost(postId, title, image);
+      dispatch({ type: EDIT_POST, payload: posts });
+    },
+    [handleEditPost],
+  );
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -139,6 +159,8 @@ const UserProvider = ({ children }) => {
       onLike,
       onDisLike,
       onKeepLoggedIn,
+      onAddPost,
+      onEditPost,
     };
   }, [
     currentUser,
@@ -154,6 +176,8 @@ const UserProvider = ({ children }) => {
     onLike,
     onDisLike,
     onKeepLoggedIn,
+    onAddPost,
+    onEditPost,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

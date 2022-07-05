@@ -5,6 +5,8 @@ import theme from 'styles/theme';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { Modal } from 'components';
 
+import imageCompression from 'browser-image-compression';
+
 const { backgroundGreen, mainWhite } = theme.color;
 const { POST_ADD_IMG } = IMAGE_URLS;
 
@@ -39,13 +41,27 @@ const ImageInner = styled.div`
   background-repeat: no-repeat;
 `;
 
+const CompressImage = async (fileSrc) => {
+  const options = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+  };
+  try {
+    return await imageCompression(fileSrc, options);
+  } catch (error) {
+    alert(error);
+  }
+};
+
 const UploadImage = ({ onChange, defaultImage, ...props }) => {
   const [imageSrc, setImageSrc] = useState(defaultImage);
   const fileInputRef = useRef(null);
   const [modalMsg, setModalMsg] = useState({ isModal: false, title: '', description: '' });
 
-  const handleFileChange = (e) => {
-    const fileBlob = e.target.files[0];
+  const handleFileChange = async (e) => {
+    let fileBlob = e.target.files[0];
+    const MAX_MB = 10;
 
     if (!fileBlob) {
       return;
@@ -60,13 +76,18 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
       return;
     }
 
-    if (fileBlob.size > 1024 * 1024) {
+    if (fileBlob.size > 1024 * 1024 * MAX_MB) {
       setModalMsg({
         isModal: true,
-        title: '1MB 이하 파일만 등록해 주세요!',
+        title: `${MAX_MB}MB 이하 파일만 등록해 주세요!`,
         description: `현재 파일 용량 : ${Math.round((fileBlob.size / 1024 / 1024) * 100) / 100}MB`,
       });
       return;
+    }
+
+    // 1MB 보다 크다면 변환
+    if (fileBlob.size > 1024 * 1024) {
+      fileBlob = await CompressImage(fileBlob);
     }
 
     const reader = new FileReader();

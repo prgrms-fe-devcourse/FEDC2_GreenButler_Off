@@ -2,7 +2,7 @@ import { Button, Text, UploadImage } from 'components';
 import styled from '@emotion/styled';
 import useClickAway from '../../hooks/useClickAway';
 
-const ChangeProfileModal = ({ onFileChange, onProfileSubmit, onClose }) => {
+const ChangeProfileModal = ({ onFileChange, onProfileSubmit, onClose, currentProfile }) => {
   const ref = useClickAway(() => {
     onClose && onClose();
   });
@@ -13,6 +13,7 @@ const ChangeProfileModal = ({ onFileChange, onProfileSubmit, onClose }) => {
           프로필을 변경하시겠습니까?
         </Text>
         <UploadImage
+          defaultImage={currentProfile}
           onChange={onFileChange}
           style={{ width: '90%', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px' }}
         />{' '}

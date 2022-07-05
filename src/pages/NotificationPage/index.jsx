@@ -4,8 +4,8 @@ import useLocalToken from 'hooks/useLocalToken';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
+import displayedAt from 'utils/functions/displayedAt';
 
 const NotificationsWrapper = styled.div`
   background-color: ${theme.color.backgroundLight};
@@ -17,7 +17,6 @@ const NotificationsWrapper = styled.div`
 const NotificationPage = () => {
   const [token] = useLocalToken();
   const [notifications, setNotifications] = useState([]);
-  const { currentUser } = useUserContext();
   useEffect(() => {
     const initNotifications = async () => {
       const fetchedNotifications = await getNotifications(token);
@@ -50,17 +49,7 @@ const NotificationPage = () => {
       <PageWrapper title="알림" header prev>
         <NotificationsWrapper>
           {notifications.map(
-            ({
-              notificationId,
-              postId,
-              fullName,
-              message,
-              userId,
-              authorId,
-              isSeen,
-              img,
-              createdAt,
-            }) =>
+            ({ notificationId, postId, fullName, message, authorId, isSeen, img, createdAt }) =>
               message &&
               (postId ? (
                 <Link to={`/post/detail/${postId}`} key={notificationId}>
@@ -71,7 +60,9 @@ const NotificationPage = () => {
                     message={message}
                     img={img}
                     createdAt={createdAt}
-                  ></NotificationCard>
+                  >
+                    <span>{displayedAt(createdAt)}</span>
+                  </NotificationCard>
                 </Link>
               ) : (
                 <Link to={`/user/${authorId}`} key={notificationId}>
@@ -82,7 +73,9 @@ const NotificationPage = () => {
                     message={message}
                     img={img}
                     createdAt={createdAt}
-                  ></NotificationCard>
+                  >
+                    <span>{displayedAt(createdAt)}</span>
+                  </NotificationCard>
                 </Link>
               )),
           )}

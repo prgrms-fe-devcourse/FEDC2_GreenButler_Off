@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import colors from 'utils/constants/colors';
+import theme from 'styles/theme';
 
-const { mainGreen } = colors;
+const { mainGreen } = theme.color;
 
 const StyledButton = styled.button`
   border-radius: ${({ borderRadius }) => borderRadius};

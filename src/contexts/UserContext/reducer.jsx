@@ -15,6 +15,8 @@ import {
   ADD_POST,
   EDIT_POST,
   DELETE_POST,
+  ADD_COMMENT,
+  DELETE_COMMENT,
 } from './types';
 
 export const initialUserData = {
@@ -28,6 +30,7 @@ export const initialUserData = {
     followers: [],
     following: [],
     notifications: [],
+    comments: [],
   },
   isLoading: false,
 };
@@ -48,6 +51,7 @@ export const reducer = (state, { type, payload }) => {
           following: payload.following,
           notifications: payload.notifications,
           likes: payload.likes,
+          comments: payload.comments,
         },
       };
     }
@@ -66,6 +70,7 @@ export const reducer = (state, { type, payload }) => {
           following: payload.following,
           notifications: payload.notifications,
           likes: payload.likes,
+          comments: payload.comments,
         },
       };
     }
@@ -191,6 +196,24 @@ export const reducer = (state, { type, payload }) => {
         currentUser: {
           ...state.currentUser,
           posts: state.currentUser.posts.filter((post) => post._id !== payload._id),
+        },
+      };
+    }
+    case ADD_COMMENT: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          comments: [...state.currentUser.comments, payload],
+        },
+      };
+    }
+    case DELETE_COMMENT: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          comments: state.currentUser.comments.filter((comment) => comment !== payload),
         },
       };
     }

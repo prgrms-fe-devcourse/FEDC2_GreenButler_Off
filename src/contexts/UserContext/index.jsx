@@ -18,6 +18,8 @@ import {
   ADD_POST,
   EDIT_POST,
   DELETE_POST,
+  ADD_COMMENT,
+  DELETE_COMMENT,
 } from './types';
 
 export const UserContext = createContext(initialUserData);
@@ -39,6 +41,8 @@ const UserProvider = ({ children }) => {
     handleAddPost,
     handleEditPost,
     handleDeletePost,
+    handleAddComment,
+    handleDeleteComment,
   } = useHandles();
 
   const onLogin = useCallback(
@@ -154,6 +158,23 @@ const UserProvider = ({ children }) => {
     [handleDeletePost],
   );
 
+  const onAddComment = useCallback(
+    async (postId, value) => {
+      const comment = await handleAddComment(postId, value);
+      dispatch({ type: ADD_COMMENT, payload: comment._id });
+      return comment;
+    },
+    [handleAddComment],
+  );
+
+  const onDeleteComment = useCallback(
+    async (commentId) => {
+      await handleDeleteComment(commentId);
+      dispatch({ type: DELETE_COMMENT, payload: commentId });
+    },
+    [handleDeleteComment],
+  );
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -172,6 +193,8 @@ const UserProvider = ({ children }) => {
       onAddPost,
       onEditPost,
       onDeletePost,
+      onAddComment,
+      onDeleteComment,
     };
   }, [
     currentUser,
@@ -190,6 +213,8 @@ const UserProvider = ({ children }) => {
     onAddPost,
     onEditPost,
     onDeletePost,
+    onAddComment,
+    onDeleteComment,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

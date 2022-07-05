@@ -3,10 +3,9 @@ import PostItem from 'pages/MainPage/PostItem';
 import { Avatar, Icon, Modal, PageWrapper } from 'components';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState, useEffect } from 'react';
-import { addComment } from 'utils/apis/postApi';
 import useLocalToken from 'hooks/useLocalToken';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getPostData, deleteComment } from 'utils/apis/postApi';
+import { getPostData } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
 import { setNotification } from 'utils/apis/userApi';
 import displayedAt from 'utils/functions/displayedAt';
@@ -18,7 +17,7 @@ const PostDetailPage = () => {
   const [inputHeight, setInputHeight] = useState('30px');
   const inputRef = useRef(null);
   const [localToken] = useLocalToken();
-  const { currentUser } = useUserContext();
+  const { currentUser, onAddComment, onDeleteComment } = useUserContext();
   const [isModal, setIsModal] = useState(false);
   const commentIdToDelete = useRef('');
 
@@ -36,9 +35,7 @@ const PostDetailPage = () => {
       if (!inputRef.current.value) {
         return;
       }
-      const newComment = await addComment(localToken, post._id, inputRef.current.value).then(
-        (res) => res.data,
-      );
+      const newComment = await onAddComment(post._id, inputRef.current.value);
       setPost({
         ...post,
         comments: [...post.comments, newComment],
@@ -49,7 +46,7 @@ const PostDetailPage = () => {
         await setNotification(localToken, 'COMMENT', newComment._id, post.author._id, post._id);
       }
     },
-    [post, localToken, currentUser.id],
+    [post, localToken, currentUser.id, onAddComment],
   );
 
   const handleResizeInputHeight = useCallback(() => {
@@ -75,8 +72,8 @@ const PostDetailPage = () => {
 
   const handleDeleteComment = useCallback(async () => {
     setIsModal(false);
-    if (localToken && commentIdToDelete.current) {
-      await deleteComment(localToken, commentIdToDelete.current);
+    if (commentIdToDelete.current) {
+      await onDeleteComment(commentIdToDelete.current);
       const nextComments = post.comments.filter(
         (comment) => comment._id !== commentIdToDelete.current,
       );
@@ -85,7 +82,7 @@ const PostDetailPage = () => {
         comments: nextComments,
       });
     }
-  }, [post, localToken]);
+  }, [post, onDeleteComment]);
 
   const onClose = useCallback(() => {
     setIsModal(false);

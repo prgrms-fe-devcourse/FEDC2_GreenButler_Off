@@ -56,10 +56,6 @@ const PostHeader = ({ post, isDetailPage }) => {
     return _id === currentUser.id && isDetailPage;
   }, [_id, currentUser.id, isDetailPage]);
 
-  useEffect(() => {
-    console.log('here', currentUser);
-  }, [currentUser]);
-
   return (
     <>
       <Header>

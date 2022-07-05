@@ -14,6 +14,7 @@ import {
   DISLIKE,
   ADD_POST,
   EDIT_POST,
+  DELETE_POST,
 } from './types';
 
 export const initialUserData = {
@@ -181,6 +182,15 @@ export const reducer = (state, { type, payload }) => {
         currentUser: {
           ...state.currentUser,
           posts: payload,
+        },
+      };
+    }
+    case DELETE_POST: {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          posts: state.currentUser.posts.filter((post) => post._id !== payload._id),
         },
       };
     }

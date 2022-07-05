@@ -14,7 +14,7 @@ import {
   setNotification,
 } from 'utils/apis/userApi';
 
-import { channelId, addPost, updatePost, getUserPosts } from 'utils/apis/postApi';
+import { channelId, addPost, updatePost, deletePost, getUserPosts } from 'utils/apis/postApi';
 import { objectToForm } from 'utils/functions/converter';
 
 const useHandles = () => {
@@ -160,6 +160,13 @@ const useHandles = () => {
     [localToken],
   );
 
+  const handleDeletePost = useCallback(
+    async (postId) => {
+      return await deletePost(localToken, postId).then((res) => res.data);
+    },
+    [localToken],
+  );
+
   return {
     handleGetCurrentUser,
     handleLogin,
@@ -172,6 +179,7 @@ const useHandles = () => {
     handleUnFollow,
     handleAddPost,
     handleEditPost,
+    handleDeletePost,
   };
 };
 

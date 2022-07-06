@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/react';
 import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Image, Text, Icon } from 'components';
+import { Image, Text } from 'components';
 import theme from 'styles/theme';
 import { setLike, setDisLike } from 'utils/apis/postApi';
 import { setNotification } from 'utils/apis/userApi';
@@ -12,6 +12,7 @@ import useScrollPosition from 'hooks/useScrollPosition';
 import { useUserContext } from 'contexts/UserContext';
 import { IMAGE_URLS } from 'utils/constants/images';
 import displayedAt from 'utils/functions/displayedAt';
+import IconButton from 'components/basic/Icon/IconButton';
 
 const PostBody = ({ index, post, isDetailPage = false }) => {
   const { _id: postId, image, likes, comments, createdAt, author } = post || {};
@@ -103,12 +104,18 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
         <IconButtons>
           <IconButton
             name={onHeart ? 'HEART_RED' : 'HEART'} // Todo: 상수화
+            size={22}
+            style={IconButtonStyle}
             onClick={handleClickHeart}
           >
-            <IconButtonText>{heartCount}</IconButtonText>
+            <Text fontSize={16} style={IconButtonTextStyle}>
+              {heartCount}
+            </Text>
           </IconButton>
-          <IconButton name="COMMENT" onClick={navigateToDetailPage}>
-            <IconButtonText>{comments.length}</IconButtonText>
+          <IconButton name="COMMENT" size={22} onClick={navigateToDetailPage}>
+            <Text fontSize={16} style={IconButtonTextStyle}>
+              {comments.length}
+            </Text>
           </IconButton>
         </IconButtons>
         <TextContainer>
@@ -158,38 +165,18 @@ const IconButtons = styled.div`
   display: flex;
 `;
 
-const IconButton = ({ name, children, onClick }) => {
-  const style = {
-    padding: 0,
-    borderRadius: '0',
-    marginRight: '16px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    color: theme.color.fontBlack,
-  };
-  return (
-    <button style={style} onClick={onClick}>
-      <Icon name={name} size={22} />
-      {children}
-    </button>
-  );
+const IconButtonStyle = {
+  marginRight: '16px',
+  color: theme.color.fontBlack,
 };
 
-const IconButtonText = ({ children, ...props }) => {
-  const style = {
-    color: theme.color.fontBlack,
-    marginLeft: '8px',
-    PointerEvent: 'none',
-    lineHeight: '19px',
-    transform: 'translateY(-1px)',
-  };
-  return (
-    <Text fontSize={16} style={style} {...props}>
-      {children}
-    </Text>
-  );
+const IconButtonTextStyle = {
+  fontSize: '16px',
+  color: theme.color.fontBlack,
+  marginLeft: '8px',
+  PointerEvent: 'none',
+  lineHeight: '19px',
+  transform: 'translateY(-1px)',
 };
 
 const TextContainer = styled.div`

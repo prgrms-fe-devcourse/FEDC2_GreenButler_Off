@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
 import { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import IconBtn from './IconButton';
 import { Profile, Modal } from 'components';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
-import { deletePost } from 'utils/apis/postApi';
 import useLocalToken from 'hooks/useLocalToken';
-import { useEffect } from 'react';
+import IconButton from 'components/basic/Icon/IconButton';
 
 const PostHeader = ({ post, isDetailPage }) => {
   const {
@@ -62,7 +60,7 @@ const PostHeader = ({ post, isDetailPage }) => {
         <Profile src={image} userName={fullName} onClick={handleClickProfile} />
         {isMyPost && (
           <>
-            <IconBtn name="MORE" size={20} onClick={handleClickMore} />
+            <IconButton name="MORE" size={20} onClick={handleClickMore} />
             <Modal visible={isModal} onClose={onClose}>
               <Modal.Custom>
                 <Buttons>

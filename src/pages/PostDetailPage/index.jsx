@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import PostItem from 'pages/MainPage/PostItem';
 import { Avatar, Icon, Modal, PageWrapper } from 'components';
+import IconButton from 'components/basic/Icon/IconButton';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState, useEffect } from 'react';
 import useLocalToken from 'hooks/useLocalToken';
@@ -116,7 +117,12 @@ const PostDetailPage = () => {
                       <CommentText>{comment}</CommentText>
                     </Content>
                     {_id === currentUser.id && (
-                      <MoreButton onClick={() => handleMoreClick(commentId)} />
+                      <IconButton
+                        name="MORE"
+                        size={20}
+                        style={MoreButtonStyle}
+                        onClick={() => handleMoreClick(commentId)}
+                      />
                     )}
                   </CommentItem>
                 ))
@@ -232,24 +238,10 @@ const CommentText = styled.p`
   white-space: pre-wrap;
 `;
 
-const MoreButton = ({ onClick, ...props }) => {
-  const style = {
-    borderRadius: '0',
-    backgroundColor: 'transparent',
-    padding: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: '23px',
-    right: '0',
-  };
-
-  return (
-    <button {...props} style={style} onClick={onClick}>
-      <Icon className="more-button" name="MORE" size={20} />
-    </button>
-  );
+const MoreButtonStyle = {
+  position: 'absolute',
+  top: '23px',
+  right: '0',
 };
 
 const DeleteCommentButton = styled.button`

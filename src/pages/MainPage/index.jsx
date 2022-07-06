@@ -67,19 +67,11 @@ const MainPage = () => {
     <PageWrapper header nav info>
       <PostList>
         {posts?.map((post, i) => {
-          if (posts.length - 1 === i) {
-            return (
-              <li key={i} ref={targetRef}>
-                <PostItem key={i} index={i} post={post} />
-              </li>
-            );
-          } else {
-            return (
-              <li key={i}>
-                <PostItem key={i} index={i} post={post} />
-              </li>
-            );
-          }
+          return (
+            <li key={i} ref={posts.length - 1 === i ? targetRef : null}>
+              <PostItem key={i} index={i} post={post} />
+            </li>
+          );
         })}
       </PostList>
     </PageWrapper>

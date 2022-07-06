@@ -17,6 +17,9 @@ import {
   DISLIKE,
   ADD_POST,
   EDIT_POST,
+  DELETE_POST,
+  ADD_COMMENT,
+  DELETE_COMMENT,
 } from './types';
 
 export const UserContext = createContext(initialUserData);
@@ -37,6 +40,9 @@ const UserProvider = ({ children }) => {
     handleUnFollow,
     handleAddPost,
     handleEditPost,
+    handleDeletePost,
+    handleAddComment,
+    handleDeleteComment,
   } = useHandles();
 
   const onLogin = useCallback(
@@ -144,6 +150,31 @@ const UserProvider = ({ children }) => {
     [handleEditPost],
   );
 
+  const onDeletePost = useCallback(
+    async (postId) => {
+      const posts = await handleDeletePost(postId);
+      dispatch({ type: DELETE_POST, payload: posts });
+    },
+    [handleDeletePost],
+  );
+
+  const onAddComment = useCallback(
+    async (postId, value) => {
+      const comment = await handleAddComment(postId, value);
+      dispatch({ type: ADD_COMMENT, payload: comment._id });
+      return comment;
+    },
+    [handleAddComment],
+  );
+
+  const onDeleteComment = useCallback(
+    async (commentId) => {
+      await handleDeleteComment(commentId);
+      dispatch({ type: DELETE_COMMENT, payload: commentId });
+    },
+    [handleDeleteComment],
+  );
+
   const value = useMemo(() => {
     return {
       currentUser,
@@ -161,6 +192,9 @@ const UserProvider = ({ children }) => {
       onKeepLoggedIn,
       onAddPost,
       onEditPost,
+      onDeletePost,
+      onAddComment,
+      onDeleteComment,
     };
   }, [
     currentUser,
@@ -178,6 +212,9 @@ const UserProvider = ({ children }) => {
     onKeepLoggedIn,
     onAddPost,
     onEditPost,
+    onDeletePost,
+    onAddComment,
+    onDeleteComment,
   ]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 import displayedAt from 'utils/functions/displayedAt';
+import { setNotificationSeen } from 'utils/apis/postApi';
 
 const NotificationsWrapper = styled.div`
   background-color: ${theme.color.backgroundLight};
@@ -43,6 +44,12 @@ const NotificationPage = () => {
       );
     };
     initNotifications();
+    return () => {
+      const readNotifications = async () => {
+        setNotificationSeen(token);
+      };
+      readNotifications();
+    };
   }, []);
   return (
     <>

@@ -2,7 +2,11 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Icon, Text, FixedContainer } from 'components';
 import theme from 'styles/theme';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
+import Badge from 'components/basic/Badge';
+import useLocalToken from 'hooks/useLocalToken';
+import { useState } from 'react';
+import { getNotifications } from 'utils/apis/userApi';
 
 const { headerHeight, pagePadding } = theme.value;
 const { borderLight } = theme.color;
@@ -39,10 +43,16 @@ const InnerRight = styled.div`
 
 export const Header = ({ prev, title, info, complete, onComplete }) => {
   const navigate = useNavigate();
-
   const onClickPrev = () => {
     navigate(-1);
   };
+  const [isSeen, setIsSeen] = useState(true);
+  const [token] = useLocalToken();
+  const initNotifications = async () => {
+    const fetchedNotifications = await getNotifications(token);
+    setIsSeen(fetchedNotifications.data[0].seen);
+  };
+  initNotifications();
 
   return (
     <HeaderContainer top height={headerHeight}>
@@ -53,7 +63,9 @@ export const Header = ({ prev, title, info, complete, onComplete }) => {
       <InnerRight>
         {info && (
           <>
-            <Icon.Link to="/user/notification" name="NOTIFICATION" size={30} />
+            <Badge dot={isSeen}>
+              <Icon.Link to="/user/notification" name="NOTIFICATION" size={30} />
+            </Badge>
             <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
           </>
         )}

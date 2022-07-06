@@ -7,7 +7,6 @@ export { default as PageWrapper } from './basic/PageWrapper';
 export { default as Tab } from './basic/Tab';
 export { default as Text } from './basic/Text';
 
-export { default as Card } from './Card';
 export { default as ChangeNameForm } from './ChangeNameForm';
 export { default as ChangePasswordForm } from './ChangePasswordForm';
 export { default as ChangeProfileModal } from './ChangeProfileModal';

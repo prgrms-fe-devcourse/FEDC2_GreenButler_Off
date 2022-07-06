@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import theme from 'styles/theme';
 import { Avatar, Text } from 'components';
 import { IMAGE_URLS } from 'utils/constants/images';
+import { setNotificationSeen } from 'utils/apis/postApi';
+import useLocalToken from 'hooks/useLocalToken';
 
 const NotificationText = styled(Text)`
   margin-bottom: 7px;
@@ -37,28 +39,39 @@ const NotificationCard = ({
   color,
   fontSize = 18,
   fullName,
+  isSeen,
   message,
   children,
   img = IMAGE_URLS.PROFILE_IMG,
   ...props
 }) => {
+  const [token] = useLocalToken();
+  const handleClick = async () => {
+    await setNotificationSeen(token);
+  };
   return (
-    <CardWrapper>
-      <Container {...props}>
-        <Avatar src={img} alt="유저 프로필 이미지" size={size} />
-        <Div gap={gap}>
-          <NotificationText style={{ wordBreak: 'keep-all' }} color={color} lineHeight={'24.52px'}>
-            <Text fontWeight={600} fontSize={fontSize}>
-              {fullName}
+    !isSeen && (
+      <CardWrapper onClick={handleClick}>
+        <Container {...props}>
+          <Avatar src={img} alt="유저 프로필 이미지" size={size} />
+          <Div gap={gap}>
+            <NotificationText
+              style={{ wordBreak: 'keep-all' }}
+              color={color}
+              lineHeight={'24.52px'}
+            >
+              <Text fontWeight={600} fontSize={fontSize}>
+                {fullName}
+              </Text>
+              <Text fontSize={fontSize}>{message}</Text>
+            </NotificationText>
+            <Text color={theme.color.fontNormal} fontSize={16}>
+              {children}
             </Text>
-            <Text fontSize={fontSize}>{message}</Text>
-          </NotificationText>
-          <Text color={theme.color.fontNormal} fontSize={16}>
-            {children}
-          </Text>
-        </Div>
-      </Container>
-    </CardWrapper>
+          </Div>
+        </Container>
+      </CardWrapper>
+    )
   );
 };
 

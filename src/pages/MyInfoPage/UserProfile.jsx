@@ -101,6 +101,7 @@ const UserProfile = () => {
           onFileChange={onFileChange}
           onProfileSubmit={onProfileSubmit}
           onClose={onCloseProfile}
+          currentProfile={currentUser.image}
         />
       )}
     </UserProfileWrapper>

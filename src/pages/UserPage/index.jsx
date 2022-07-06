@@ -24,7 +24,6 @@ const UserPage = () => {
   const { currentUser } = useUserContext();
   const [user, setUser] = useState(initialUserData.currentUser);
   const [userLevel, setUserLevel] = useState({});
-  const [userPosts, setUserPosts] = useState([]);
   const [userLikePosts, setUserLikePosts] = useState([]);
 
   const [currentTab, setCurrentTab] = useState(USER_POSTS);
@@ -39,7 +38,6 @@ const UserPage = () => {
       setUser(data);
       const { posts, comments, followers } = data;
       const { level } = getUserLevel({ posts, comments, followers });
-      setUserPosts(posts);
       setUserLevel(level);
     }
   }, [pageUserId]);
@@ -76,7 +74,7 @@ const UserPage = () => {
             }}
             index={USER_POSTS}
           >
-            <PostImageContainer posts={userPosts} />
+            <PostImageContainer posts={user.posts} />
           </Tab.Item>
           <Tab.Item
             icon={{

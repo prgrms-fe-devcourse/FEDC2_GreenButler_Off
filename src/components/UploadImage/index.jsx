@@ -6,6 +6,7 @@ import { IMAGE_URLS } from 'utils/constants/images';
 import { Modal } from 'components';
 
 import imageCompression from 'browser-image-compression';
+import heic2any from 'heic2any';
 
 const { backgroundGreen, mainWhite } = theme.color;
 const { POST_ADD_IMG } = IMAGE_URLS;
@@ -67,11 +68,11 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
       return;
     }
 
-    if (!/\.(gif|jpg|jpeg|png)$/i.test(fileBlob.name)) {
+    if (!/\.(gif|jpg|jpeg|png|heic)$/i.test(fileBlob.name)) {
       setModalMsg({
         isModal: true,
         title: '등록할 수 없는 파일입니다.',
-        description: '등록 가능한 확장자: jpg, jpeg, gif, png',
+        description: '등록 가능한 확장자: jpg, jpeg, gif, png, heic',
       });
       return;
     }
@@ -83,6 +84,10 @@ const UploadImage = ({ onChange, defaultImage, ...props }) => {
         description: `현재 파일 용량 : ${Math.round((fileBlob.size / 1024 / 1024) * 100) / 100}MB`,
       });
       return;
+    }
+
+    if (/\.(heic)$/i.test(fileBlob.name)) {
+      fileBlob = await heic2any({ blob: fileBlob, toType: 'image/jpeg' });
     }
 
     // 1MB 보다 크다면 변환

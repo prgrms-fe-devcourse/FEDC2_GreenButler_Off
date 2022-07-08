@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import theme from 'styles/theme';
 
 const DefaultTemplate = ({ children }) => {
   return (
@@ -20,7 +21,7 @@ const Container = styled.div`
   min-height: 100vh;
   overflow-x: hidden;
   margin: 0 auto;
-  background-color: ${({ theme }) => theme.color.mainWhite};
+  background-color: ${theme.color.mainWhite};
   -ms-overflow-style: none;
 
   ::-webkit-scrollbar {

@@ -1,24 +1,23 @@
 import styled from '@emotion/styled';
 import { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import IconBtn from './IconButton';
 import { Profile, Modal } from 'components';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
-import { deletePost } from 'utils/apis/postApi';
 import useLocalToken from 'hooks/useLocalToken';
+import IconButton from 'components/basic/Icon/IconButton';
 
 const PostHeader = ({ post, isDetailPage }) => {
   const {
     _id: postId,
     author: { _id, image, fullName },
   } = post;
-  const { currentUser } = useUserContext();
+  const { currentUser, onDeletePost } = useUserContext();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
   const [localToken] = useLocalToken();
 
-  const handleProfileClick = useCallback(() => {
+  const handleClickProfile = useCallback(() => {
     navigate(`/user/${_id}`, {
       state: {
         userId: _id,
@@ -26,11 +25,11 @@ const PostHeader = ({ post, isDetailPage }) => {
     });
   }, [navigate, _id]);
 
-  const handleMoreClick = useCallback(() => {
+  const handleClickMore = useCallback(() => {
     setIsModal(true);
   }, []);
 
-  const handleUpdateClick = useCallback(() => {
+  const handleUpdate = useCallback(() => {
     setIsModal(false);
     navigate(`/post/edit/${postId}`, {
       state: {
@@ -39,13 +38,13 @@ const PostHeader = ({ post, isDetailPage }) => {
     });
   }, [postId, post, navigate]);
 
-  const handleDeleteClick = useCallback(async () => {
+  const handleDelete = useCallback(async () => {
     setIsModal(false);
     if (localToken && postId) {
-      await deletePost(localToken, postId);
+      await onDeletePost(postId);
       navigate(-1);
     }
-  }, [localToken, postId, navigate]);
+  }, [localToken, postId, onDeletePost, navigate]);
 
   const onClose = useCallback(() => {
     setIsModal(false);
@@ -58,15 +57,15 @@ const PostHeader = ({ post, isDetailPage }) => {
   return (
     <>
       <Header>
-        <Profile src={image} userName={fullName} onClick={handleProfileClick} />
+        <Profile src={image} userName={fullName} onClick={handleClickProfile} />
         {isMyPost && (
           <>
-            <IconBtn name="MORE" size={20} onClick={handleMoreClick} />
+            <IconButton name="MORE" size={20} onClick={handleClickMore} />
             <Modal visible={isModal} onClose={onClose}>
               <Modal.Custom>
                 <Buttons>
-                  <UpdatePostButton onClick={handleUpdateClick}>수정</UpdatePostButton>
-                  <DeletePostButton onClick={handleDeleteClick}>삭제</DeletePostButton>
+                  <UpdatePostButton onClick={handleUpdate}>수정</UpdatePostButton>
+                  <DeletePostButton onClick={handleDelete}>삭제</DeletePostButton>
                 </Buttons>
               </Modal.Custom>
             </Modal>

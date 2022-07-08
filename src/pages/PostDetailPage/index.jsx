@@ -10,6 +10,11 @@ import { getPostData } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
 import { setNotification } from 'utils/apis/userApi';
 import displayedAt from 'utils/functions/displayedAt';
+import { MORE } from 'utils/constants/icons/names';
+import { COMMENT } from 'utils/constants/notificationTypes';
+
+const MODAL_TITLE_LOGIN_REQUIRED = '로그인이 필요한 서비스입니다.';
+const MODAL_DESCRIPTION_LOGIN_REQUIRED = '로그인 화면으로 이동하시겠어요?';
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -49,7 +54,7 @@ const PostDetailPage = () => {
       setInputHeight('30px');
       inputRef.current.value = '';
       if (currentUser.id !== post.author._id) {
-        await setNotification(localToken, 'COMMENT', newComment._id, post.author._id, post._id);
+        await setNotification(localToken, COMMENT, newComment._id, post.author._id, post._id);
       }
     },
     [post, localToken, currentUser.id, onAddComment],
@@ -124,7 +129,7 @@ const PostDetailPage = () => {
                     </Content>
                     {_id === currentUser.id && (
                       <IconButton
-                        name="MORE"
+                        name={MORE}
                         size={20}
                         style={MoreButtonStyle}
                         onClick={() => handleMoreClick(commentId)}
@@ -145,8 +150,8 @@ const PostDetailPage = () => {
           {loginModalOn && (
             <Modal visible={loginModalOn} onClose={handleCloseModal}>
               <Modal.Content
-                title="로그인이 필요한 서비스입니다."
-                description="로그인 화면으로 이동하시겠어요?"
+                title={MODAL_TITLE_LOGIN_REQUIRED}
+                description={MODAL_DESCRIPTION_LOGIN_REQUIRED}
                 onClose={handleCloseModal}
               />
               <Modal.Button

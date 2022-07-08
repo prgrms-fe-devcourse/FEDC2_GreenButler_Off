@@ -13,6 +13,8 @@ import { useUserContext } from 'contexts/UserContext';
 import { IMAGE_URLS } from 'utils/constants/images';
 import displayedAt from 'utils/functions/displayedAt';
 import IconButton from 'components/basic/Icon/IconButton';
+import { COMMENT, HEART, HEART_RED } from 'utils/constants/icons/names';
+import { LIKE } from 'utils/constants/notificationTypes';
 
 const PostBody = ({ index, post, isDetailPage = false }) => {
   const { _id: postId, image, likes, comments, createdAt, author } = post || {};
@@ -62,7 +64,7 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
         const like = await setLike(localToken, postId).then((res) => res.data);
         setLikeId(like._id);
         if (currentUser.id !== author._id) {
-          await setNotification(localToken, 'LIKE', like._id, author._id, postId);
+          await setNotification(localToken, LIKE, like._id, author._id, postId);
         }
       }
     } else {
@@ -103,7 +105,7 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
       <Contents>
         <IconButtons>
           <IconButton
-            name={onHeart ? 'HEART_RED' : 'HEART'} // Todo: 상수화
+            name={onHeart ? HEART_RED : HEART}
             size={22}
             style={IconButtonStyle}
             onClick={handleClickHeart}
@@ -112,7 +114,7 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
               {heartCount}
             </Text>
           </IconButton>
-          <IconButton name="COMMENT" size={22} onClick={navigateToDetailPage}>
+          <IconButton name={COMMENT} size={22} onClick={navigateToDetailPage}>
             <Text fontSize={16} style={IconButtonTextStyle}>
               {comments.length}
             </Text>

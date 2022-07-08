@@ -6,6 +6,7 @@ import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
 import useLocalToken from 'hooks/useLocalToken';
 import IconButton from 'components/basic/Icon/IconButton';
+import { MORE } from 'utils/constants/icons/names';
 
 const PostHeader = ({ post, isDetailPage }) => {
   const {
@@ -60,7 +61,7 @@ const PostHeader = ({ post, isDetailPage }) => {
         <Profile src={image} userName={fullName} onClick={handleClickProfile} />
         {isMyPost && (
           <>
-            <IconButton name="MORE" size={20} onClick={handleClickMore} />
+            <IconButton name={MORE} size={20} onClick={handleClickMore} />
             <Modal visible={isModal} onClose={onClose}>
               <Modal.Custom>
                 <Buttons>

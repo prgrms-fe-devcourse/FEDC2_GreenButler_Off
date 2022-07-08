@@ -20,17 +20,14 @@ import {
 } from '../pages/index';
 
 const Router = () => {
-  const navigate = useNavigate();
   const [token] = useLocalToken();
   const { onKeepLoggedIn } = useUserContext();
   scrollToTop();
 
   useEffect(() => {
-    if (!token) {
-      navigate('/login', { replace: true });
-      return;
+    if (token) {
+      onKeepLoggedIn();
     }
-    onKeepLoggedIn();
   }, []);
 
   return (

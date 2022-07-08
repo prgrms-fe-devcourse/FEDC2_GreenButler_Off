@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import PostItem from 'pages/MainPage/PostItem';
-import { Avatar, Icon, Modal, PageWrapper } from 'components';
+import { Avatar, Modal, PageWrapper } from 'components';
 import IconButton from 'components/basic/Icon/IconButton';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState, useEffect } from 'react';
@@ -19,7 +19,8 @@ const PostDetailPage = () => {
   const inputRef = useRef(null);
   const [localToken] = useLocalToken();
   const { currentUser, onAddComment, onDeleteComment } = useUserContext();
-  const [isModal, setIsModal] = useState(false);
+  const [loginModalOn, setLoginModalOn] = useState(false);
+  const [commentModalOn, setCommentModalOn] = useState(false);
   const commentIdToDelete = useRef('');
 
   useEffect(() => {
@@ -33,6 +34,10 @@ const PostDetailPage = () => {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
+      if (!localToken) {
+        setLoginModalOn(true);
+        return;
+      }
       if (!inputRef.current.value) {
         return;
       }
@@ -67,12 +72,12 @@ const PostDetailPage = () => {
   );
 
   const handleMoreClick = useCallback((commentId) => {
-    setIsModal(true);
+    setCommentModalOn(true);
     commentIdToDelete.current = commentId;
   }, []);
 
   const handleDeleteComment = useCallback(async () => {
-    setIsModal(false);
+    setCommentModalOn(false);
     if (commentIdToDelete.current) {
       await onDeleteComment(commentIdToDelete.current);
       const nextComments = post.comments.filter(
@@ -85,8 +90,9 @@ const PostDetailPage = () => {
     }
   }, [post, onDeleteComment]);
 
-  const onClose = useCallback(() => {
-    setIsModal(false);
+  const handleCloseModal = useCallback(() => {
+    setLoginModalOn(false);
+    setCommentModalOn(false);
   }, []);
 
   return (
@@ -129,11 +135,36 @@ const PostDetailPage = () => {
                 .reverse()}
             </CommentList>
           </Container>
-          <Modal visible={isModal} onClose={onClose}>
-            <Modal.Custom>
-              <DeleteCommentButton onClick={handleDeleteComment}>삭제</DeleteCommentButton>
-            </Modal.Custom>
-          </Modal>
+          {commentModalOn && (
+            <Modal visible={commentModalOn} onClose={handleCloseModal}>
+              <Modal.Custom>
+                <DeleteCommentButton onClick={handleDeleteComment}>삭제</DeleteCommentButton>
+              </Modal.Custom>
+            </Modal>
+          )}
+          {loginModalOn && (
+            <Modal visible={loginModalOn} onClose={handleCloseModal}>
+              <Modal.Content
+                title="로그인이 필요한 서비스입니다."
+                description="로그인 화면으로 이동하시겠어요?"
+                onClose={handleCloseModal}
+              />
+              <Modal.Button
+                onClick={() => {
+                  navigate('/login', { replace: true });
+                }}
+              >
+                예
+              </Modal.Button>
+              <Modal.Button
+                onClick={handleCloseModal}
+                backgroundColor={theme.color.backgroundNormal}
+                color="#000"
+              >
+                아니오
+              </Modal.Button>
+            </Modal>
+          )}
         </PageWrapper>
       )}
     </>

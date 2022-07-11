@@ -12,9 +12,7 @@ import { setNotification } from 'utils/apis/userApi';
 import displayedAt from 'utils/functions/displayedAt';
 import { MORE } from 'utils/constants/icons/names';
 import { COMMENT } from 'utils/constants/notificationTypes';
-
-const MODAL_TITLE_LOGIN_REQUIRED = '로그인이 필요한 서비스입니다.';
-const MODAL_DESCRIPTION_LOGIN_REQUIRED = '로그인 화면으로 이동하시겠어요?';
+import LoginRequireModal from 'components/Modal/customs/LoginRequireModal';
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -147,29 +145,7 @@ const PostDetailPage = () => {
               </Modal.Custom>
             </Modal>
           )}
-          {loginModalOn && (
-            <Modal visible={loginModalOn} onClose={handleCloseModal}>
-              <Modal.Content
-                title={MODAL_TITLE_LOGIN_REQUIRED}
-                description={MODAL_DESCRIPTION_LOGIN_REQUIRED}
-                onClose={handleCloseModal}
-              />
-              <Modal.Button
-                onClick={() => {
-                  navigate('/login', { replace: true });
-                }}
-              >
-                예
-              </Modal.Button>
-              <Modal.Button
-                onClick={handleCloseModal}
-                backgroundColor={theme.color.backgroundNormal}
-                color="#000"
-              >
-                아니오
-              </Modal.Button>
-            </Modal>
-          )}
+          {loginModalOn && <LoginRequireModal visible={loginModalOn} onClose={handleCloseModal} />}
         </PageWrapper>
       )}
     </>

@@ -4,19 +4,16 @@ import { Text, PageWrapper, Input, Modal } from 'components';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import theme from 'styles/theme';
-import useDebounce from 'hooks/useDebounce';
 
 const MyInfoEditPage = () => {
   const { onChangePassword } = useUserContext();
   const navigate = useNavigate();
 
   const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
   const [passwordInvalid, setPasswordInvalid] = useState(false);
   const [confirmInvalid, setConfirmInvalid] = useState(false);
   const [errors, setErrors] = useState({});
   const [isModal, setIsModal] = useState(false);
-  const [value, setValue] = useState('');
 
   const onClose = () => {
     setIsModal(false);
@@ -24,43 +21,45 @@ const MyInfoEditPage = () => {
 
   const regex = /\S{8,10}/;
 
-  const validate = useDebounce(
-    () => {
-      const newErrors = {};
-      if (password && !regex.test(password)) {
+  const validate = (e) => {
+    const { value, name } = e.target;
+
+    const newErrors = {};
+    if (name === 'password') {
+      if (value.length > 10) {
+        e.target.value = value.slice(0, 10);
+      }
+      if (!regex.test(value)) {
         newErrors.password = '! 8-10자 사이로 공백없이 입력해주세요';
         setPasswordInvalid(true);
       }
-      if (password.length > 10) {
-        newErrors.password = '! 8-10자 사이로 공백없이 입력해주세요';
-        setPassword(password.slice(0, 10));
-        setPasswordInvalid(true);
+      setPassword(e.target.value);
+    }
+    if (name === 'confirm') {
+      if (value.length > 10) {
+        e.target.value = value.slice(0, 10);
       }
-      if (confirm && password !== confirm) {
+      if (password !== e.target.value) {
         newErrors.confirm = '! 비밀번호와 일치하지 않습니다.';
         setConfirmInvalid(true);
       }
-      if (confirm.length > 10) {
-        setConfirm(confirm.slice(0, 10));
-      }
-      setErrors(newErrors);
-      !newErrors.password && setPasswordInvalid(false);
-      !newErrors.confirm && setConfirmInvalid(false);
-    },
-    200,
-    [password, confirm],
-  );
+    }
+
+    setErrors(newErrors);
+    !newErrors.password && setPasswordInvalid(false);
+    !newErrors.confirm && setConfirmInvalid(false);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password && confirm && !passwordInvalid && !confirmInvalid) {
+    if (password && !passwordInvalid && !confirmInvalid) {
       onChangePassword(password);
       setIsModal(true);
     }
   };
   return (
     <PageWrapper header prev complete onComplete={handleSubmit}>
-      <UserContainter>
+      <UserContainer>
         <UserInfo>
           <Text
             style={{
@@ -74,18 +73,14 @@ const MyInfoEditPage = () => {
           >
             비밀번호를 설정해주세요
           </Text>
-          <UserEditForm onSubmit={handleSubmit}>
+          <UserEditForm>
             <Input
               label="변경할 비밀번호"
               style={{ marginTop: 5 }}
               type="password"
               name="password"
               inValid={passwordInvalid}
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                validate();
-              }}
+              onChange={validate}
             ></Input>
             {errors.password ? (
               <ErrorText>{errors.password}</ErrorText>
@@ -100,11 +95,7 @@ const MyInfoEditPage = () => {
               type="password"
               name="confirm"
               inValid={confirmInvalid}
-              value={confirm}
-              onChange={(e) => {
-                setConfirm(e.target.value);
-                validate();
-              }}
+              onChange={validate}
             ></Input>
             {errors.confirm && <ErrorText>{errors.confirm}</ErrorText>}
           </UserEditForm>
@@ -122,14 +113,14 @@ const MyInfoEditPage = () => {
             </Modal.Button>
           </Modal>
         )}
-      </UserContainter>
+      </UserContainer>
     </PageWrapper>
   );
 };
 
 export default MyInfoEditPage;
 
-const UserContainter = styled.div`
+const UserContainer = styled.div`
   width: 100%;
   height: 100%;
   position: relative;

@@ -139,7 +139,7 @@
 
 # ✏️ 와이어 프레임 & 기능 리스트
 
-<a href="https://www.figma.com/file/oifXc5Xse4MTsZh2l0MotC/%EC%B4%88%EB%A1%9D-%EC%A7%91%EC%82%AC-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84-%EB%B0%8F-%EA%B5%AC%EC%A1%B0%EB%8F%84?node-id=0%3A1"><img src="https://user-images.githubusercontent.com/79133602/178573127-299ec93a-22cc-47f6-a55d-e689f97a83a9.png"/></a>
+<a href="https://www.figma.com/file/oifXc5Xse4MTsZh2l0MotC/%EC%B4%88%EB%A1%9D-%EC%A7%91%EC%82%AC-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84-%EB%B0%8F-%EA%B5%AC%EC%A1%B0%EB%8F%84?node-id=0%3A1"><img src="https://user-images.githubusercontent.com/79133602/178573592-f4941a70-2083-4254-8f3f-15c0f2d73587.png"/></a>
 
 
 <br />
@@ -147,7 +147,7 @@
 # 🎨 디자인 시안
 
 
-<a href="https://www.figma.com/file/Q81vKDRIoXpMcIZTYHqrQl/%EC%B4%88%EB%A1%9D%EC%A7%91%EC%82%AC-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=0%3A1"><img src="https://user-images.githubusercontent.com/79133602/178573592-f4941a70-2083-4254-8f3f-15c0f2d73587.png"/></a>
+<a href="https://www.figma.com/file/Q81vKDRIoXpMcIZTYHqrQl/%EC%B4%88%EB%A1%9D%EC%A7%91%EC%82%AC-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=0%3A1"><img src="https://user-images.githubusercontent.com/79133602/178573127-299ec93a-22cc-47f6-a55d-e689f97a83a9.png" width="100%"/></a>
 
 <br />
 

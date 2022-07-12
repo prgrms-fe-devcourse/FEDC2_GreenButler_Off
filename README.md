@@ -146,8 +146,7 @@
 
 # 🎨 디자인 시안
 
-
-<a href="https://www.figma.com/file/Q81vKDRIoXpMcIZTYHqrQl/%EC%B4%88%EB%A1%9D%EC%A7%91%EC%82%AC-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=0%3A1"><img src="https://user-images.githubusercontent.com/79133602/178573127-299ec93a-22cc-47f6-a55d-e689f97a83a9.png" width="100%"/></a>
+<a href="https://www.figma.com/file/Q81vKDRIoXpMcIZTYHqrQl/%EC%B4%88%EB%A1%9D%EC%A7%91%EC%82%AC-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=0%3A1"><img src="https://user-images.githubusercontent.com/79133602/178581705-9e7f8451-41b4-40a1-8f98-e2676faf55a9.png" width="100%"/></a>
 
 <br />
 

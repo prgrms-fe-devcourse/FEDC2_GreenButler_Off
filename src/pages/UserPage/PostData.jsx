@@ -22,10 +22,14 @@ const PostData = ({ user }) => {
   const handleGetLikePosts = useCallback(async () => {
     const { likes } = user;
     if (likes.length !== 0) {
-      const data = await Promise.all(
-        likes.map((like) => getPostData(like.post).then((result) => result.data)),
-      );
-      setUserLikePosts(data);
+      try {
+        const data = await Promise.allSettled(
+          likes.map((like) => getPostData(like.post).then((result) => result.data)),
+        );
+        setUserLikePosts(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }, [user]);
 

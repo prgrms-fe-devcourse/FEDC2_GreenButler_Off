@@ -10,25 +10,32 @@ const PostImageContainer = ({ posts }) => {
 
   return (
     <PostImageList>
-      {posts.map((post) => (
-        <ImageItem
-          key={post._id}
-          onClick={() => {
-            navigate(`/post/detail/${post._id}`);
-          }}
-        >
-          <Image
-            src={post.image ? post.image : IMAGE_URLS.POST_DEFAULT_IMG}
-            height="100%"
-            width="100%"
-            mode="cover"
-            lazy={true}
-            threshold={0.4}
-            placeholder={IMAGE_URLS.POST_DEFAULT_IMG}
-            style={{ position: 'absolute', left: 0, top: 0 }}
-          />
-        </ImageItem>
-      ))}
+      {posts.map((post) => {
+        const data =
+          Object.hasOwnProperty.call(post, 'status') && post.status === 'fulfilled'
+            ? post.value
+            : post;
+        return (
+          <ImageItem
+            key={data._id}
+            onClick={() => {
+              navigate(`/post/detail/${data._id}`);
+            }}
+          >
+            <Image
+              src={data.image ? data.image : IMAGE_URLS.POST_DEFAULT_IMG}
+              height="100%"
+              width="100%"
+              mode="cover"
+              lazy={true}
+              threshold={0.4}
+              placeholder={IMAGE_URLS.POST_DEFAULT_IMG}
+              style={{ position: 'absolute', left: 0, top: 0 }}
+              defaultImageUrl={IMAGE_URLS.POST_DEFAULT_GRID_IMG}
+            />
+          </ImageItem>
+        );
+      })}
     </PostImageList>
   );
 };

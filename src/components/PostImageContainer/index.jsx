@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { Image } from 'components';
 import { IMAGE_URLS } from 'utils/constants/images';
 
-const PostImageContainer = React.memo(function ImageContainer({ posts }) {
+const PostImageContainer = ({ posts }) => {
   const navigate = useNavigate();
 
   return (
@@ -31,9 +31,9 @@ const PostImageContainer = React.memo(function ImageContainer({ posts }) {
       ))}
     </PostImageList>
   );
-});
+};
 
-export default PostImageContainer;
+export default React.memo(PostImageContainer);
 
 PostImageContainer.prototype = {
   posts: PropTypes.array,

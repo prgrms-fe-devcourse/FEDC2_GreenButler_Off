@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Text, Avatar, Button, Image, Modal } from 'components';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
@@ -18,11 +18,19 @@ import {
 
 const UserData = ({ user, pageUserId, userLevel }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
-  const checkFollow = currentUser.following.some((follow) => follow.user === pageUserId);
-  const [isFollow, setIsFollow] = useState(checkFollow);
+  const followData = currentUser.following.filter((follow) => follow.user === pageUserId);
+  const [isFollow, setIsFollow] = useState(false);
   const [isFollowModal, setIsFollowModal] = useState(false);
   const [isUnFollowModal, setIsUnFollowModal] = useState(false);
   const [followers, setFollowers] = useState();
+
+  useEffect(() => {
+    setIsFollow(followData.length === 0 ? false : true);
+  }, [followData]);
+
+  useEffect(() => {
+    setFollowers(user.followers.length);
+  }, [user]);
 
   const navigate = useNavigate();
 
@@ -34,7 +42,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
     setIsUnFollowModal(false);
   };
 
-  const hadleFollow = useCallback(() => {
+  const handleFollow = useCallback(() => {
     if (!isFollow) {
       onFollow({ userId: pageUserId, followId: '' });
       setIsFollowModal(true);
@@ -44,9 +52,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
     setIsFollow(true);
   }, [pageUserId, isFollow, onFollow, followers]);
 
-  const hadleUnFollow = useCallback(() => {
-    const followData = currentUser.following.filter((follow) => follow.user === pageUserId);
-
+  const handleUnFollow = useCallback(() => {
     if (followData.length !== 0) {
       onUnfollow({ unfollowId: followData[0]._id });
       setIsFollow(false);
@@ -55,11 +61,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
       }
     }
     setIsUnFollowModal(false);
-  }, [pageUserId, currentUser, onUnfollow, followers]);
-
-  useEffect(() => {
-    setFollowers(user.followers.length);
-  }, [user]);
+  }, [followData, onUnfollow, followers]);
 
   return (
     <UserInfo>
@@ -127,7 +129,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           borderRadius={10}
           fontSize="16px"
           style={{ ...followButtonStyle }}
-          onClick={hadleFollow}
+          onClick={handleFollow}
         >
           팔로우
         </Button>
@@ -150,7 +152,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
         />
         <Modal.Button
           onClick={() => {
-            hadleUnFollow();
+            handleUnFollow();
           }}
         >
           확인
@@ -167,7 +169,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
   );
 };
 
-export default UserData;
+export default React.memo(UserData);
 
 UserData.propTypes = {
   user: PropTypes.object,

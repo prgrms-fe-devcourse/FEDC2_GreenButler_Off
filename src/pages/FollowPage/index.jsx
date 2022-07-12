@@ -16,20 +16,10 @@ const FollowPage = () => {
   const [followingData, setFollowingData] = useState([]); // 얘는 해당 user(id) 유저 정보들의 배열 vs following은 id가 담긴 배열
   const [followerData, setFollowerData] = useState([]); // 얘는 해당 follower(id) 유저 정보들의 배열 vs followers는 id가 담긴 배열
   const { currentUser } = useUserContext();
-  const [isFollowSuccess, setIsFollowSuccess] = useState(false);
+  const [isFollowChange, setIsFollowChange] = useState(false);
 
-  useEffect(() => {
-    if (currentUser.id !== id) {
-      handleGetUser();
-      setIsMyFollow(false);
-    } else {
-      setUser(currentUser);
-      setIsMyFollow(true);
-    }
-  }, [currentUser]);
-
-  const handleFollowSuccess = (value) => {
-    setIsFollowSuccess(value);
+  const handleFollowChange = (value) => {
+    setIsFollowChange(value);
   };
 
   //TODO:신영 현재 페이지 유저의 정보 => 전역데이터가 아닌 경우 context를 사용할 수 없어서 직접 api 호출
@@ -44,6 +34,16 @@ const FollowPage = () => {
   const onActive = (value) => {
     setCurrentTab(value);
   };
+
+  useEffect(() => {
+    if (currentUser.id !== id) {
+      handleGetUser();
+      setIsMyFollow(false);
+    } else {
+      setUser(currentUser);
+      setIsMyFollow(true);
+    }
+  }, [currentUser, id, handleGetUser]);
 
   //FOLLOWING: 내가 팔로잉 한 사람들 user: 그놈들 id , follower: 내 id
   const handleGetFollowing = useCallback(async () => {
@@ -63,6 +63,7 @@ const FollowPage = () => {
     } else {
       setFollowingData([]);
     }
+    setIsFollowChange(false);
   }, [user]);
 
   //FOLLOWERS: 나를 팔로잉 한 사람들 user: 내 id , follower: 그 놈들 id
@@ -81,17 +82,24 @@ const FollowPage = () => {
       );
       setFollowerData(data);
     }
+    setIsFollowChange(false);
   }, [user]);
-
+  
   useEffect(() => {
-    if (currentTab === FOLLOWING && (followingData.length === 0 || isFollowSuccess)) {
+    if (currentTab === FOLLOWING && (followingData.length === 0 || isFollowChange)) {
       handleGetFollowing();
-      setIsFollowSuccess(false);
     } else if (currentTab === FOLLOWER && followerData.length === 0) {
       handleGetFollowers();
-      setIsFollowSuccess(false);
     }
-  }, [user, currentTab]);
+  }, [
+    currentTab,
+    user,
+    isFollowChange,
+    followingData,
+    followerData,
+    handleGetFollowing,
+    handleGetFollowers,
+  ]);
 
   return (
     <PageWrapper header nav prev title={user.fullName}>
@@ -101,7 +109,7 @@ const FollowPage = () => {
             <MyFollowList
               followList={followerData}
               tab={FOLLOWER}
-              handleFollowSuccess={handleFollowSuccess}
+              handleFollowChange={handleFollowChange}
             />
           ) : (
             <FollowList followList={followerData} />
@@ -112,7 +120,7 @@ const FollowPage = () => {
             <MyFollowList
               followList={followingData}
               tab={FOLLOWING}
-              handleFollowSuccess={handleFollowSuccess}
+              handleFollowChange={handleFollowChange}
             />
           ) : (
             <FollowList followList={followingData} />

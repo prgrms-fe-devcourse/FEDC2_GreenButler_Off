@@ -52,8 +52,8 @@ export const Header = ({ prev, title, info, complete, onComplete }) => {
   const [token] = useLocalToken();
   const initNotifications = useCallback(async () => {
     const fetchedNotifications = await getNotifications(token);
-    setIsSeen(fetchedNotifications.data[0].seen);
-  }, [token]);
+    setIsSeen(fetchedNotifications.data.length === 0 ? isSeen : fetchedNotifications.data[0].seen);
+  }, [token, isSeen]);
   initNotifications();
 
   return (

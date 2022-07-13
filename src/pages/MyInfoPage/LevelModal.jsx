@@ -5,6 +5,42 @@ import theme from 'styles/theme';
 
 const { fontNormal, fontBlack, backgroundLight, fontDark } = theme.color;
 
+const LevelModal = ({ onClose }) => {
+  return (
+    <ModalContainer>
+      <CloseButton name="CLOSE" size={30} onClick={onClose} />
+      <Text fontSize={22} block strong style={{ marginTop: 30 }}>
+        활동 점수
+      </Text>
+      <Text block fontSize={16} style={{ marginTop: 12 }}>
+        활동 점수에 따라 등급이 부여됩니다.
+      </Text>
+      <ScoreDescription>
+        게시물 등록 시 <Strong>+3점</Strong>, 댓글 등록 시 <Strong>+2점</Strong>,<br />
+        다른 사람이 나를 팔로우 할 시 <Strong>+2점</Strong>
+      </ScoreDescription>
+      <LevelList>
+        {levels.map((level, index) => (
+          <LevelItem key={index}>
+            <Avatar
+              src={level.image}
+              size={50}
+              alt={level.name}
+              style={{ backgroundColor: level.color, border: 0 }}
+            />
+            <LevelInfo>
+              <LevelName>{level.name}</LevelName>
+              <LevelDescription>{level.description}</LevelDescription>
+            </LevelInfo>
+          </LevelItem>
+        ))}
+      </LevelList>
+    </ModalContainer>
+  );
+};
+
+export default LevelModal;
+
 const ModalContainer = styled.div`
   width: 100%;
   background-color: white;
@@ -65,39 +101,3 @@ const Strong = styled.span`
   font-weight: bold;
   color: ${fontBlack};
 `;
-
-const LevelModal = ({ onClose }) => {
-  return (
-    <ModalContainer>
-      <CloseButton name="CLOSE" size={30} onClick={onClose} />
-      <Text fontSize={22} block strong style={{ marginTop: 30 }}>
-        활동 점수
-      </Text>
-      <Text block fontSize={16} style={{ marginTop: 12 }}>
-        활동 점수에 따라 등급이 부여됩니다.
-      </Text>
-      <ScoreDescription>
-        게시물 등록 시 <Strong>+2점</Strong>, 댓글 등록 시 <Strong>+1점</Strong>,<br />
-        다른 사람이 나를 팔로우 할 시 <Strong>+1점</Strong>
-      </ScoreDescription>
-      <LevelList>
-        {levels.map((level, index) => (
-          <LevelItem key={index}>
-            <Avatar
-              src={level.image}
-              size={50}
-              alt={level.name}
-              style={{ backgroundColor: level.color, border: 0 }}
-            />
-            <LevelInfo>
-              <LevelName>{level.name}</LevelName>
-              <LevelDescription>{level.description}</LevelDescription>
-            </LevelInfo>
-          </LevelItem>
-        ))}
-      </LevelList>
-    </ModalContainer>
-  );
-};
-
-export default LevelModal;

@@ -34,18 +34,21 @@ const Router = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/" element={<MainPage />} />
+      <Route path="/post/detail/:id" element={<PostDetailPage />} />
+      <Route path="/user/:id" element={<UserPage />} />
+      <Route path="/user/follow/:id" element={<FollowPage />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/search/:searchKeyword" element={<SearchPage />} />
+      <Route path="/tag/:tag" element={<SearchTagPage />} />
       <Route element={<PrivateWrapper />}>
         <Route path="/post/create" element={<PostEditPage />} />
       </Route>
       <Route element={<PrivateWrapper />}>
         <Route path="/post/edit/:id" element={<PostEditPage />} />
       </Route>
-      <Route path="/post/detail/:id" element={<PostDetailPage />} />
-      <Route path="/user/:id" element={<UserPage />} />
       <Route element={<PrivateWrapper />}>
         <Route path="/user/" element={<UserPage />} />
       </Route>
-      <Route path="/user/follow/:id" element={<FollowPage />} />
       <Route element={<PrivateWrapper />}>
         <Route path="/user/myinfo" element={<MyInfoPage />} />
       </Route>
@@ -55,9 +58,6 @@ const Router = () => {
       <Route element={<PrivateWrapper />}>
         <Route path="/user/notification" element={<NotificationPage />} />
       </Route>
-      <Route path="/search" element={<SearchPage />} />
-      <Route path="/search/:searchKeyword" element={<SearchPage />} />
-      <Route path="/tag/:tag" element={<SearchTagPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

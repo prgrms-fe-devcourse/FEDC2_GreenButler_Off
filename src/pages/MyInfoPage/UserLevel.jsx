@@ -1,13 +1,71 @@
 import styled from '@emotion/styled';
-import theme from 'styles/theme';
-import { useEffect } from 'react';
-import { getUser } from 'utils/apis/userApi';
 import { useUserContext } from 'contexts/UserContext';
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Modal, Text } from 'components';
 import getUserLevel from 'utils/functions/userLevel/getUserLevel';
-import { useCallback } from 'react';
 import LevelModal from './LevelModal';
+import theme from 'styles/theme';
+
+const UserLevel = () => {
+  const { currentUser } = useUserContext();
+  const [isModal, setIsModal] = useState(false);
+
+  const levelData = useMemo(
+    () =>
+      getUserLevel({
+        posts: currentUser.posts,
+        comments: currentUser.comments,
+        followers: currentUser.followers,
+      }),
+    [currentUser],
+  );
+
+  const closeModal = useCallback(() => {
+    setIsModal(false);
+  }, []);
+
+  return (
+    <LevelContainer>
+      {levelData.level && (
+        <MyLevel>
+          <LevelIcon src={levelData.level.image} />
+          {levelData.level?.name}
+        </MyLevel>
+      )}
+      <MyHistory>
+        <HistoryItem>
+          <HistoryTitle>게시글</HistoryTitle>
+          <HistoryCount>{currentUser.posts.length}</HistoryCount>
+        </HistoryItem>
+        <HistoryItem>
+          <HistoryTitle>댓글</HistoryTitle>
+          <HistoryCount>{currentUser.comments.length}</HistoryCount>
+        </HistoryItem>
+        <HistoryItem>
+          <HistoryTitle>팔로워</HistoryTitle>
+          <HistoryCount>{currentUser.followers.length}</HistoryCount>
+        </HistoryItem>
+      </MyHistory>
+
+      <CurrentScore fontSize={16} block>
+        <Text color={fontBlack} fontSize={16} underline onClick={() => setIsModal(true)}>
+          현재 활동 점수
+        </Text>
+        :
+        <Text fontSize={16} strong style={{ marginLeft: 5 }}>
+          {levelData.score}
+        </Text>
+      </CurrentScore>
+      <Modal visible={isModal} onClose={closeModal}>
+        <Modal.Custom>
+          <LevelModal onClose={closeModal} />
+        </Modal.Custom>
+      </Modal>
+    </LevelContainer>
+  );
+};
+
+export default UserLevel;
 
 const { mainGreen, mainWhite, fontNormal, fontBlack } = theme.color;
 
@@ -79,85 +137,3 @@ const LevelIcon = styled.div`
   background-repeat: no-repeat;
   border-radius: 15px;
 `;
-
-const UserLevel = () => {
-  const { currentUser } = useUserContext();
-  const [userData, setUserData] = useState({
-    post: 0,
-    comment: 0,
-    follower: 0,
-    currentLevel: null,
-    currentScore: 0,
-  });
-
-  const [isModal, setIsModal] = useState(false);
-
-  const getUserInfo = async (userId) => {
-    const result = await getUser(userId).then((res) => res.data);
-    const { score, level } = getUserLevel({
-      posts: result.posts,
-      comments: result.comments,
-      followers: result.followers,
-    });
-
-    setUserData({
-      post: result.posts.length,
-      comment: result.comments.length,
-      follower: result.followers.length,
-      currentLevel: level,
-      currentScore: score,
-    });
-  };
-
-  const closeModal = useCallback(() => {
-    setIsModal(false);
-  }, []);
-
-  useEffect(() => {
-    if (currentUser.id) {
-      getUserInfo(currentUser.id);
-    }
-  }, [currentUser.id]);
-
-  return (
-    <LevelContainer>
-      {userData.currentLevel && (
-        <MyLevel>
-          <LevelIcon src={userData.currentLevel.image} />
-          {userData.currentLevel?.name}
-        </MyLevel>
-      )}
-      <MyHistory>
-        <HistoryItem>
-          <HistoryTitle>게시글</HistoryTitle>
-          <HistoryCount>{userData.post}</HistoryCount>
-        </HistoryItem>
-        <HistoryItem>
-          <HistoryTitle>댓글</HistoryTitle>
-          <HistoryCount>{userData.comment}</HistoryCount>
-        </HistoryItem>
-        <HistoryItem>
-          <HistoryTitle>팔로워</HistoryTitle>
-          <HistoryCount>{userData.follower}</HistoryCount>
-        </HistoryItem>
-      </MyHistory>
-
-      <CurrentScore fontSize={16} block>
-        <Text color={fontBlack} fontSize={16} underline onClick={() => setIsModal(true)}>
-          현재 활동 점수
-        </Text>
-        :
-        <Text fontSize={16} strong style={{ marginLeft: 5 }}>
-          {userData.currentScore}
-        </Text>
-      </CurrentScore>
-      <Modal visible={isModal} onClose={closeModal}>
-        <Modal.Custom>
-          <LevelModal onClose={closeModal} />
-        </Modal.Custom>
-      </Modal>
-    </LevelContainer>
-  );
-};
-
-export default UserLevel;

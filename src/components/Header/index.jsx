@@ -2,12 +2,11 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Icon, Text, FixedContainer } from 'components';
 import theme from 'styles/theme';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import Badge from 'components/basic/Badge';
 import useLocalToken from 'hooks/useLocalToken';
 import { useState } from 'react';
 import { getNotifications } from 'utils/apis/userApi';
-import { useCallback } from 'react';
 
 const { headerHeight, pagePadding } = theme.value;
 const { borderLight } = theme.color;
@@ -50,11 +49,15 @@ export const Header = ({ prev, title, info, complete, onComplete }) => {
   };
 
   const [token] = useLocalToken();
-  const initNotifications = useCallback(async () => {
-    const fetchedNotifications = await getNotifications(token);
-    setIsSeen(fetchedNotifications.data.length === 0 ? isSeen : fetchedNotifications.data[0].seen);
+  useEffect(() => {
+    const initNotifications = async () => {
+      const fetchedNotifications = await getNotifications(token);
+      setIsSeen(
+        fetchedNotifications.data.length === 0 ? isSeen : fetchedNotifications.data[0].seen,
+      );
+    };
+    initNotifications();
   }, [token, isSeen]);
-  initNotifications();
 
   return (
     <HeaderContainer top height={headerHeight}>

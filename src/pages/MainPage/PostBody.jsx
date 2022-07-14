@@ -1,5 +1,4 @@
-/** @jsxImportSource @emotion/react */
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -13,6 +12,9 @@ import { useUserContext } from 'contexts/UserContext';
 import { IMAGE_URLS } from 'utils/constants/images';
 import displayedAt from 'utils/functions/displayedAt';
 import IconButton from 'components/basic/Icon/IconButton';
+import { COMMENT, HEART, HEART_RED } from 'utils/constants/icons/names';
+import { LIKE } from 'utils/constants/notificationTypes';
+import LoginRequireModal from 'components/Modal/customs/LoginRequireModal';
 
 const PostBody = ({ index, post, isDetailPage = false }) => {
   const { _id: postId, image, likes, comments, createdAt, author } = post || {};
@@ -21,7 +23,8 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
   const [heartCount, setHeartCount] = useState(likes.length);
   const [likeId, setLikeId] = useState('');
   const [isShown, setIsShown] = useState(false);
-  const [localToken] = useLocalToken();
+  const [modalOn, setModalOn] = useState(false);
+  const [token] = useLocalToken();
   const { currentUser } = useUserContext();
   const [, setCurrentPostIndex] = useScrollPosition();
   const navigate = useNavigate();
@@ -55,24 +58,29 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
   }, [setCurrentPostIndex, index, postId, post, isDetailPage, navigate]);
 
   const handleClickHeart = useCallback(async () => {
+    if (!token) {
+      setModalOn(true);
+      return;
+    }
+
     setOnHeart(!onHeart);
     if (!onHeart) {
       setHeartCount(heartCount + 1);
-      if (localToken && postId) {
-        const like = await setLike(localToken, postId).then((res) => res.data);
+      if (token && postId) {
+        const like = await setLike(token, postId).then((res) => res.data);
         setLikeId(like._id);
         if (currentUser.id !== author._id) {
-          await setNotification(localToken, 'LIKE', like._id, author._id, postId);
+          await setNotification(token, LIKE, like._id, author._id, postId);
         }
       }
     } else {
       setHeartCount(heartCount - 1);
-      if (localToken && likeId) {
-        await setDisLike(localToken, likeId).then((res) => res.data);
+      if (token && likeId) {
+        await setDisLike(token, likeId).then((res) => res.data);
         setLikeId('');
       }
     }
-  }, [onHeart, heartCount, postId, likeId, author._id, currentUser, localToken]);
+  }, [onHeart, heartCount, postId, likeId, author._id, currentUser, token]);
 
   const handleClickTag = useCallback(
     (tag) => {
@@ -86,9 +94,13 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
     [index, setCurrentPostIndex, navigate],
   );
 
-  const handleClickMore = () => {
+  const handleClickMore = useCallback(() => {
     setIsShown(true);
-  };
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModalOn(false);
+  }, []);
 
   return (
     <Container>
@@ -103,7 +115,7 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
       <Contents>
         <IconButtons>
           <IconButton
-            name={onHeart ? 'HEART_RED' : 'HEART'} // Todo: 상수화
+            name={onHeart ? HEART_RED : HEART}
             size={22}
             style={IconButtonStyle}
             onClick={handleClickHeart}
@@ -112,7 +124,7 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
               {heartCount}
             </Text>
           </IconButton>
-          <IconButton name="COMMENT" size={22} onClick={navigateToDetailPage}>
+          <IconButton name={COMMENT} size={22} onClick={navigateToDetailPage}>
             <Text fontSize={16} style={IconButtonTextStyle}>
               {comments.length}
             </Text>
@@ -135,6 +147,7 @@ const PostBody = ({ index, post, isDetailPage = false }) => {
         </Tags>
         <DateText>{displayedAt(createdAt)}</DateText>
       </Contents>
+      <LoginRequireModal visible={modalOn} onClose={handleCloseModal} />
     </Container>
   );
 };

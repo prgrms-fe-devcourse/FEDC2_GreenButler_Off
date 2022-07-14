@@ -43,16 +43,21 @@ const InnerRight = styled.div`
 
 export const Header = ({ prev, title, info, complete, onComplete }) => {
   const navigate = useNavigate();
+  const [isSeen, setIsSeen] = useState(true);
   const onClickPrev = () => {
     navigate(-1);
   };
-  const [isSeen, setIsSeen] = useState(true);
+
   const [token] = useLocalToken();
-  const initNotifications = async () => {
-    const fetchedNotifications = await getNotifications(token);
-    setIsSeen(fetchedNotifications.data[0].seen);
-  };
-  initNotifications();
+  useEffect(() => {
+    const initNotifications = async () => {
+      const fetchedNotifications = await getNotifications(token);
+      setIsSeen(
+        fetchedNotifications.data.length === 0 ? isSeen : fetchedNotifications.data[0].seen,
+      );
+    };
+    initNotifications();
+  }, [token, isSeen]);
 
   return (
     <HeaderContainer top height={headerHeight}>
@@ -63,9 +68,11 @@ export const Header = ({ prev, title, info, complete, onComplete }) => {
       <InnerRight>
         {info && (
           <>
-            <Badge dot={isSeen}>
-              <Icon.Link to="/user/notification" name="NOTIFICATION" size={30} />
-            </Badge>
+            {token && (
+              <Badge dot={isSeen}>
+                <Icon.Link to="/user/notification" name="NOTIFICATION" size={30} />
+              </Badge>
+            )}
             <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
           </>
         )}

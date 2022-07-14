@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import PostItem from 'pages/MainPage/PostItem';
-import { Avatar, Icon, Modal, PageWrapper } from 'components';
+import { Avatar, Modal, PageWrapper } from 'components';
 import IconButton from 'components/basic/Icon/IconButton';
 import theme from 'styles/theme';
 import { useRef, useCallback, useState, useEffect } from 'react';
@@ -10,6 +10,9 @@ import { getPostData } from 'utils/apis/postApi';
 import { useUserContext } from 'contexts/UserContext';
 import { setNotification } from 'utils/apis/userApi';
 import displayedAt from 'utils/functions/displayedAt';
+import { MORE } from 'utils/constants/icons/names';
+import { COMMENT } from 'utils/constants/notificationTypes';
+import LoginRequireModal from 'components/Modal/customs/LoginRequireModal';
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -19,7 +22,8 @@ const PostDetailPage = () => {
   const inputRef = useRef(null);
   const [localToken] = useLocalToken();
   const { currentUser, onAddComment, onDeleteComment } = useUserContext();
-  const [isModal, setIsModal] = useState(false);
+  const [loginModalOn, setLoginModalOn] = useState(false);
+  const [commentModalOn, setCommentModalOn] = useState(false);
   const commentIdToDelete = useRef('');
 
   useEffect(() => {
@@ -33,6 +37,10 @@ const PostDetailPage = () => {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
+      if (!localToken) {
+        setLoginModalOn(true);
+        return;
+      }
       if (!inputRef.current.value) {
         return;
       }
@@ -44,7 +52,7 @@ const PostDetailPage = () => {
       setInputHeight('30px');
       inputRef.current.value = '';
       if (currentUser.id !== post.author._id) {
-        await setNotification(localToken, 'COMMENT', newComment._id, post.author._id, post._id);
+        await setNotification(localToken, COMMENT, newComment._id, post.author._id, post._id);
       }
     },
     [post, localToken, currentUser.id, onAddComment],
@@ -67,12 +75,12 @@ const PostDetailPage = () => {
   );
 
   const handleMoreClick = useCallback((commentId) => {
-    setIsModal(true);
+    setCommentModalOn(true);
     commentIdToDelete.current = commentId;
   }, []);
 
   const handleDeleteComment = useCallback(async () => {
-    setIsModal(false);
+    setCommentModalOn(false);
     if (commentIdToDelete.current) {
       await onDeleteComment(commentIdToDelete.current);
       const nextComments = post.comments.filter(
@@ -85,8 +93,9 @@ const PostDetailPage = () => {
     }
   }, [post, onDeleteComment]);
 
-  const onClose = useCallback(() => {
-    setIsModal(false);
+  const handleCloseModal = useCallback(() => {
+    setLoginModalOn(false);
+    setCommentModalOn(false);
   }, []);
 
   return (
@@ -118,7 +127,7 @@ const PostDetailPage = () => {
                     </Content>
                     {_id === currentUser.id && (
                       <IconButton
-                        name="MORE"
+                        name={MORE}
                         size={20}
                         style={MoreButtonStyle}
                         onClick={() => handleMoreClick(commentId)}
@@ -129,11 +138,14 @@ const PostDetailPage = () => {
                 .reverse()}
             </CommentList>
           </Container>
-          <Modal visible={isModal} onClose={onClose}>
-            <Modal.Custom>
-              <DeleteCommentButton onClick={handleDeleteComment}>삭제</DeleteCommentButton>
-            </Modal.Custom>
-          </Modal>
+          {commentModalOn && (
+            <Modal visible={commentModalOn} onClose={handleCloseModal}>
+              <Modal.Custom>
+                <DeleteCommentButton onClick={handleDeleteComment}>삭제</DeleteCommentButton>
+              </Modal.Custom>
+            </Modal>
+          )}
+          {loginModalOn && <LoginRequireModal visible={loginModalOn} onClose={handleCloseModal} />}
         </PageWrapper>
       )}
     </>

@@ -4,9 +4,10 @@ import { Text, Icon, Modal } from 'components';
 import { LOGOUT, KEY } from 'utils/constants/icons/names';
 import { useUserContext } from 'contexts/UserContext';
 import theme from 'styles/theme';
-import { navigate } from '@storybook/addon-links';
+import { useNavigate } from 'react-router-dom';
 
 const UserDetails = () => {
+  const navigate = useNavigate();
   const { currentUser, onLogout } = useUserContext();
   const [isLogoutModal, setIsLogoutModal] = useState(false);
 
@@ -30,7 +31,11 @@ const UserDetails = () => {
           {currentUser.email}
         </Text>
       </UserDetail>
-      <UserDetail>
+      <UserDetail
+        onClick={() => {
+          navigate('/user/myInfo/edit');
+        }}
+      >
         <Icon.Link
           name={KEY}
           size={24}
@@ -45,7 +50,7 @@ const UserDetails = () => {
           </Text>
         </Icon.Link>
       </UserDetail>
-      <UserDetail>
+      <UserDetail onClick={() => setIsLogoutModal(true)}>
         <Icon.Button
           name={LOGOUT}
           size={24}

@@ -68,9 +68,11 @@ export const Header = ({ prev, title, info, complete, onComplete }) => {
       <InnerRight>
         {info && (
           <>
-            <Badge dot={isSeen}>
-              <Icon.Link to="/user/notification" name="NOTIFICATION" size={30} />
-            </Badge>
+            {token && (
+              <Badge dot={isSeen}>
+                <Icon.Link to="/user/notification" name="NOTIFICATION" size={30} />
+              </Badge>
+            )}
             <Icon.Link to="/user/myinfo" name="MY_INFO" size={30} />
           </>
         )}

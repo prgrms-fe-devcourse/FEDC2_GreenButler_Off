@@ -24,7 +24,7 @@ const MainPage = () => {
       }).then((res) => res.data);
       setPosts(nextPosts);
       setMax(nextPosts[0].channel.posts.length);
-      setOffset(prevPostIndex ? prevPostIndex : 5);
+      setOffset(prevPostIndex ? prevPostIndex : LIMIT);
     })();
   }, []);
 

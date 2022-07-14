@@ -13,35 +13,35 @@ const FOLLOWER = 'follower';
 //TODO: follows 데이터 구조
 // const followData = [{ followId: '', userData: {}, followData: {}}]; // 팔로잉 기준 전부 isFollow true
 
-const FollowList = ({ followList, tab, handleFollowSuccess }) => {
+const FollowList = ({ followList, tab, handleFollowChange }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
   const [isModal, setIsModal] = useState(false);
   const [unfollowId, setUnfollowId] = useState('');
-  const [isFollowSuccess, setIsFollowSuccess] = useState(false);
+  const [isFollowChange, setIsFollowChange] = useState(false);
 
   const onClose = () => {
     setIsModal(false);
   };
 
-  const hadleFollow = useCallback(
+  const handleFollow = useCallback(
     (followId, userId) => {
       if (!currentUser.following.some((follow) => follow.user === userId)) {
         onFollow({ userId, followId });
-        setIsFollowSuccess(true);
+        setIsFollowChange(true);
+        handleFollowChange(true);
       } else {
-        setIsFollowSuccess(false);
+        setIsFollowChange(false);
       }
       setIsModal(true);
-      handleFollowSuccess(isFollowSuccess);
     },
-    [currentUser, onFollow, handleFollowSuccess, isFollowSuccess],
+    [currentUser, onFollow, handleFollowChange],
   );
 
-  const hadleUnFollow = useCallback(() => {
+  const handleUnFollow = useCallback(() => {
     onUnfollow({ unfollowId });
     setIsModal(false);
-    handleFollowSuccess(true);
-  }, [unfollowId, onUnfollow, handleFollowSuccess]);
+    handleFollowChange(true);
+  }, [unfollowId, onUnfollow, handleFollowChange]);
 
   return (
     //TODO: user._id:
@@ -84,7 +84,7 @@ const FollowList = ({ followList, tab, handleFollowSuccess }) => {
                   fontSize="16px"
                   style={{ ...followButtonStyle }}
                   onClick={() => {
-                    hadleFollow(followId, followData.follower);
+                    handleFollow(followId, followData.follower);
                   }}
                 >
                   팔로우
@@ -93,7 +93,7 @@ const FollowList = ({ followList, tab, handleFollowSuccess }) => {
             </ProfileContainer>
           );
         })}{' '}
-      {tab === FOLLOWER && !isFollowSuccess && isModal && (
+      {tab === FOLLOWER && !isFollowChange && isModal && (
         <Modal visible={isModal} onClose={onClose}>
           <Modal.Content
             title="팔로우 실패했어요!"
@@ -103,7 +103,7 @@ const FollowList = ({ followList, tab, handleFollowSuccess }) => {
           <Modal.Button onClick={onClose}>확인</Modal.Button>
         </Modal>
       )}
-      {tab === FOLLOWER && isFollowSuccess && isModal && (
+      {tab === FOLLOWER && isFollowChange && isModal && (
         <Modal visible={isModal} onClose={onClose}>
           <Modal.Content title="팔로우에 성공했어요!" onClose={onClose} />
           <Modal.Button onClick={onClose}>확인</Modal.Button>
@@ -118,7 +118,7 @@ const FollowList = ({ followList, tab, handleFollowSuccess }) => {
           />
           <Modal.Button
             onClick={() => {
-              hadleUnFollow();
+              handleUnFollow();
             }}
           >
             확인

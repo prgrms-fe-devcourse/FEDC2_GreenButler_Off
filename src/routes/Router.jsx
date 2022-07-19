@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import useLocalToken from 'hooks/useLocalToken';
 import { Routes, Route } from 'react-router-dom';
 import { useUserContext } from 'contexts/UserContext';
-import scrollToTop from 'utils/functions/scrollToTop';
+import useScrollToTop from 'hooks/useScrollToTop';
 import PrivateWrapper from './PrivateWrapper';
 import {
   LoginPage,
@@ -23,7 +23,7 @@ import {
 const Router = () => {
   const [token] = useLocalToken();
   const { onKeepLoggedIn } = useUserContext();
-  scrollToTop();
+  useScrollToTop();
 
   useEffect(() => {
     token && onKeepLoggedIn();

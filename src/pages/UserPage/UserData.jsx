@@ -5,6 +5,7 @@ import theme from 'styles/theme';
 import { IMAGE_URLS } from 'utils/constants/images';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import useLocalToken from 'hooks/useLocalToken';
 
 import {
   followButtonStyle,
@@ -17,12 +18,15 @@ import {
 } from './style';
 
 const UserData = ({ user, pageUserId, userLevel }) => {
+  const [token] = useLocalToken();
   const { currentUser, onFollow, onUnfollow } = useUserContext();
   const followData = currentUser.following.filter((follow) => follow.user === pageUserId);
   const [isFollow, setIsFollow] = useState(false);
   const [isFollowModal, setIsFollowModal] = useState(false);
   const [isUnFollowModal, setIsUnFollowModal] = useState(false);
   const [followers, setFollowers] = useState();
+  const isFollowButton = token && currentUser.id !== pageUserId && isFollow;
+  const isUnfollowButton = token && currentUser.id !== pageUserId && !isFollow;
 
   useEffect(() => {
     setIsFollow(followData.length === 0 ? false : true);
@@ -106,7 +110,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
         </UserDetail>
       </UserDetailWrapper>
 
-      {currentUser.id !== pageUserId && isFollow && (
+      {isFollowButton && (
         <Button
           width={100}
           height={30}
@@ -122,7 +126,7 @@ const UserData = ({ user, pageUserId, userLevel }) => {
           팔로잉
         </Button>
       )}
-      {currentUser.id !== pageUserId && !isFollow && (
+      {isUnfollowButton && (
         <Button
           width={100}
           height={30}

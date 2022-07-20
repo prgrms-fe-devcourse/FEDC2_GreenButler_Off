@@ -15,6 +15,12 @@ import {
   UserDetail,
   NickName,
 } from './style';
+import {
+  MODAL_FOLLOW_DESCRIPTION,
+  MODAL_FOLLOW_TITLE,
+  MODAL_UNFOLLOW_DESCRIPTION,
+  MODAL_UNFOLLOW_TITLE,
+} from 'utils/constants/messages';
 
 const UserData = ({ user, pageUserId, userLevel }) => {
   const { currentUser, onFollow, onUnfollow } = useUserContext();
@@ -137,8 +143,8 @@ const UserData = ({ user, pageUserId, userLevel }) => {
 
       <Modal visible={isFollowModal} onClose={onCloseFollow}>
         <Modal.Content
-          title="팔로우 성공!"
-          description="성공적으로 팔로잉 했어요"
+          title={MODAL_FOLLOW_TITLE}
+          description={MODAL_FOLLOW_DESCRIPTION}
           onClose={onCloseFollow}
         />
         <Modal.Button onClick={onCloseFollow}>확인</Modal.Button>
@@ -146,8 +152,8 @@ const UserData = ({ user, pageUserId, userLevel }) => {
 
       <Modal visible={isUnFollowModal} onClose={onCloseUnFollow}>
         <Modal.Content
-          title="언팔하시겠어요?"
-          description="언팔하시면 팔로잉 목록에서 사용자가 사라져요"
+          title={MODAL_UNFOLLOW_TITLE}
+          description={MODAL_UNFOLLOW_DESCRIPTION}
           onClose={onCloseUnFollow}
         />
         <Modal.Button

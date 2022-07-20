@@ -19,3 +19,5 @@ export const MODAL_SIGNUP_FAIL_TITLE = '회원가입에 실패했어요!';
 export const MODAL_SIGNUP_FAIL_DESCRIPTION = '이메일 및 비밀번호를 다시 확인해 주세요.';
 export const MODAL_SIGNUP_FAIL_NETWORK = '네트워크 연결이 불안정합니다.';
 export const MODAL_SIGNUP_FAIL_EMAIL = '이미 가입된 이메일입니다.';
+export const MODAL_TITLE_LOGIN_REQUIRED = '로그인이 필요한 서비스입니다.';
+export const MODAL_DESCRIPTION_LOGIN_REQUIRED = '로그인 화면으로 이동하시겠어요?';
